@@ -10,6 +10,7 @@ import { useUser } from "reactfire";
 import Welcome from "./Components/Welcome.jsx";
 import SignIn from "./Components/SignIn.jsx";
 import SignUp from "./Components/SignUp.jsx";
+import Inventory from "./Components/Inventory.jsx";
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
         <Switch>
           <Route path="/signin"><SignIn /> </Route>
           <Route path="/signup"><SignUp /></Route>
+          <Route path="/inventory"><Inventory /></Route>
           <Route path="/">
             <Welcome />
           </Route>

@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
-function App() {
+/* Firebase */
+import { useUser } from "reactfire";
+
+/* App Components */
+import Welcome from "./Components/Welcome.jsx";
+import SignIn from "./Components/SignIn.jsx";
+import SignUp from "./Components/SignUp.jsx";
+
+
+const App = () => {
+  // const user = useUser();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="main-container">
+        <Switch>
+          <Route path="/signin"><SignIn /> </Route>
+          <Route path="/signup"><SignUp /></Route>
+          <Route path="/">
+            <Welcome />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

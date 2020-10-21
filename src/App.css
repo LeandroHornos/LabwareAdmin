@@ -1,9 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap");
+
 * {
   box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   padding: 20px 0px;
+  color: rgb(60, 60, 60);
+}
+
+p {
+  color: rgb(60, 60, 60);
 }
 
 .row {
@@ -19,11 +29,24 @@ h1, h2, h3 {
 
 .inventory-sidepanel {
   background-color: rgb(41, 107, 63);
-  color: white;
   padding: 20px;
+}
+
+.inventory-sidepanel h3,
+label {
+  color: white;
+
 }
 
 .item-card {
   margin-bottom: 20px;
-  box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.3);
+}
+.item-card-header {
+  background-color: rgb(60, 60, 60);
+}
+
+.navbar {
+  box-shadow: 2px 2px 12px 1px rgba(0, 0, 0, 0.3);
+  z-index: 100;
 }

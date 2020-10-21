@@ -6,19 +6,17 @@ const Welcome = () => {
   const history = useHistory();
   return (
     <div className="row">
-      <div className="col-md-3"></div>
+      <div className="col-md-4"></div>
       <div
-        className="col-md-6 d-flex flex-column aling-items-center justify-content-center"
+        className="col-md-4 d-flex flex-column aling-items-center justify-content-center"
         style={{ minHeight: "100vh" }}
       >
         <div style={{ textAlign: "center" }}>
           <p>Te damos la bienvenida a</p>
-          <h1>LabwareAdmin</h1>
-          <p>
-            Con esta aplicación podrás llevar un inventario del material de tu
-            laboratorio
-          </p>
+          <h1 style={{ color: "rgb(0,160,60)" }}>LabwareAdmin</h1>
+          <p>Lleva el inventario de tu laboratorio</p>
           <Button
+            variant="dark"
             onClick={(e) => {
               history.push("/signin");
             }}
@@ -27,6 +25,7 @@ const Welcome = () => {
             Ingresar
           </Button>
           <Button
+            variant="primary"
             onClick={(e) => {
               history.push("/signup");
             }}
@@ -36,7 +35,7 @@ const Welcome = () => {
           </Button>
         </div>
       </div>
-      <div className="col-md-3"></div>
+      <div className="col-md-4"></div>
     </div>
   );
 };

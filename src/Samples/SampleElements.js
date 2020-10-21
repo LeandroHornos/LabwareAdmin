@@ -5,6 +5,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -13,6 +14,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -21,6 +23,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -29,6 +32,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -37,6 +41,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -45,6 +50,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -53,6 +59,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 },{
     id:"oie445tgh765rfh877y66ty5r44e",
@@ -61,6 +68,7 @@ const SampleElements = [{
     brand: "Investiglass",
     description: "Esta es una descripcion",
     ammount: "2",
+    changelog: [{user: "useremail@pepito.com",  date: "01022020-09:34", ammount: "2"}],
     location: "Deposit"
 }];
 

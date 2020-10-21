@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const NavigationBar = () => {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar className="navbar" collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
       <Navbar.Brand>
         <Link to="/">LabwareAdmin</Link>
       </Navbar.Brand>

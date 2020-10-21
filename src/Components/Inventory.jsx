@@ -14,9 +14,10 @@ const Inventory = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <div className="row">
+      <div className="row" style={{ marginTop: "50px" }}>
         <div className="col-md-3 inventory-sidepanel">
           <Button
+          style={{marginTop: "10px"}}
             variant="success"
             block
             onClick={(e) => {
@@ -28,14 +29,13 @@ const Inventory = () => {
           {search ? <SearchItemForm /> : <NewItemForm />}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
-          <h1>Hola, este es el inventario</h1>
+          <h1 style={{ marginBottom: "40px" }}>Hola, este es el inventario</h1>
           {items.map((item) => {
             return (
               <Card className="item-card">
-                <Card.Header>
-                  <Card.Title>{item.name}</Card.Title>
-                </Card.Header>
+                <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body>
+                  <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{item.description}</Card.Text>
                   <Button variant="success">Editar</Button>
                 </Card.Body>
@@ -72,7 +72,7 @@ const NewItemForm = () => {
         <Form.Label>Ubicación: </Form.Label>
         <FormControl type="text"></FormControl>
       </FormGroup>
-      <Button block>Agregar item</Button>
+      <Button variant="info" block>Agregar item</Button>
     </Form>
   );
 };
@@ -85,7 +85,7 @@ const SearchItemForm = () => {
         <Form.Label>Buscar por las siguientes palabras: </Form.Label>
         <FormControl type="text"></FormControl>
       </FormGroup>
-      <Button block>Buscar</Button>
+      <Button variant="info" block>Buscar</Button>
     </Form>
   );
 };

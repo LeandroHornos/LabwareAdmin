@@ -16,7 +16,7 @@ function SignIn() {
   const firebase = useFirebaseApp();
 
   const handleSubmit = async () => {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
+    // await firebase.auth().signInWithEmailAndPassword(email, password);
     history.push("./inventory");
   };
 
@@ -55,7 +55,8 @@ function SignIn() {
             />
           </Form.Group>
           <Button
-            variant="primary"
+            block
+            variant="success"
             type="submit"
             onClick={(e) => {
               e.preventDefault();

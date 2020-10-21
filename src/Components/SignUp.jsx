@@ -22,8 +22,8 @@ function SignUp() {
   const firebase = useFirebaseApp();
 
   const handleSubmit = async () => {
-    await firebase.auth().createUserWithEmailAndPassword(email, password);
-    history.push("./wall");
+    // await firebase.auth().createUserWithEmailAndPassword(email, password);
+    history.push("./inventory");
   };
   return (
     <div className="row">
@@ -83,7 +83,8 @@ function SignUp() {
             />
           </Form.Group>
           <Button
-            variant="primary"
+          block
+            variant="success"
             type="submit"
             onClick={(e) => {
               e.preventDefault();

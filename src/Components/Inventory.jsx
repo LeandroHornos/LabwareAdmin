@@ -9,8 +9,8 @@ import { FormControl, FormGroup } from "react-bootstrap";
 
 import NavigationBar from "./NavigationBar.jsx";
 
-const Inventory = () => {
-  const inventory = SampleInventories[0];
+const Inventory = (props) => {
+  const inventory = SampleInventories[props.inventory];
   console.log(inventory);
   const [items, setItems] = useState(SampleElements);
   const [search, setSearch] = useState(true);

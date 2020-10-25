@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import SampleElements from "../Samples/SampleElements";
+
+// Samples
 import SampleInventories from "../Samples/SampleInventories";
 
+// Bootstrap components
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
+// Router
 import { useHistory } from "react-router-dom";
 
+// App components
 import NavigationBar from "./NavigationBar.jsx";
 
 const Inventory = (props) => {
-  const history = useHistory();
+  // hooks
   const [items, setItems] = useState(SampleInventories);
-
-  const HandleClick = (inventoryNumber) => {
-    props.updateInventory(inventoryNumber);
-    history.push("./inventory");
-  };
+  // methods
 
   return (
     <React.Fragment>
@@ -29,18 +29,18 @@ const Inventory = (props) => {
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           <h1 style={{ marginBottom: "40px" }}>Mis Inventarios</h1>
-          <Button variant="success" onClick={() => HandleClick(2)}>
-            Ver inventario 2
-          </Button>
+
           <DinamicInventoriesWall
             items={items}
-            setCurrentInventory={props.updateInventory}
+            updateInventory={props.updateInventory}
           />
         </div>
       </div>
     </React.Fragment>
   );
 };
+
+// SUBCOMPONENTS-------------------------------------------------------
 
 const NewItemForm = () => {
   return (
@@ -61,28 +61,22 @@ const NewItemForm = () => {
   );
 };
 
-const SearchItemForm = () => {
-  return (
-    <Form>
-      <h3>Buscar</h3>
-      <FormGroup>
-        <Form.Label>Buscar por las siguientes palabras: </Form.Label>
-        <FormControl type="text"></FormControl>
-      </FormGroup>
-      <Button variant="info" block>
-        Buscar
-      </Button>
-    </Form>
-  );
-};
-
 /* DinamicInventoriesWall genera dinamicamente el muro de posteos a partir de la base de datos.
 Agrupa los items de a 2 en un array bidimensional de forma que cada par se muestre
 como una fila con 2 columnas, con una tarjeta en cada columna. En un dispositivo pequeño
 las columnas se ubican una debajo de la otra quedando una tira de tarjetas.
 */
 const DinamicInventoriesWall = (props) => {
+  // data
   const pairs = groupAsPairs(props.items);
+  // hooks
+  const history = useHistory();
+  // methods
+  const HandleClick = (inventoryNumber) => {
+    props.updateInventory(inventoryNumber);
+    history.push("./inventory");
+  };
+
   return pairs.map((pair) => {
     return (
       <div className="row">
@@ -94,7 +88,9 @@ const DinamicInventoriesWall = (props) => {
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{item.description}</Card.Text>
-                  <Button variant="success">Ver</Button>
+                  <Button variant="success" onClick={() => HandleClick(2)}>
+                    Ver inventario 2
+                  </Button>
                 </Card.Body>
               </Card>
             </div>

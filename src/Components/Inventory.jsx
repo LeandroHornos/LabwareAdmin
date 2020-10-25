@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SampleElements from "../Samples/SampleElements";
+import SampleInventories from "../Samples/SampleInventories";
 
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -9,6 +10,8 @@ import { FormControl, FormGroup } from "react-bootstrap";
 import NavigationBar from "./NavigationBar.jsx";
 
 const Inventory = () => {
+  const inventory = SampleInventories[0];
+  console.log(inventory);
   const [items, setItems] = useState(SampleElements);
   const [search, setSearch] = useState(true);
   return (
@@ -29,7 +32,7 @@ const Inventory = () => {
           {search ? <SearchItemForm /> : <NewItemForm />}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
-          <h1 style={{ marginBottom: "40px" }}>Hola, este es el inventario</h1>
+          <h1 style={{ marginBottom: "40px" }}>{inventory.name}</h1>
           <DinamicWall items={items} />
         </div>
       </div>
@@ -54,11 +57,23 @@ const NewItemForm = () => {
         <FormControl type="text"></FormControl>
       </FormGroup>
       <FormGroup>
+        <Form.Label>Categoria: </Form.Label>
+        <FormControl type="text"></FormControl>
+      </FormGroup>
+      <FormGroup>
+        <Form.Label>Subcategoria: </Form.Label>
+        <FormControl type="text"></FormControl>
+      </FormGroup>
+      <FormGroup>
         <Form.Label>Cantidad: </Form.Label>
         <FormControl type="number"></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Ubicación: </Form.Label>
+        <FormControl type="text"></FormControl>
+      </FormGroup>
+      <FormGroup>
+        <Form.Label>Sub-ubicación: </Form.Label>
         <FormControl type="text"></FormControl>
       </FormGroup>
       <Button variant="info" block>
@@ -84,7 +99,7 @@ const SearchItemForm = () => {
 };
 
 /* DinamicWall genera dinamicamente el muro de posteos a partir de la base de datos.
-Agrupa los posts de a 3 en un array bidimensional de forma que cada triplete se muestre
+Agrupa los items de a 3 en un array bidimensional de forma que cada triplete se muestre
 como una fila con 3 columnas, con una tarjeta en cada columna. En un dispositivo pequeño
 las columnas se ubican una debajo de la otra quedando una tira de tarjetas.
 */
@@ -112,19 +127,19 @@ const DinamicWall = (props) => {
   });
 };
 
-const groupAsTriplets = (posts) => {
-  // Create a 2D array where every element is an array of 3 posts.
-  // It can be used to make rows with 3 posts each.
+const groupAsTriplets = (items) => {
+  // Create a 2D array where every element is an array of 3 items.
+  // It can be used to make rows with 3 items each.
 
   let triplets = [];
   let triplet = [];
   let count = 0;
-  posts.forEach((post) => {
+  items.forEach((item) => {
     if (count < 2) {
-      triplet.push(post);
+      triplet.push(item);
       count++;
     } else {
-      triplet.push(post);
+      triplet.push(item);
       triplets.push(triplet);
       triplet = [];
       count = 0;

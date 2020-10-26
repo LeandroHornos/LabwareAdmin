@@ -1,20 +1,16 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import firebaseConfig from "./firebaseConfig";
-
-import { FirebaseAppProvider } from "reactfire";
+import { AuthProvider } from "./Auth";
 
 ReactDOM.render(
   <React.StrictMode>
-    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <Suspense fallback={"Cargando..."}>
-        <App />
-      </Suspense>
-    </FirebaseAppProvider>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

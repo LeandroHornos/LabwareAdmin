@@ -48,7 +48,7 @@ const NewInventoryForm = () => {
   const history = useHistory();
   // Methods
   const handleCreateInventory = () => {
-    data = {
+    const data = {
       ...invDefaultData,
       name,
       description,
@@ -57,7 +57,7 @@ const NewInventoryForm = () => {
       users: [{ id: "pepito@gmail.com", role: "admin" }],
     };
     // Save data to database
-    console.log("creando inventario");
+    console.log("creando inventario", data);
     history.push("./inventories");
   };
   return (

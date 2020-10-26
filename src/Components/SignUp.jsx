@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-/* Firebase */
-import "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+// Firebase
+import firebaseApp from "../firebaseApp";
 
 /* Bootstrap */
 import Button from "react-bootstrap/Button";
@@ -19,18 +18,16 @@ function SignUp() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState(null);
 
-  const firebase = useFirebaseApp();
-
-  const handleSubmit = async () => {
-    // await firebase.auth().createUserWithEmailAndPassword(email, password);
-    history.push("./inventory");
+  const handleSignOut = async () => {
+    await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
+    history.push("./inventories");
   };
   return (
     <div className="row">
       <div className="col-md-3"></div>
       <div
         className="col-md-6 d-flex flex-column justify-content-center"
-        style={{minHeight: "100vh"}}
+        style={{ minHeight: "100vh" }}
       >
         <div>
           {() => {
@@ -83,12 +80,12 @@ function SignUp() {
             />
           </Form.Group>
           <Button
-          block
+            block
             variant="success"
             type="submit"
             onClick={(e) => {
               e.preventDefault();
-              handleSubmit();
+              handleSignOut();
             }}
           >
             Registrarme

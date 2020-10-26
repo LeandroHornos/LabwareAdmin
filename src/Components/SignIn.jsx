@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import "firebase/auth";
-import { useFirebaseApp } from "reactfire";
+// Firebase
+import firebaseApp from "../firebaseApp";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -13,11 +13,9 @@ function SignIn() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const firebase = useFirebaseApp();
-
-  const handleSubmit = async () => {
-    // await firebase.auth().signInWithEmailAndPassword(email, password);
-    history.push("./inventory");
+  const handleSignIn = async () => {
+    await firebaseApp.auth().signInWithEmailAndPassword(email, password);
+    history.push("./inventories");
   };
 
   return (
@@ -60,7 +58,7 @@ function SignIn() {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
-              handleSubmit();
+              handleSignIn();
             }}
           >
             Entrar

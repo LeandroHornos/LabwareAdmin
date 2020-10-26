@@ -9,6 +9,7 @@ import "./App.css";
 import Welcome from "./Components/Welcome.jsx";
 import SignIn from "./Components/SignIn.jsx";
 import SignUp from "./Components/SignUp.jsx";
+import SignOut from "./Components/SignOut.jsx";
 import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
 
@@ -24,10 +25,13 @@ const App = () => {
       <div className="main-container">
         <Switch>
           <Route path="/signin">
-            <SignIn />{" "}
+            <SignIn />
           </Route>
           <Route path="/signup">
             <SignUp />
+          </Route>
+          <Route path="/signout">
+            <SignOut />
           </Route>
           <Route path="/inventory">
             <Inventory inventory={currentInventory} />

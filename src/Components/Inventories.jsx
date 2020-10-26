@@ -25,14 +25,13 @@ const Inventory = (props) => {
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
         <div className="col-md-3 inventory-sidepanel">
-          <NewItemForm />
+          <NewInventoryForm />
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           <h1 style={{ marginBottom: "40px" }}>Mis Inventarios</h1>
-
           <DinamicInventoriesWall
             items={items}
-            updateInventory={props.updateInventory}
+            updateCurrentInventory={props.updateCurrentInventory}
           />
         </div>
       </div>
@@ -42,7 +41,25 @@ const Inventory = (props) => {
 
 // SUBCOMPONENTS-------------------------------------------------------
 
-const NewItemForm = () => {
+const NewInventoryForm = () => {
+  // Hooks
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const history = useHistory();
+  // Methods
+  const handleCreateInventory = () => {
+    data = {
+      ...invDefaultData,
+      name,
+      description,
+      date: new Date(),
+      creator: "pepito@gmail.com",
+      users: [{ id: "pepito@gmail.com", role: "admin" }],
+    };
+    // Save data to database
+    console.log("creando inventario");
+    history.push("./inventories");
+  };
   return (
     <Form>
       <h3>Nuevo Inventario</h3>
@@ -52,10 +69,10 @@ const NewItemForm = () => {
       </FormGroup>
       <FormGroup>
         <Form.Label>Descripción: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl as="textarea" rows={3}></FormControl>
       </FormGroup>
-      <Button variant="info" block>
-        Agregar item
+      <Button onClick={() => handleCreateInventory()} variant="info" block>
+        Crear inventario
       </Button>
     </Form>
   );
@@ -73,7 +90,7 @@ const DinamicInventoriesWall = (props) => {
   const history = useHistory();
   // methods
   const HandleClick = (inventoryNumber) => {
-    props.updateInventory(inventoryNumber);
+    props.updateCurrentInventory(inventoryNumber);
     history.push("./inventory");
   };
 
@@ -123,6 +140,12 @@ const groupAsPairs = (items) => {
     pairs.push(pair);
   }
   return pairs;
+};
+
+const invDefaultData = {
+  categories: [],
+  locations: [],
+  statuses: ["Active", "Stored", "Inactive", "Lent", "For repair", "Repairing"],
 };
 
 export default Inventory;

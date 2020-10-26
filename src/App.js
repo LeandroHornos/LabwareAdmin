@@ -15,7 +15,7 @@ import Inventories from "./Components/Inventories.jsx";
 const App = () => {
   const [currentInventory, setCurrentInventory] = useState(0);
 
-  const updateInventory = (inv) => {
+  const updateCurrentInventory = (inv) => {
     setCurrentInventory(inv);
   };
 
@@ -33,7 +33,7 @@ const App = () => {
             <Inventory inventory={currentInventory} />
           </Route>
           <Route path="/inventories">
-            <Inventories updateInventory={updateInventory} />
+            <Inventories updateCurrentInventory={updateCurrentInventory} />
           </Route>
           <Route path="/">
             <Welcome />

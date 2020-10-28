@@ -1,18 +1,25 @@
 import React from "react";
 
+// Router
 import { useHistory } from "react-router-dom";
 
+// Bootstrap
 import Button from "react-bootstrap/Button";
 
+// Firebase
 import firebaseApp from "../firebaseApp";
 
 const SignOut = () => {
   const history = useHistory();
 
   const handleSignOut = async () => {
-    await firebaseApp.auth().signOut();
-    history.push("./");
-    console.log("has salido")
+    try {
+      await firebaseApp.auth().signOut();
+      history.push("./");
+      console.log("has salido");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

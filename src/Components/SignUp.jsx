@@ -19,8 +19,12 @@ function SignUp() {
   const [error, setError] = useState(null);
 
   const handleSignOut = async () => {
-    await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
-    history.push("./inventories");
+    try {
+      await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
+      history.push("./inventories");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="row">

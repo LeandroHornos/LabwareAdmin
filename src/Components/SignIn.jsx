@@ -14,8 +14,12 @@ function SignIn() {
   const [password, setPassword] = useState(null);
 
   const handleSignIn = async () => {
-    await firebaseApp.auth().signInWithEmailAndPassword(email, password);
-    history.push("./inventories");
+    try {
+      await firebaseApp.auth().signInWithEmailAndPassword(email, password);
+      history.push("./inventories");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

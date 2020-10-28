@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 /* Firebase */
+import { AuthContext } from "./Auth";
 
 /* App Components */
 import Welcome from "./Components/Welcome.jsx";
@@ -14,6 +16,7 @@ import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
 
 const App = () => {
+  const { currentUser } = useContext(AuthContext);
   const [currentInventory, setCurrentInventory] = useState(0);
 
   const updateCurrentInventory = (inv) => {
@@ -25,19 +28,36 @@ const App = () => {
       <div className="main-container">
         <Switch>
           <Route path="/signin">
-            <SignIn />
+            {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
+            {currentUser ? (
+              <Inventories updateCurrentInventory={updateCurrentInventory} />
+            ) : (
+              <SignIn />
+            )}
           </Route>
           <Route path="/signup">
-            <SignUp />
+            {currentUser ? (
+              <Inventories updateCurrentInventory={updateCurrentInventory} />
+            ) : (
+              <SignIn />
+            )}
           </Route>
           <Route path="/signout">
-            <SignOut />
+            {currentUser ? <SignOut /> : <SignUp />}
           </Route>
           <Route path="/inventory">
-            <Inventory inventory={currentInventory} />
+            {currentUser ? (
+              <Inventory inventory={currentInventory} />
+            ) : (
+              <SignUp />
+            )}
           </Route>
           <Route path="/inventories">
-            <Inventories updateCurrentInventory={updateCurrentInventory} />
+            {currentUser ? (
+              <Inventories updateCurrentInventory={updateCurrentInventory} />
+            ) : (
+              <SignUp />
+            )}
           </Route>
           <Route path="/">
             <Welcome />

@@ -65,11 +65,15 @@ const NewInventoryForm = () => {
       <h3>Nuevo Inventario</h3>
       <FormGroup>
         <Form.Label>Nombre: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl type="text" onChange={(e) => {
+          setName(e.target.value)
+        }}></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Descripción: </Form.Label>
-        <FormControl as="textarea" rows={3}></FormControl>
+        <FormControl as="textarea" rows={3} onChange={(e) => {
+          setDescription(e.target.value)
+        }}></FormControl>
       </FormGroup>
       <Button onClick={() => handleCreateInventory()} variant="info" block>
         Crear inventario

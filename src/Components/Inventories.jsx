@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // Samples
 import SampleInventories from "../Samples/SampleInventories";
@@ -11,6 +11,10 @@ import { FormControl, FormGroup } from "react-bootstrap";
 
 // Router
 import { useHistory } from "react-router-dom";
+
+/* Firebase */
+import firebaseApp from "../firebaseApp";
+import { AuthContext } from "../Auth";
 
 // App components
 import NavigationBar from "./NavigationBar.jsx";
@@ -46,34 +50,55 @@ const NewInventoryForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const history = useHistory();
+  const { currentUser } = useContext(AuthContext);
   // Methods
-  const handleCreateInventory = () => {
+  const handleCreateInventory = async () => {
+    const db = firebaseApp.firestore();
     const data = {
       ...invDefaultData,
       name,
       description,
       date: new Date(),
-      creator: "pepito@gmail.com",
-      users: [{ id: "pepito@gmail.com", role: "admin" }],
+      creatoruid: currentUser.uid,
+      creatoremail: currentUser.email,
+      users: [{ id: currentUser.uid, role: "admin" }],
     };
     // Save data to database
-    console.log("creando inventario", data);
-    history.push("./inventories");
+    try {
+      await db
+        .collection("inventories")
+        .add(data)
+        .then((docref) => {
+          console.log("esta es la ref al doc creado:", docref.id);
+        });
+      console.log("creando inventario", data);
+      console.log("usuario", currentUser);
+      history.push("./inventories");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Form>
       <h3>Nuevo Inventario</h3>
       <FormGroup>
         <Form.Label>Nombre: </Form.Label>
-        <FormControl type="text" onChange={(e) => {
-          setName(e.target.value)
-        }}></FormControl>
+        <FormControl
+          type="text"
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Descripción: </Form.Label>
-        <FormControl as="textarea" rows={3} onChange={(e) => {
-          setDescription(e.target.value)
-        }}></FormControl>
+        <FormControl
+          as="textarea"
+          rows={3}
+          onChange={(e) => {
+            setDescription(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <Button onClick={() => handleCreateInventory()} variant="info" block>
         Crear inventario

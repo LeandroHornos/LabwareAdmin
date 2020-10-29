@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // Samples
 import SampleInventories from "../Samples/SampleInventories";
@@ -20,9 +20,32 @@ import { AuthContext } from "../Auth";
 import NavigationBar from "./NavigationBar.jsx";
 
 const Inventory = (props) => {
+  const db = firebaseApp.firestore();
+  const ref = db.collection("inventories");
+
   // hooks
-  const [items, setItems] = useState(SampleInventories);
+  const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState([]);
+
   // methods
+  const fetchData = () => {
+    try {
+      ref.get().then((inventories) => {
+        const items = inventories.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        setItems(items);
+        setLoading(false);
+      });
+      console.log(ref);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
@@ -33,10 +56,14 @@ const Inventory = (props) => {
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           <h1 style={{ marginBottom: "40px" }}>Mis Inventarios</h1>
-          <DinamicInventoriesWall
-            items={items}
-            updateCurrentInventory={props.updateCurrentInventory}
-          />
+          {loading ? (
+            "Cargando Inventarios..."
+          ) : (
+            <DinamicInventoriesWall
+              items={items}
+              updateCurrentInventory={props.updateCurrentInventory}
+            />
+          )}
         </div>
       </div>
     </React.Fragment>
@@ -124,11 +151,12 @@ const DinamicInventoriesWall = (props) => {
   };
 
   return pairs.map((pair) => {
+    console.log(pair);
     return (
-      <div className="row">
+      <div className="row" key={"row-" + pair[0].id}>
         {pair.map((item) => {
           return (
-            <div className="col-lg-6">
+            <div className="col-lg-6" key={item.id}>
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body>

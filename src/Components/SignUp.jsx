@@ -33,13 +33,6 @@ function SignUp() {
         className="col-md-6 d-flex flex-column justify-content-center"
         style={{ minHeight: "100vh" }}
       >
-        <div>
-          {() => {
-            if (error) {
-              return <p>{error}</p>;
-            }
-          }}
-        </div>
         <h1>Registrate</h1>
         <Form>
           <Form.Group controlId="formBasicEmail">

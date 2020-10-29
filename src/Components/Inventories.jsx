@@ -52,7 +52,9 @@ const Inventory = (props) => {
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
         <div className="col-md-3 inventory-sidepanel">
-          <NewInventoryForm />
+          <NewInventoryForm
+            updateCurrentInventory={props.updateCurrentInventory}
+          />
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           <h1 style={{ marginBottom: "40px" }}>Mis Inventarios</h1>
@@ -72,12 +74,13 @@ const Inventory = (props) => {
 
 // SUBCOMPONENTS-------------------------------------------------------
 
-const NewInventoryForm = () => {
+const NewInventoryForm = (props) => {
   // Hooks
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const history = useHistory();
   const { currentUser } = useContext(AuthContext);
+
   // Methods
   const handleCreateInventory = async () => {
     const db = firebaseApp.firestore();
@@ -90,6 +93,7 @@ const NewInventoryForm = () => {
       creatoremail: currentUser.email,
       users: [{ id: currentUser.uid, role: "admin" }],
     };
+
     // Save data to database
     try {
       await db
@@ -97,14 +101,15 @@ const NewInventoryForm = () => {
         .add(data)
         .then((docref) => {
           console.log("esta es la ref al doc creado:", docref.id);
+          props.updateCurrentInventory(docref.id);
         });
-      console.log("creando inventario", data);
-      console.log("usuario", currentUser);
-      history.push("./inventories");
+      history.push("./inventory");
     } catch (error) {
       console.log(error);
     }
   };
+
+  //Component
   return (
     <Form>
       <h3>Nuevo Inventario</h3>
@@ -145,8 +150,9 @@ const DinamicInventoriesWall = (props) => {
   // hooks
   const history = useHistory();
   // methods
-  const HandleClick = (inventoryNumber) => {
-    props.updateCurrentInventory(inventoryNumber);
+  const HandleOpenInventory = (inventoryId) => {
+    console.log("vamos a abrir el inventario cuyo id es:", inventoryId);
+    props.updateCurrentInventory(inventoryId);
     history.push("./inventory");
   };
 
@@ -162,7 +168,10 @@ const DinamicInventoriesWall = (props) => {
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>{item.description}</Card.Text>
-                  <Button variant="success" onClick={() => HandleClick(2)}>
+                  <Button
+                    variant="success"
+                    onClick={() => HandleOpenInventory(item.id)}
+                  >
                     Ver inventario 2
                   </Button>
                 </Card.Body>

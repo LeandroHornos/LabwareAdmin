@@ -1,19 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SampleElements from "../Samples/SampleElements";
-import SampleInventories from "../Samples/SampleInventories";
 
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
+/* Firebase */
+import firebaseApp from "../firebaseApp";
+// import { AuthContext } from "../Auth";
+
 import NavigationBar from "./NavigationBar.jsx";
 
 const Inventory = (props) => {
-  const inventory = SampleInventories[props.inventory];
-  console.log(inventory);
+  const [inventory, setInventory] = useState({ name: "" });
   const [items, setItems] = useState(SampleElements);
   const [search, setSearch] = useState(true);
+
+  const db = firebaseApp.firestore();
+  const ref = db.collection("inventories");
+
+  // methods
+  const fetchData = async () => {
+    console.log("inventario a buscar:", props.inventory);
+    try {
+      await ref
+        .doc(props.inventory)
+        .get()
+        .then((inventory) => {
+          const data = inventory.data();
+          setInventory(data);
+          console.log("inventario obtenido con exito: ");
+          console.log(data);
+        });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <React.Fragment>
       <NavigationBar />

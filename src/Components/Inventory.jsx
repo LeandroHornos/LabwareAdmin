@@ -10,6 +10,9 @@ import { FormControl, FormGroup } from "react-bootstrap";
 import firebaseApp from "../firebaseApp";
 // import { AuthContext } from "../Auth";
 
+// Router
+import { useHistory } from "react-router-dom";
+
 import NavigationBar from "./NavigationBar.jsx";
 
 const Inventory = (props) => {
@@ -33,7 +36,6 @@ const Inventory = (props) => {
           console.log("inventario obtenido con exito: ");
           console.log(data);
         });
-
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +60,11 @@ const Inventory = (props) => {
           >
             {search ? "Nuevo item" : "Buscar"}
           </Button>
-          {search ? <SearchItemForm /> : <NewItemForm />}
+          {search ? (
+            <SearchItemForm />
+          ) : (
+            <NewItemForm inventory={props.inventory} />
+          )}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           <h1 style={{ marginBottom: "40px" }}>{inventory.name}</h1>
@@ -69,43 +75,150 @@ const Inventory = (props) => {
   );
 };
 
-const NewItemForm = () => {
+const NewItemForm = (props) => {
+  const history = useHistory();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [location, setLocation] = useState("");
+  const [sublocation, setSublocation] = useState("");
+  const [ammount, setAmmount] = useState(0);
+  const [status, setStatus] = useState("");
+
+  const cleanForm = () => {
+    setName("");
+    setDescription("");
+    setCategory("");
+    setSubcategory("");
+    setLocation("");
+    setSublocation("");
+    setAmmount(0);
+    setStatus("");
+  };
+
+  const handleCreateItem = async () => {
+    const db = firebaseApp.firestore();
+    let data = {
+      inventory: props.inventory,
+      creationdate: new Date(),
+      name,
+      description,
+      category,
+      subcategory,
+      groups: [
+        {
+          date: new Date(),
+          groupname: "default",
+          location,
+          sublocation,
+          status,
+          ammount,
+        },
+      ],
+    };
+    data = { ...data, changelog: data.groups };
+    console.log(data);
+    try {
+      await db
+        .collection("items")
+        .add(data)
+        .then((docref) => {
+          console.log(
+            "El item se guardó con éxito, aquí está su id:",
+            docref.id
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    history.push("./inventory");
+    cleanForm();
+  };
   return (
     <Form>
       <h3>Nuevo item</h3>
       <FormGroup>
         <Form.Label>Nombre: </Form.Label>
-        <FormControl type="text"></FormControl>
-      </FormGroup>
-      <FormGroup>
-        <Form.Label>Marca: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl
+          type="text"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Descripción: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl
+          type="text"
+          value={description}
+          onChange={(e) => {
+            setDescription(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Categoria: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl
+          value={category}
+          type="text"
+          onChange={(e) => {
+            setCategory(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Subcategoria: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl
+          type="text"
+          value={subcategory}
+          onChange={(e) => {
+            setSubcategory(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Cantidad: </Form.Label>
-        <FormControl type="number"></FormControl>
+        <FormControl
+          type="number"
+          value={ammount}
+          onChange={(e) => {
+            setAmmount(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Ubicación: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl
+          type="text"
+          value={location}
+          onChange={(e) => {
+            setLocation(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
       <FormGroup>
         <Form.Label>Sub-ubicación: </Form.Label>
-        <FormControl type="text"></FormControl>
+        <FormControl
+          type="text"
+          value={sublocation}
+          onChange={(e) => {
+            setSublocation(e.target.value);
+          }}
+        ></FormControl>
       </FormGroup>
-      <Button variant="info" block>
+      <FormGroup>
+        <Form.Label>Estado: </Form.Label>
+        <FormControl
+          type="text"
+          value={status}
+          onChange={(e) => {
+            setStatus(e.target.value);
+          }}
+        ></FormControl>
+      </FormGroup>
+      <Button variant="info" block onClick={() => handleCreateItem()}>
         Agregar item
       </Button>
     </Form>

@@ -47,7 +47,7 @@ const App = () => {
           </Route>
           <Route path="/inventory">
             {currentUser ? (
-              <Inventory inventory={currentInventory} />
+              <Inventory inventoryId={currentInventory} />
             ) : (
               <SignUp />
             )}

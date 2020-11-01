@@ -19,7 +19,7 @@ import { AuthContext } from "../Auth";
 // App components
 import NavigationBar from "./NavigationBar.jsx";
 
-const Inventory = (props) => {
+const Inventories = (props) => {
   const db = firebaseApp.firestore();
   const ref = db.collection("inventories");
 
@@ -214,4 +214,4 @@ const invDefaultData = {
   statuses: ["Active", "Stored", "Inactive", "Lent", "For repair", "Repairing"],
 };
 
-export default Inventory;
+export default Inventories;

@@ -16,7 +16,8 @@ import { useHistory } from "react-router-dom";
 import NavigationBar from "./NavigationBar.jsx";
 
 const Inventory = (props) => {
-  const [inventory, setInventory] = useState({ name: "" });
+  const [loading, setLoading] = useState(true);
+  const [inventory, setInventory] = useState(null);
   const [items, setItems] = useState(SampleElements);
   const [search, setSearch] = useState(true);
 
@@ -25,17 +26,18 @@ const Inventory = (props) => {
 
   // methods
   const fetchData = async () => {
-    console.log("inventario a buscar:", props.inventory);
+    console.log("inventario a buscar:", props.inventoryId);
     try {
       await ref
-        .doc(props.inventory)
+        .doc(props.inventoryId)
         .get()
-        .then((inventory) => {
-          const data = inventory.data();
+        .then((inv) => {
+          const data = { ...inv.data(), id: inv.id };
           setInventory(data);
-          console.log("inventario obtenido con exito: ");
-          console.log(data);
+          console.log("esta es la data", data);
         });
+      console.log("inventario obtenido con exito: ");
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -61,14 +63,18 @@ const Inventory = (props) => {
             {search ? "Nuevo item" : "Buscar"}
           </Button>
           {search ? (
-            <SearchItemForm />
+            !loading && <SearchItemForm inventory={inventory} />
           ) : (
-            <NewItemForm inventory={props.inventory} />
+            !loading && <NewItemForm
+              inventory={inventory}
+            />
           )}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
-          <h1 style={{ marginBottom: "40px" }}>{inventory.name}</h1>
-          <DinamicWall items={items} />
+          {!loading && (
+            <h1 style={{ marginBottom: "40px" }}>{inventory.name}</h1>
+          )}
+          {loading ? "Cargando..." : <DinamicWall items={items} />}
         </div>
       </div>
     </React.Fragment>
@@ -100,7 +106,7 @@ const NewItemForm = (props) => {
   const handleCreateItem = async () => {
     const db = firebaseApp.firestore();
     let data = {
-      inventory: props.inventory,
+      inventoryId: props.inventory.id,
       creationdate: new Date(),
       name,
       description,
@@ -137,6 +143,8 @@ const NewItemForm = (props) => {
   };
   return (
     <Form>
+      <p>{props.inventory.description}</p>
+      <p>{props.inventory.id}</p>
       <h3>Nuevo item</h3>
       <FormGroup>
         <Form.Label>Nombre: </Form.Label>
@@ -225,10 +233,11 @@ const NewItemForm = (props) => {
   );
 };
 
-const SearchItemForm = () => {
+const SearchItemForm = (props) => {
   return (
     <Form>
       <h3>Buscar</h3>
+      <p>{props.inventory.description}</p>
       <FormGroup>
         <Form.Label>Buscar por las siguientes palabras: </Form.Label>
         <FormControl type="text"></FormControl>

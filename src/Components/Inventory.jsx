@@ -15,18 +15,20 @@ import { useHistory } from "react-router-dom";
 
 import NavigationBar from "./NavigationBar.jsx";
 
+/* Inventory ----------------------------------------- */
+
 const Inventory = (props) => {
   const [loading, setLoading] = useState(true);
   const [inventory, setInventory] = useState(null);
   const [items, setItems] = useState(SampleElements);
   const [search, setSearch] = useState(true);
 
+  // Firebase
   const db = firebaseApp.firestore();
   const ref = db.collection("inventories");
 
-  // methods
+  // Methods
   const fetchData = async () => {
-    console.log("inventario a buscar:", props.inventoryId);
     try {
       await ref
         .doc(props.inventoryId)
@@ -34,9 +36,7 @@ const Inventory = (props) => {
         .then((inv) => {
           const data = { ...inv.data(), id: inv.id };
           setInventory(data);
-          console.log("esta es la data", data);
         });
-      console.log("inventario obtenido con exito: ");
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -62,18 +62,12 @@ const Inventory = (props) => {
           >
             {search ? "Nuevo item" : "Buscar"}
           </Button>
-          {search ? (
-            !loading && <SearchItemForm inventory={inventory} />
-          ) : (
-            !loading && <NewItemForm
-              inventory={inventory}
-            />
-          )}
+          {search
+            ? !loading && <SearchItemForm inventory={inventory} />
+            : !loading && <NewItemForm inventory={inventory} />}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
-          {!loading && (
-            <h1 style={{ marginBottom: "40px" }}>{inventory.name}</h1>
-          )}
+          {!loading && <InventoryInfo inventory={inventory} />}
           {loading ? "Cargando..." : <DinamicWall items={items} />}
         </div>
       </div>
@@ -81,12 +75,26 @@ const Inventory = (props) => {
   );
 };
 
+const InventoryInfo = (props) => {
+  return (
+    <div style={{ padding: "15px" }}>
+      <h1>{props.inventory.name}</h1>
+      <p>{props.inventory.description}</p>
+    </div>
+  );
+};
+
+/* New Item form ------------------------------------ */
+
 const NewItemForm = (props) => {
   const history = useHistory();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [subcategory, setSubcategory] = useState("");
+  const [newcat, setNewCat] = useState(false);
+  const [newsubcat, setNewSubcat] = useState(false);
+  const [subcatlist, setSubcatlist] = useState([]);
+  const [category, setCategory] = useState(null);
+  const [subcategory, setSubcategory] = useState(null);
   const [location, setLocation] = useState("");
   const [sublocation, setSublocation] = useState("");
   const [ammount, setAmmount] = useState(0);
@@ -101,6 +109,16 @@ const NewItemForm = (props) => {
     setSublocation("");
     setAmmount(0);
     setStatus("");
+  };
+
+  const listSubcats = (catname, catArray) => {
+    let subcats = [];
+    catArray.forEach((cat) => {
+      if (cat.catname == catname) {
+        subcats = cat.subcategories;
+      }
+    });
+    return subcats;
   };
 
   const handleCreateItem = async () => {
@@ -124,7 +142,6 @@ const NewItemForm = (props) => {
       ],
     };
     data = { ...data, changelog: data.groups };
-    console.log(data);
     try {
       await db
         .collection("items")
@@ -150,7 +167,6 @@ const NewItemForm = (props) => {
         <Form.Label>Nombre: </Form.Label>
         <FormControl
           type="text"
-          value={name}
           onChange={(e) => {
             setName(e.target.value);
           }}
@@ -168,23 +184,87 @@ const NewItemForm = (props) => {
       </FormGroup>
       <FormGroup>
         <Form.Label>Categoria: </Form.Label>
-        <FormControl
-          value={category}
-          type="text"
+
+        <Form.Control
+          as="select"
           onChange={(e) => {
-            setCategory(e.target.value);
+            if (e.target.value == "new") {
+              // si selecciono nuevo asigno valor null y paso a modo nuevo catalogo
+              setNewCat(true);
+              setNewSubcat(true);
+              setCategory(null);
+              setSubcatlist([]);
+            } else {
+              setCategory(e.target.value);
+              setNewCat(false);
+              setNewSubcat(false);
+              setSubcatlist(
+                listSubcats(e.target.value, props.inventory.categories)
+              );
+            }
           }}
-        ></FormControl>
+        >
+          <option selected value={null}>
+            Elije una categoría
+          </option>
+          {props.inventory.categories.map((cat) => {
+            return (
+              <option key={cat.index} value={cat.catname}>
+                {cat.catname}
+              </option>
+            );
+          })}
+          <option value="new">Nueva</option>
+        </Form.Control>
+        {newcat && (
+          <FormControl
+            placeholder="Nombre de la categoría"
+            style={{ marginTop: "10px" }}
+            type="text"
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
+          ></FormControl>
+        )}
       </FormGroup>
       <FormGroup>
         <Form.Label>Subcategoria: </Form.Label>
-        <FormControl
-          type="text"
-          value={subcategory}
-          onChange={(e) => {
-            setSubcategory(e.target.value);
-          }}
-        ></FormControl>
+
+        {!newcat && (
+          <Form.Control
+            as="select"
+            onChange={(e) => {
+              if (e.target.value == "new") {
+                setSubcategory(null);
+                setNewSubcat(true);
+              } else {
+                setSubcategory(e.target.value);
+                setNewSubcat(false);
+              }
+            }}
+          >
+            <option selected value={null}>Elije una subcategoría</option>
+            {subcatlist.map((subcat) => {
+              return (
+                <option key={subcat} value={subcat}>
+                  {subcat}
+                </option>
+              );
+            })}
+            <option value="new">Nueva</option>;
+          </Form.Control>
+        )}
+
+        {newsubcat && (
+          <FormControl
+            placeholder="Nombre de la subcategoría"
+            style={{ marginTop: "10px" }}
+            type="text"
+            onChange={(e) => {
+              setSubcategory(e.target.value);
+            }}
+          ></FormControl>
+        )}
       </FormGroup>
       <FormGroup>
         <Form.Label>Cantidad: </Form.Label>
@@ -233,6 +313,8 @@ const NewItemForm = (props) => {
   );
 };
 
+/* Search Item form --------------------------------- */
+
 const SearchItemForm = (props) => {
   return (
     <Form>
@@ -249,11 +331,8 @@ const SearchItemForm = (props) => {
   );
 };
 
-/* DinamicWall genera dinamicamente el muro de posteos a partir de la base de datos.
-Agrupa los items de a 3 en un array bidimensional de forma que cada triplete se muestre
-como una fila con 3 columnas, con una tarjeta en cada columna. En un dispositivo pequeño
-las columnas se ubican una debajo de la otra quedando una tira de tarjetas.
-*/
+/* DinamicWall -------------------------------------- */
+
 const DinamicWall = (props) => {
   const triplets = groupAsTriplets(props.items);
   return triplets.map((triplet) => {
@@ -277,6 +356,8 @@ const DinamicWall = (props) => {
     );
   });
 };
+
+/* Auxiliary functions ------------------------------ */
 
 const groupAsTriplets = (items) => {
   // Create a 2D array where every element is an array of 3 items.

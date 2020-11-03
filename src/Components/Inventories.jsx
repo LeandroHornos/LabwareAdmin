@@ -37,7 +37,6 @@ const Inventories = (props) => {
         setItems(items);
         setLoading(false);
       });
-      console.log(ref);
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +99,6 @@ const NewInventoryForm = (props) => {
         .collection("inventories")
         .add(data)
         .then((docref) => {
-          console.log("esta es la ref al doc creado:", docref.id);
           props.updateCurrentInventory(docref.id);
         });
       history.push("./inventory");
@@ -151,13 +149,11 @@ const DinamicInventoriesWall = (props) => {
   const history = useHistory();
   // methods
   const HandleOpenInventory = (inventoryId) => {
-    console.log("vamos a abrir el inventario cuyo id es:", inventoryId);
     props.updateCurrentInventory(inventoryId);
     history.push("./inventory");
   };
 
   return pairs.map((pair) => {
-    console.log(pair);
     return (
       <div className="row" key={"row-" + pair[0].id}>
         {pair.map((item) => {

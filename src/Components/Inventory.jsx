@@ -100,6 +100,9 @@ const NewItemForm = (props) => {
   const [ammount, setAmmount] = useState(0);
   const [status, setStatus] = useState("");
 
+  let categories = props.inventory.categories.map((cat) => cat.catname);
+  categories = [...categories, "new"];
+
   const cleanForm = () => {
     setName("");
     setDescription("");
@@ -118,7 +121,7 @@ const NewItemForm = (props) => {
         subcats = cat.subcategories;
       }
     });
-    return subcats;
+    return [...subcats, "new"];
   };
 
   const handleCreateItem = async () => {
@@ -158,10 +161,9 @@ const NewItemForm = (props) => {
     history.push("./inventory");
     cleanForm();
   };
+
   return (
     <Form>
-      <p>{props.inventory.description}</p>
-      <p>{props.inventory.id}</p>
       <h3>Nuevo item</h3>
       <FormGroup>
         <Form.Label>Nombre: </Form.Label>
@@ -197,7 +199,6 @@ const NewItemForm = (props) => {
             } else {
               setCategory(e.target.value);
               setNewCat(false);
-              setNewSubcat(false);
               setSubcatlist(
                 listSubcats(e.target.value, props.inventory.categories)
               );
@@ -207,14 +208,13 @@ const NewItemForm = (props) => {
           <option selected value={null}>
             Elije una categoría
           </option>
-          {props.inventory.categories.map((cat) => {
+          {categories.map((cat) => {
             return (
-              <option key={cat.index} value={cat.catname}>
-                {cat.catname}
+              <option key={cat.index} value={cat}>
+                {cat}
               </option>
             );
           })}
-          <option value="new">Nueva</option>
         </Form.Control>
         {newcat && (
           <FormControl
@@ -243,15 +243,25 @@ const NewItemForm = (props) => {
               }
             }}
           >
-            <option selected value={null}>Elije una subcategoría</option>
-            {subcatlist.map((subcat) => {
-              return (
-                <option key={subcat} value={subcat}>
-                  {subcat}
-                </option>
-              );
-            })}
-            <option value="new">Nueva</option>;
+            <option selected value={null}>
+              Elije una subcategoría
+            </option>
+            {!newcat &&
+              subcatlist.map((subcat) => {
+                if (subcat == "new") {
+                  return (
+                    <option key={subcat.index} value={subcat}>
+                      Nueva
+                    </option>
+                  );
+                } else {
+                  return (
+                    <option key={subcat.index} value={subcat}>
+                      {subcat}
+                    </option>
+                  );
+                }
+              })}
           </Form.Control>
         )}
 
@@ -319,7 +329,6 @@ const SearchItemForm = (props) => {
   return (
     <Form>
       <h3>Buscar</h3>
-      <p>{props.inventory.description}</p>
       <FormGroup>
         <Form.Label>Buscar por las siguientes palabras: </Form.Label>
         <FormControl type="text"></FormControl>

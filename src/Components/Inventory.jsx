@@ -93,15 +93,14 @@ const NewItemForm = (props) => {
   const [newcat, setNewCat] = useState(false);
   const [newsubcat, setNewSubcat] = useState(false);
   const [subcatlist, setSubcatlist] = useState([]);
-  const [category, setCategory] = useState(null);
-  const [subcategory, setSubcategory] = useState(null);
+  const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
   const [location, setLocation] = useState("");
   const [sublocation, setSublocation] = useState("");
   const [ammount, setAmmount] = useState(0);
   const [status, setStatus] = useState("");
 
-  let categories = props.inventory.categories.map((cat) => cat.catname);
-  categories = [...categories, "new"];
+  const categories = props.inventory.categories.map((cat) => cat.catname);
 
   const cleanForm = () => {
     setName("");
@@ -121,7 +120,7 @@ const NewItemForm = (props) => {
         subcats = cat.subcategories;
       }
     });
-    return [...subcats, "new"];
+    return subcats;
   };
 
   const handleCreateItem = async () => {
@@ -145,21 +144,22 @@ const NewItemForm = (props) => {
       ],
     };
     data = { ...data, changelog: data.groups };
-    try {
-      await db
-        .collection("items")
-        .add(data)
-        .then((docref) => {
-          console.log(
-            "El item se guardó con éxito, aquí está su id:",
-            docref.id
-          );
-        });
-    } catch (error) {
-      console.log(error);
-    }
-    history.push("./inventory");
-    cleanForm();
+    // try {
+    //   await db
+    //     .collection("items")
+    //     .add(data)
+    //     .then((docref) => {
+    //       console.log(
+    //         "El item se guardó con éxito, aquí está su id:",
+    //         docref.id
+    //       );
+    //     });
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // history.push("./inventory");
+    // cleanForm();(
+    console.log("he aqui la data", data)
   };
 
   return (
@@ -189,23 +189,16 @@ const NewItemForm = (props) => {
 
         <Form.Control
           as="select"
+          value={category}
           onChange={(e) => {
-            if (e.target.value == "new") {
-              // si selecciono nuevo asigno valor null y paso a modo nuevo catalogo
-              setNewCat(true);
-              setNewSubcat(true);
-              setCategory(null);
-              setSubcatlist([]);
-            } else {
-              setCategory(e.target.value);
-              setNewCat(false);
-              setSubcatlist(
-                listSubcats(e.target.value, props.inventory.categories)
-              );
-            }
+            setCategory(e.target.value);
+            setSubcategory("");
+            setSubcatlist(
+              listSubcats(e.target.value, props.inventory.categories)
+            );
           }}
         >
-          <option selected value={null}>
+          <option selected value={""}>
             Elije una categoría
           </option>
           {categories.map((cat) => {
@@ -216,6 +209,7 @@ const NewItemForm = (props) => {
             );
           })}
         </Form.Control>
+        <Button variant="link">Nueva</Button>
         {newcat && (
           <FormControl
             placeholder="Nombre de la categoría"
@@ -233,41 +227,28 @@ const NewItemForm = (props) => {
         {!newcat && (
           <Form.Control
             as="select"
+            value={subcategory}
             onChange={(e) => {
-              if (e.target.value == "new") {
-                setSubcategory(null);
-                setNewSubcat(true);
-              } else {
-                setSubcategory(e.target.value);
-                setNewSubcat(false);
-              }
+              setSubcategory(e.target.value);
             }}
           >
-            <option selected value={null}>
+            <option selected value={""}>
               Elije una subcategoría
             </option>
-            {!newcat &&
-              subcatlist.map((subcat) => {
-                if (subcat == "new") {
-                  return (
-                    <option key={subcat.index} value={subcat}>
-                      Nueva
-                    </option>
-                  );
-                } else {
-                  return (
-                    <option key={subcat.index} value={subcat}>
-                      {subcat}
-                    </option>
-                  );
-                }
-              })}
+            {subcatlist.map((subcat) => {
+              return (
+                <option key={subcat.index} value={subcat}>
+                  {subcat}
+                </option>
+              );
+            })}
           </Form.Control>
         )}
 
-        {newsubcat && (
+        {(newcat || newsubcat) && (
           <FormControl
             placeholder="Nombre de la subcategoría"
+            value={subcategory}
             style={{ marginTop: "10px" }}
             type="text"
             onChange={(e) => {

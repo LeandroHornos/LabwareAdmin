@@ -29,7 +29,7 @@ const Welcome = () => {
             Ingresar
           </Button>
           <Button
-            variant="primary"
+            variant="info"
             onClick={(e) => {
               history.push("/signup");
             }}

@@ -14,8 +14,8 @@ import firebaseApp from "../firebaseApp";
 import { useHistory } from "react-router-dom";
 
 import NavigationBar from "./NavigationBar.jsx";
-import NewItemForm from "./NewItemForm.jsx"
-import ItemsWall from "./ItemsWall.jsx"
+import NewItemForm from "./NewItemForm.jsx";
+import ItemsWall from "./ItemsWall.jsx";
 
 /* Inventory ----------------------------------------- */
 
@@ -54,16 +54,18 @@ const Inventory = (props) => {
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
         <div className="col-md-3 inventory-sidepanel">
-          <Button
-            style={{ marginTop: "10px" }}
-            variant="success"
-            block
-            onClick={(e) => {
-              search ? setSearch(false) : setSearch(true);
-            }}
-          >
-            {search ? "Nuevo item" : "Buscar"}
-          </Button>
+          <div style={{ padding: "20px" }}>
+            <Button
+              style={{ marginTop: "10px" }}
+              variant="success"
+              block
+              onClick={(e) => {
+                search ? setSearch(false) : setSearch(true);
+              }}
+            >
+              {search ? "Nuevo item" : "Buscar"}
+            </Button>
+          </div>
           {search
             ? !loading && <SearchItemForm inventory={inventory} />
             : !loading && <NewItemForm inventory={inventory} />}
@@ -90,18 +92,20 @@ const InventoryInfo = (props) => {
 
 const SearchItemForm = (props) => {
   return (
-    <Form>
-      <h3>Buscar</h3>
-      <FormGroup>
-        <Form.Label>Buscar por las siguientes palabras: </Form.Label>
-        <FormControl type="text"></FormControl>
-      </FormGroup>
-      <Button variant="info" block>
-        Buscar
-      </Button>
-    </Form>
+    <div style={{ padding: "20px" }}>
+      {" "}
+      <Form>
+        <h3>Buscar</h3>
+        <FormGroup>
+          <Form.Label>Buscar por las siguientes palabras: </Form.Label>
+          <FormControl type="text"></FormControl>
+        </FormGroup>
+        <Button variant="info" block>
+          Buscar
+        </Button>
+      </Form>
+    </div>
   );
 };
-
 
 export default Inventory;

@@ -1,19 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
-
-// Samples
-import SampleInventories from "../Samples/SampleInventories";
+import React from "react";
 
 // Bootstrap components
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
 import Accordion from "react-bootstrap/Accordion";
 
 const AccordionFormWrap = (props) => {
   return (
     <Accordion
       className="accordion-form-container"
-      style={{ backgroundColor: "none" }}
+      style={{ backgroundColor: "none"}}
     >
       <Card
         style={{
@@ -29,8 +25,15 @@ const AccordionFormWrap = (props) => {
         >
           <h3 className="d-inline">{props.title}</h3>
           <span>
-            <Accordion.Toggle as={Button} variant="outline-info" eventKey="0">
-              V
+            <Accordion.Toggle
+              style={{ color: "white", fontWeight: "bold" }}
+              as={Button}
+              size="md"
+              variant="outline-info"
+              eventKey="0"
+              className="rounded-pill"
+            >
+              +
             </Accordion.Toggle>
           </span>
         </Card.Header>

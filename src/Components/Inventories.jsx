@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-import Accordion from "react-bootstrap/Accordion";
+
 import { FormControl, FormGroup } from "react-bootstrap";
 
 // Router
@@ -43,7 +43,7 @@ const Inventories = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
 
   return (
     <React.Fragment>

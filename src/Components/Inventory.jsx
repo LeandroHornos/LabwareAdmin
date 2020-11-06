@@ -159,7 +159,7 @@ const NewItemForm = (props) => {
     // }
     // history.push("./inventory");
     // cleanForm();(
-    console.log("he aqui la data", data)
+    console.log("he aqui la data", data);
   };
 
   return (
@@ -186,30 +186,32 @@ const NewItemForm = (props) => {
       </FormGroup>
       <FormGroup>
         <Form.Label>Categoria: </Form.Label>
+        {/* Si no voy a generar una nueva categoría muestro un menu 
+        select con las opciones que tengo en el inventario, 
+        caso contrario muestro un input */}
+        {!newcat && (
+          <Form.Control
+            as="select"
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setSubcategory("");
+              setSubcatlist(
+                listSubcats(e.target.value, props.inventory.categories)
+              );
+            }}
+          >
+            <option value={""}>Elije una categoría</option>
+            {categories.map((cat) => {
+              return (
+                <option key={cat.index + "-" + cat} value={cat}>
+                  {cat}
+                </option>
+              );
+            })}
+          </Form.Control>
+        )}
 
-        <Form.Control
-          as="select"
-          value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
-            setSubcategory("");
-            setSubcatlist(
-              listSubcats(e.target.value, props.inventory.categories)
-            );
-          }}
-        >
-          <option selected value={""}>
-            Elije una categoría
-          </option>
-          {categories.map((cat) => {
-            return (
-              <option key={cat.index} value={cat}>
-                {cat}
-              </option>
-            );
-          })}
-        </Form.Control>
-        <Button variant="link">Nueva</Button>
         {newcat && (
           <FormControl
             placeholder="Nombre de la categoría"
@@ -221,10 +223,20 @@ const NewItemForm = (props) => {
           ></FormControl>
         )}
       </FormGroup>
+      <Button
+        style={{ marginBottom: "10px" }}
+        variant="info"
+        onClick={(e) => {
+          e.preventDefault();
+          newcat ? setNewCat(false) : setNewCat(true);
+        }}
+      >
+        {newcat ? "Cancelar" : "Nueva"}
+      </Button>
       <FormGroup>
         <Form.Label>Subcategoria: </Form.Label>
 
-        {!newcat && (
+        {(!newcat && !newsubcat) && (
           <Form.Control
             as="select"
             value={subcategory}
@@ -232,12 +244,10 @@ const NewItemForm = (props) => {
               setSubcategory(e.target.value);
             }}
           >
-            <option selected value={""}>
-              Elije una subcategoría
-            </option>
+            <option value={""}>Elije una subcategoría</option>
             {subcatlist.map((subcat) => {
               return (
-                <option key={subcat.index} value={subcat}>
+                <option key={subcat.index + "-" + subcat} value={subcat}>
                   {subcat}
                 </option>
               );
@@ -257,6 +267,18 @@ const NewItemForm = (props) => {
           ></FormControl>
         )}
       </FormGroup>
+      {!newcat && (
+        <Button
+          style={{ marginBottom: "10px" }}
+          variant="info"
+          onClick={(e) => {
+            e.preventDefault();
+            newsubcat ? setNewSubcat(false) : setNewSubcat(true);
+          }}
+        >
+          {newsubcat ? "Cancelar" : "Nueva"}
+        </Button>
+      )}
       <FormGroup>
         <Form.Label>Cantidad: </Form.Label>
         <FormControl

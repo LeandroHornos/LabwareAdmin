@@ -2,6 +2,8 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
+import "./Welcome.css";
+
 const Welcome = () => {
   const history = useHistory();
   return (
@@ -12,15 +14,11 @@ const Welcome = () => {
         style={{ minHeight: "100vh" }}
       >
         <div style={{ textAlign: "center" }}>
-          <img
-            src="./img/logo3.png"
-            alt="logo"
-            className="welcomeSpinningLogo"
-            style={style.logo}
-          />
+          <img src="./img/logo3.png" alt="logo" style={style.logo} />
           <p>Te damos la bienvenida a</p>
           <h1 style={{ color: "rgb(0,160,60)" }}>LabwareAdmin</h1>
-          <p>Lleva el inventario de tu laboratorio</p>
+          <p style={{ fontStyle: "italic" }}>By Carbo</p>
+          <p>Lleva el inventario de tu laboratorio!</p>
           <Button
             variant="dark"
             onClick={(e) => {
@@ -48,7 +46,7 @@ const Welcome = () => {
 
 const style = {
   logo: {
-    width: "80%",
+    width: "50%",
     margin: "auto",
     animation: "rotation 10s infinite linear",
   },

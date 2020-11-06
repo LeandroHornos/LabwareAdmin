@@ -16,8 +16,10 @@ p {
   color: rgb(60, 60, 60);
 }
 
-.block-button {
-  border-radius: 50%;
+.accordion-form-container {
+  margin: 0;
+  padding: 0;
+  background-color: "red";
 }
 
 .row {
@@ -33,13 +35,13 @@ p {
 
 .inventory-sidepanel {
   background-color: rgb(41, 107, 63);
-  padding: 20px;
+  padding: 0;
+  border: "none";
 }
 
 .inventory-sidepanel h3,
 label {
   color: white;
-
 }
 
 .item-card {

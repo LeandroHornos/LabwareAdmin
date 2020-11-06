@@ -7,6 +7,7 @@ import SampleInventories from "../Samples/SampleInventories";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
+import Accordion from "react-bootstrap/Accordion";
 import { FormControl, FormGroup } from "react-bootstrap";
 
 // Router
@@ -109,31 +110,64 @@ const NewInventoryForm = (props) => {
 
   //Component
   return (
-    <Form>
-      <h3>Nuevo Inventario</h3>
-      <FormGroup>
-        <Form.Label>Nombre: </Form.Label>
-        <FormControl
-          type="text"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        ></FormControl>
-      </FormGroup>
-      <FormGroup>
-        <Form.Label>Descripción: </Form.Label>
-        <FormControl
-          as="textarea"
-          rows={3}
-          onChange={(e) => {
-            setDescription(e.target.value);
-          }}
-        ></FormControl>
-      </FormGroup>
-      <Button onClick={() => handleCreateInventory()} variant="info" block>
-        Crear inventario
-      </Button>
-    </Form>
+    <Accordion
+      className="accordion-form-container"
+      style={{ backgroundColor: "none" }}
+    >
+      <Card
+        style={{
+          margin: "0",
+          padding: "0",
+          backgroundColor: "rgba(0,0,0,0)",
+          border: "none",
+        }}
+      >
+        <Card.Header
+          style={{ backgroundColor: "rgba(0,0,0,0)", border: "none" }}
+          className="d-flex justify-content-between align-items-center"
+        >
+          <h3 className="d-inline">Nuevo Inventario</h3>
+          <span>
+            {" "}
+            <Accordion.Toggle as={Button} variant="outline-info" eventKey="0">
+              V
+            </Accordion.Toggle>
+          </span>
+        </Card.Header>
+        <Accordion.Collapse eventKey="0">
+          <Card.Body>
+            <Form>
+              <FormGroup>
+                <Form.Label>Nombre: </Form.Label>
+                <FormControl
+                  type="text"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                ></FormControl>
+              </FormGroup>
+              <FormGroup>
+                <Form.Label>Descripción: </Form.Label>
+                <FormControl
+                  as="textarea"
+                  rows={3}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                ></FormControl>
+              </FormGroup>
+              <Button
+                onClick={() => handleCreateInventory()}
+                variant="info"
+                block
+              >
+                Crear inventario
+              </Button>
+            </Form>
+          </Card.Body>
+        </Accordion.Collapse>
+      </Card>
+    </Accordion>
   );
 };
 

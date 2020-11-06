@@ -12,6 +12,12 @@ const Welcome = () => {
         style={{ minHeight: "100vh" }}
       >
         <div style={{ textAlign: "center" }}>
+          <img
+            src="./img/logo3.png"
+            alt="logo"
+            className="welcomeSpinningLogo"
+            style={style.logo}
+          />
           <p>Te damos la bienvenida a</p>
           <h1 style={{ color: "rgb(0,160,60)" }}>LabwareAdmin</h1>
           <p>Lleva el inventario de tu laboratorio</p>
@@ -38,6 +44,14 @@ const Welcome = () => {
       <div className="col-md-4"></div>
     </div>
   );
+};
+
+const style = {
+  logo: {
+    width: "80%",
+    margin: "auto",
+    animation: "rotation 10s infinite linear",
+  },
 };
 
 export default Welcome;

@@ -225,7 +225,7 @@ const NewItemForm = (props) => {
       </FormGroup>
       <Button
         style={{ marginBottom: "10px" }}
-        variant="info"
+        variant={newcat ? "warning" : "info"}
         onClick={(e) => {
           e.preventDefault();
           newcat ? setNewCat(false) : setNewCat(true);
@@ -236,7 +236,7 @@ const NewItemForm = (props) => {
       <FormGroup>
         <Form.Label>Subcategoria: </Form.Label>
 
-        {(!newcat && !newsubcat) && (
+        {!newcat && !newsubcat && (
           <Form.Control
             as="select"
             value={subcategory}
@@ -270,7 +270,7 @@ const NewItemForm = (props) => {
       {!newcat && (
         <Button
           style={{ marginBottom: "10px" }}
-          variant="info"
+          variant={newsubcat ? "warning" : "info"}
           onClick={(e) => {
             e.preventDefault();
             newsubcat ? setNewSubcat(false) : setNewSubcat(true);

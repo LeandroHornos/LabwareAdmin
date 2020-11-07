@@ -26,10 +26,14 @@ const NewItemForm = (props) => {
   const [subcategory, setSubcategory] = useState("");
   const [location, setLocation] = useState("");
   const [sublocation, setSublocation] = useState("");
+  const [sublocationlist, setSublocationList] = useState([]);
+  const [newlocation, setNewLocation] = useState(false);
+  const [newsublocation, setNewSublocation] = useState(false);
   const [ammount, setAmmount] = useState(0);
   const [status, setStatus] = useState("");
 
-  const categories = props.inventory.categories.map((cat) => cat.catname);
+  const categories = props.inventory.categories.map((cat) => cat.name);
+  const locations = props.inventory.locations.map((loc) => loc.name);
 
   const cleanForm = () => {
     setName("");
@@ -42,14 +46,24 @@ const NewItemForm = (props) => {
     setStatus("");
   };
 
-  const listSubcats = (catname, catArray) => {
+  const listSubcats = (name, catArray) => {
     let subcats = [];
     catArray.forEach((cat) => {
-      if (cat.catname == catname) {
+      if (cat.name == name) {
         subcats = cat.subcategories;
       }
     });
     return subcats;
+  };
+
+  const listSublocations = (name, locArray) => {
+    let sublocs = [];
+    locArray.forEach((loc) => {
+      if (loc.name == name) {
+        sublocs = loc.sublocations;
+      }
+    });
+    return sublocs;
   };
 
   const handleCreateItem = async () => {
@@ -220,26 +234,107 @@ const NewItemForm = (props) => {
             }}
           ></FormControl>
         </FormGroup>
+        {/* --- LOCATION ------------------------------------------------------- */}
         <FormGroup>
-          <Form.Label>Ubicación: </Form.Label>
-          <FormControl
-            type="text"
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-            }}
-          ></FormControl>
+          <Form.Label>Location: </Form.Label>
+          {/* SELECT LOCATION */}
+          {!newlocation && (
+            <Form.Control
+              as="select"
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                setSublocation("");
+                setSublocationList(
+                  listSublocations(e.target.value, props.inventory.locations)
+                );
+              }}
+            >
+              <option value={""}>Elije una ubicación</option>
+              {locations.map((cat) => {
+                return (
+                  <option key={cat.index + "-" + cat} value={cat}>
+                    {cat}
+                  </option>
+                );
+              })}
+            </Form.Control>
+          )}
+          {/* NEW LOCATION INPUT */}
+          {newlocation && (
+            <FormControl
+              placeholder="Ej: Armario C"
+              style={{ marginTop: "10px" }}
+              type="text"
+              onChange={(e) => {
+                setLocation(e.target.value);
+              }}
+            ></FormControl>
+          )}
         </FormGroup>
+        {/* Toggle new location */}
+        <Button
+          size="sm"
+          style={{ marginBottom: "10px" }}
+          variant={newlocation ? "warning" : "info"}
+          onClick={(e) => {
+            e.preventDefault();
+            newlocation ? setNewLocation(false) : setNewLocation(true);
+          }}
+        >
+          {newlocation ? "Cancelar" : "Nueva"}
+        </Button>
+        {/* SUBLOCATION */}
         <FormGroup>
           <Form.Label>Sub-ubicación: </Form.Label>
-          <FormControl
-            type="text"
-            value={sublocation}
-            onChange={(e) => {
-              setSublocation(e.target.value);
-            }}
-          ></FormControl>
+          {/* SUBLOCATION SELECT */}
+          {!newlocation && !newsublocation && (
+            <Form.Control
+              as="select"
+              value={sublocation}
+              onChange={(e) => {
+                setSublocation(e.target.value);
+              }}
+            >
+              <option value={""}>Elije una sub-ubicacion</option>
+              {sublocationlist.map((subloc) => {
+                return (
+                  <option key={subloc.index + "-" + subloc} value={subloc}>
+                    {subloc}
+                  </option>
+                );
+              })}
+            </Form.Control>
+          )}
+          {/* SUBLOCATION INPUT */}
+          {(newlocation || newsublocation) && (
+            <FormControl
+              placeholder="Ej: Estante 3"
+              value={sublocation}
+              style={{ marginTop: "10px" }}
+              type="text"
+              onChange={(e) => {
+                setSublocation(e.target.value);
+              }}
+            ></FormControl>
+          )}
         </FormGroup>
+        {!newlocation && (
+          <Button
+            size="sm"
+            style={{ marginBottom: "10px" }}
+            variant={newsublocation ? "warning" : "info"}
+            onClick={(e) => {
+              e.preventDefault();
+              newsublocation
+                ? setNewSublocation(false)
+                : setNewSublocation(true);
+            }}
+          >
+            {newsublocation ? "Cancelar" : "Nueva"}
+          </Button>
+        )}
+        {/* ---------------- FIN LOCATION  ----------- */}
         <FormGroup>
           <Form.Label>Estado: </Form.Label>
           <FormControl

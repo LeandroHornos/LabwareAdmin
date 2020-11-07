@@ -70,6 +70,45 @@ const NewItemForm = (props) => {
     return sublocs;
   };
 
+  const updateInventory = () => {
+    let inventory = props.inventory;
+    const hasChanged =
+      newcat || newsubcat || newlocation || newsublocation || newstatus;
+    if (newcat) {
+      inventory.categories.push({
+        name: category,
+        subcategories: [subcategory],
+      });
+    }
+    if (!newcat && newsubcat) {
+      let index = 0;
+      inventory.categories.forEach((cat) => {
+        if (cat.name === category) {
+          inventory.categories[index].subcategories.push(subcategory);
+        } else {
+          index++;
+        }
+      });
+    }
+    if (newlocation) {
+      inventory.locations.push({ name: location, sublocations: [sublocation] });
+    }
+    if (!newlocation && newsublocation) {
+      let index = 0;
+      inventory.locations.forEach((loc) => {
+        if (loc.name === location) {
+          inventory.locations[index].sublocations.push(sublocation);
+        } else {
+          index++;
+        }
+      });
+    }
+    if (newstatus) {
+      inventory.statuses.push(status);
+    }
+    return { hasChanged, newInventory: inventory };
+  };
+
   const handleCreateItem = async () => {
     const db = firebaseApp.firestore();
     let data = {
@@ -110,6 +149,13 @@ const NewItemForm = (props) => {
     // history.push("./inventory");
     // cleanForm();(
     console.log("he aqui la data", data);
+    const { hasChanged, newInventory } = updateInventory();
+    if (hasChanged) {
+      console.log(
+        "El inventario ha recibido nuevas opciones, he aquí la nueva versión:",
+        newInventory
+      );
+    }
   };
 
   return (

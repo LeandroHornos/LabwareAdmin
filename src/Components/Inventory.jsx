@@ -47,7 +47,7 @@ const Inventory = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
 
   return (
     <React.Fragment>

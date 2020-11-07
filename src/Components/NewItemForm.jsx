@@ -31,6 +31,8 @@ const NewItemForm = (props) => {
   const [newsublocation, setNewSublocation] = useState(false);
   const [ammount, setAmmount] = useState(0);
   const [status, setStatus] = useState("");
+  const [newstatus, setNewStatus] = useState(false);
+  const [groupname, setGroupName] = useState("");
 
   const categories = props.inventory.categories.map((cat) => cat.name);
   const locations = props.inventory.locations.map((loc) => loc.name);
@@ -40,8 +42,10 @@ const NewItemForm = (props) => {
     setDescription("");
     setCategory("");
     setSubcategory("");
+    setSubcatlist([]);
     setLocation("");
     setSublocation("");
+    setSublocationList([]);
     setAmmount(0);
     setStatus("");
   };
@@ -78,7 +82,7 @@ const NewItemForm = (props) => {
       groups: [
         {
           date: new Date(),
-          groupname: "default",
+          groupname,
           location,
           sublocation,
           status,
@@ -86,7 +90,10 @@ const NewItemForm = (props) => {
         },
       ],
     };
-    data = { ...data, changelog: data.groups };
+    data = {
+      ...data,
+      changelog: [{ date: data.creationdate, groups: data.groups }],
+    };
     // try {
     //   await db
     //     .collection("items")
@@ -120,7 +127,8 @@ const NewItemForm = (props) => {
         <FormGroup>
           <Form.Label>Descripción: </Form.Label>
           <FormControl
-            type="text"
+            as="textarea"
+            rows={3}
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
@@ -224,16 +232,6 @@ const NewItemForm = (props) => {
             {newsubcat ? "Cancelar" : "Nueva"}
           </Button>
         )}
-        <FormGroup>
-          <Form.Label>Cantidad: </Form.Label>
-          <FormControl
-            type="number"
-            value={ammount}
-            onChange={(e) => {
-              setAmmount(e.target.value);
-            }}
-          ></FormControl>
-        </FormGroup>
         {/* --- LOCATION ------------------------------------------------------- */}
         <FormGroup>
           <Form.Label>Location: </Form.Label>
@@ -272,7 +270,7 @@ const NewItemForm = (props) => {
             ></FormControl>
           )}
         </FormGroup>
-        {/* Toggle new location */}
+        {/* TOGGLE NEW LOCATION */}
         <Button
           size="sm"
           style={{ marginBottom: "10px" }}
@@ -336,14 +334,80 @@ const NewItemForm = (props) => {
         )}
         {/* ---------------- FIN LOCATION  ----------- */}
         <FormGroup>
+          {/* STATUS */}
+
           <Form.Label>Estado: </Form.Label>
+
+          {/* STATUS SELECT */}
+          {!newstatus && (
+            <Form.Control
+              as="select"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+              }}
+            >
+              <option value={""}>Elije un estado</option>
+              {props.inventory.statuses.map((status) => {
+                return (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                );
+              })}
+            </Form.Control>
+          )}
+
+          {/* STATUS INPUT */}
+          {newstatus && (
+            <FormControl
+              placeholder="Ej: En uso"
+              value={status}
+              style={{ marginTop: "10px" }}
+              type="text"
+              onChange={(e) => {
+                setStatus(e.target.value);
+              }}
+            ></FormControl>
+          )}
+
+          {/* STATUS BOTON NUEVA OPCION */}
+          <Button
+            size="sm"
+            style={{ margin: "10px 0px" }}
+            variant={newstatus ? "warning" : "info"}
+            onClick={(e) => {
+              e.preventDefault();
+              newstatus ? setNewStatus(false) : setNewStatus(true);
+            }}
+          >
+            {newstatus ? "Cancelar" : "Nuevo"}
+          </Button>
+        </FormGroup>
+        <FormGroup>
+          <Form.Label>Cantidad: </Form.Label>
           <FormControl
-            type="text"
-            value={status}
+            type="number"
+            value={ammount}
             onChange={(e) => {
-              setStatus(e.target.value);
+              setAmmount(e.target.value);
             }}
           ></FormControl>
+        </FormGroup>
+        <FormGroup>
+          <Form.Label>Grupo: </Form.Label>
+          <FormControl
+            placeholder="Ej: Guardados en depósito"
+            type="text"
+            onChange={(e) => {
+              setGroupName(e.target.value);
+            }}
+          ></FormControl>
+          <Form.Text className="text-muted">
+            Puedes crear distintos grupos dentro de un mismo item, por ejemplo
+            para distribuir el stock entre diferentes marcas, ubicaciones o
+            estados
+          </Form.Text>
         </FormGroup>
         <Button variant="info" block onClick={() => handleCreateItem()}>
           Agregar item

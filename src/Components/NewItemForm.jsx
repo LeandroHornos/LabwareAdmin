@@ -133,28 +133,45 @@ const NewItemForm = (props) => {
       ...data,
       changelog: [{ date: data.creationdate, groups: data.groups }],
     };
-    // try {
-    //   await db
-    //     .collection("items")
-    //     .add(data)
-    //     .then((docref) => {
-    //       console.log(
-    //         "El item se guardó con éxito, aquí está su id:",
-    //         docref.id
-    //       );
-    //     });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // history.push("./inventory");
-    // cleanForm();(
+    console.log("he aqui la data a guardar", data);
+    try {
+      await db
+        .collection("items")
+        .add(data)
+        .then((docref) => {
+          console.log(
+            "El item se guardó con éxito, aquí está su id:",
+            docref.id
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+
+    history.push("./inventory");
+    cleanForm();
+
     console.log("he aqui la data", data);
     const { hasChanged, newInventory } = updateInventory();
     if (hasChanged) {
+      /* Meter aquí el guardado a la base de datos */
       console.log(
         "El inventario ha recibido nuevas opciones, he aquí la nueva versión:",
         newInventory
       );
+      try {
+        await db
+          .collection("inventories")
+          .doc(props.inventory.id)
+          .update(newInventory)
+          .then(() => {
+            console.log(
+              "El inventario se ha actualizado con las nuevas opciones"
+            );
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

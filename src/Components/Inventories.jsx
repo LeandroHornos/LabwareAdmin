@@ -25,6 +25,7 @@ const Inventories = (props) => {
   // hooks
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(true);
 
   // methods
   const fetchData = () => {
@@ -35,6 +36,7 @@ const Inventories = (props) => {
         });
         setItems(items);
         setLoading(false);
+        console.log("fetchData de inventories dice Hola");
       });
     } catch (error) {
       console.log(error);
@@ -43,7 +45,7 @@ const Inventories = (props) => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, [loaded]);
 
   return (
     <React.Fragment>

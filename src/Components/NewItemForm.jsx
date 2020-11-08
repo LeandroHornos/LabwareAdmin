@@ -174,13 +174,15 @@ const NewItemForm = (props) => {
             console.log(
               "El inventario se ha actualizado con las nuevas opciones"
             );
+            props.setReload(true);
+            cleanForm();
           });
       } catch (error) {
         console.log(error);
       }
     }
-    history.push("./inventory");
-    cleanForm();
+
+    // cleanForm();
   };
 
   return (

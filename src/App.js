@@ -14,13 +14,19 @@ import SignUp from "./Components/SignUp.jsx";
 import SignOut from "./Components/SignOut.jsx";
 import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
+import Item from "./Components/Item.jsx";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
-  const [currentInventory, setCurrentInventory] = useState(0);
+  const [currentInventory, setCurrentInventory] = useState("");
+  const [currentItem, setCurrentItem] = useState("");
 
   const updateCurrentInventory = (inv) => {
     setCurrentInventory(inv);
+  };
+
+  const updateCurrentItem = (item) => {
+    setCurrentItem(item);
   };
 
   return (
@@ -47,10 +53,16 @@ const App = () => {
           </Route>
           <Route path="/inventory">
             {currentUser ? (
-              <Inventory inventoryId={currentInventory} />
+              <Inventory
+                inventoryId={currentInventory}
+                updateCurrentInventory={updateCurrentInventory}
+              />
             ) : (
               <SignUp />
             )}
+          </Route>
+          <Route path="/item">
+            {currentUser ? <Item itemId={currentItem} /> : <SignUp />}
           </Route>
           <Route path="/inventories">
             {currentUser ? (

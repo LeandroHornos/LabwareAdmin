@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import SampleElements from "../Samples/SampleElements";
 
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -22,17 +21,19 @@ import ItemsWall from "./ItemsWall.jsx";
 const Inventory = (props) => {
   const [loading, setLoading] = useState(true);
   const [inventory, setInventory] = useState(null);
-  const [items, setItems] = useState(SampleElements);
+  const [items, setItems] = useState([]);
   const [search, setSearch] = useState(true);
+  const [reload, setReload] = useState(false);
 
   // Firebase
   const db = firebaseApp.firestore();
-  const ref = db.collection("inventories");
+  const refInventories = db.collection("inventories");
+  const refItems = db.collection("items");
 
   // Methods
   const fetchData = async () => {
     try {
-      await ref
+      await refInventories
         .doc(props.inventoryId)
         .get()
         .then((inv) => {
@@ -40,6 +41,22 @@ const Inventory = (props) => {
           setInventory(data);
         });
       setLoading(false);
+      console.log("Inventario:", inventory);
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      await refItems
+        .where("inventoryId", "==", props.inventoryId)
+        .get()
+        .then((itemsArray) => {
+          const items = itemsArray.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id };
+          });
+          setItems(items);
+          setLoading(false);
+          console.log("FetchItems dice Hola!");
+        });
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +64,7 @@ const Inventory = (props) => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, [reload]);
 
   return (
     <React.Fragment>
@@ -68,11 +85,17 @@ const Inventory = (props) => {
           </div>
           {search
             ? !loading && <SearchItemForm inventory={inventory} />
-            : !loading && <NewItemForm inventory={inventory} />}
+            : !loading && (
+                <NewItemForm inventory={inventory} setReload={setReload} updateCurrentItem={props.updateCurrentItem}/>
+              )}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           {!loading && <InventoryInfo inventory={inventory} />}
-          {loading ? "Cargando..." : <ItemsWall items={items} />}
+          {loading ? (
+            "Cargando..."
+          ) : (
+            <ItemsWall items={items} reload={reload} />
+          )}
         </div>
       </div>
     </React.Fragment>
@@ -84,6 +107,7 @@ const InventoryInfo = (props) => {
     <div style={{ padding: "15px" }}>
       <h1>{props.inventory.name}</h1>
       <p>{props.inventory.description}</p>
+      <p>{props.inventory.id}</p>
     </div>
   );
 };

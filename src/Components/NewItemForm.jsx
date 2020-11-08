@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,7 +6,7 @@ import { FormControl, FormGroup } from "react-bootstrap";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
-// import { AuthContext } from "../Auth";
+import { AuthContext } from "../Auth";
 
 // Router
 import { useHistory } from "react-router-dom";
@@ -17,6 +17,7 @@ import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
 const NewItemForm = (props) => {
   const history = useHistory();
+  const { currentUser } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [newcat, setNewCat] = useState(false);
@@ -111,9 +112,11 @@ const NewItemForm = (props) => {
 
   const handleCreateItem = async () => {
     const db = firebaseApp.firestore();
+
     let data = {
       inventoryId: props.inventory.id,
       creationdate: new Date(),
+      creatorId: currentUser.uid,
       name,
       description,
       category,
@@ -131,7 +134,13 @@ const NewItemForm = (props) => {
     };
     data = {
       ...data,
-      changelog: [{ date: data.creationdate, groups: data.groups }],
+      changelog: [
+        {
+          date: data.creationdate,
+          userId: currentUser.uid,
+          groups: data.groups,
+        },
+      ],
     };
     console.log("he aqui la data a guardar", data);
     try {
@@ -147,9 +156,6 @@ const NewItemForm = (props) => {
     } catch (error) {
       console.log(error);
     }
-
-    history.push("./inventory");
-    cleanForm();
 
     console.log("he aqui la data", data);
     const { hasChanged, newInventory } = updateInventory();
@@ -173,6 +179,8 @@ const NewItemForm = (props) => {
         console.log(error);
       }
     }
+    history.push("./inventory");
+    cleanForm();
   };
 
   return (

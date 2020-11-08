@@ -20,6 +20,7 @@ import AccordionFormWrap from "./AccordionFormWrap.jsx";
 const Inventories = (props) => {
   const db = firebaseApp.firestore();
   const ref = db.collection("inventories");
+  const { currentUser } = useContext(AuthContext);
 
   // hooks
   const [loading, setLoading] = useState(true);
@@ -29,13 +30,16 @@ const Inventories = (props) => {
   // methods
   const fetchData = async () => {
     try {
-      await ref.get().then((inventories) => {
-        const items = inventories.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
+      await ref
+        .where("users", "array-contains", currentUser.uid)
+        .get()
+        .then((inventories) => {
+          const items = inventories.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id };
+          });
+          setItems(items);
+          setLoading(false);
         });
-        setItems(items);
-        setLoading(false);
-      });
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +93,8 @@ const NewInventoryForm = (props) => {
       date: new Date(),
       creatoruid: currentUser.uid,
       creatoremail: currentUser.email,
-      users: [{ id: currentUser.uid, role: "admin" }],
+      roles: [{ uid: currentUser.uid, role: "admin" }],
+      users: [currentUser.uid],
     };
 
     // Save data to database

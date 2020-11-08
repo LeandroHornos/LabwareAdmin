@@ -168,7 +168,7 @@ const DinamicInventoriesWall = (props) => {
                     variant="success"
                     onClick={() => HandleOpenInventory(item.id)}
                   >
-                    Ver inventario 2
+                    Ver
                   </Button>
                 </Card.Body>
               </Card>

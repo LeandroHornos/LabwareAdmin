@@ -56,6 +56,7 @@ const App = () => {
               <Inventory
                 inventoryId={currentInventory}
                 updateCurrentInventory={updateCurrentInventory}
+                updateCurrentItem={updateCurrentItem}
               />
             ) : (
               <SignUp />

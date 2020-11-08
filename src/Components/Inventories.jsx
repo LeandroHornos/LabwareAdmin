@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-
 import { FormControl, FormGroup } from "react-bootstrap";
 
 // Router
@@ -28,15 +27,14 @@ const Inventories = (props) => {
   const [loaded, setLoaded] = useState(true);
 
   // methods
-  const fetchData = () => {
+  const fetchData = async () => {
     try {
-      ref.get().then((inventories) => {
+      await ref.get().then((inventories) => {
         const items = inventories.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
         setItems(items);
         setLoading(false);
-        console.log("fetchData de inventories dice Hola");
       });
     } catch (error) {
       console.log(error);

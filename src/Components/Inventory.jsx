@@ -9,8 +9,6 @@ import { FormControl, FormGroup } from "react-bootstrap";
 import firebaseApp from "../firebaseApp";
 // import { AuthContext } from "../Auth";
 
-// Router
-import { useHistory } from "react-router-dom";
 
 import NavigationBar from "./NavigationBar.jsx";
 import NewItemForm from "./NewItemForm.jsx";
@@ -41,7 +39,6 @@ const Inventory = (props) => {
           setInventory(data);
         });
       setLoading(false);
-      console.log("Inventario:", inventory);
     } catch (error) {
       console.log(error);
     }
@@ -94,7 +91,7 @@ const Inventory = (props) => {
           {loading ? (
             "Cargando..."
           ) : (
-            <ItemsWall items={items} reload={reload} />
+            <ItemsWall items={items} reload={reload} updateCurrentItem={props.updateCurrentItem} />
           )}
         </div>
       </div>

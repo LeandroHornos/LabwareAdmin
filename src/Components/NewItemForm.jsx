@@ -152,6 +152,7 @@ const NewItemForm = (props) => {
             "El item se guardó con éxito, aquí está su id:",
             docref.id
           );
+          props.updateCurrentItem(docref.id);
         });
     } catch (error) {
       console.log(error);
@@ -174,8 +175,7 @@ const NewItemForm = (props) => {
             console.log(
               "El inventario se ha actualizado con las nuevas opciones"
             );
-            props.setReload(true);
-            cleanForm();
+            history.push("./item");
           });
       } catch (error) {
         console.log(error);

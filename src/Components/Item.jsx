@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 // Bootstrap components
 import Button from "react-bootstrap/Button";
-// import Card from "react-bootstrap/Card";
+import Card from "react-bootstrap/Card";
 // import Form from "react-bootstrap/Form";
 // import { FormControl, FormGroup } from "react-bootstrap";
 
@@ -35,6 +35,7 @@ const Item = (props) => {
         .then((doc) => {
           const data = { ...doc.data(), id: doc.id };
           setItem(data);
+          console.log("item:", data);
         });
       setLoading(false);
     } catch (error) {
@@ -58,28 +59,76 @@ const Item = (props) => {
             <div>
               <h1>{item.name}</h1>
               <ul>
-                <li>Categoría: {item.category}</li>
-                <li>Sub categoría: {item.subcategory}</li>
+                <li>
+                  <strong>Categoría:</strong> {item.category}
+                </li>
+                <li>
+                  <strong>Sub categoría:</strong> {item.subcategory}
+                </li>
               </ul>
-              {item.groups.map((group) => {
-                return (
-                  <div key={"group" + group.groupname}>
-                    <h3>{group.groupname}</h3>
-                    <ul>
-                      <li>Ubicacion: {group.location}</li>
-                      <li>Sub ubicacion: {group.sublocation}</li>
-                      <li>Estatus: {group.status}</li>
-                      <li>Cantidad: {group.ammount}</li>
-                    </ul>
-                  </div>
-                );
-              })}
+              <h2>Grupos:</h2>
+              <GroupCards groups={item.groups} />
             </div>
           )}
         </div>
       </div>
     </React.Fragment>
   );
+};
+
+const GroupCards = (props) => {
+  const triplets = groupAsTriplets(props.groups);
+  return triplets.map((triplet) => {
+    return (
+      <div className="row">
+        {triplet.map((group) => {
+          return (
+            <div className="col-lg-4">
+              <Card className="group-card">
+                <Card.Body>
+                  <Card.Title>{group.groupname}</Card.Title>
+
+                    <ul>
+                      <li>Ubicacion: {group.location}</li>
+                      <li>Sub ubicacion: {group.sublocation}</li>
+                      <li>Estatus: {group.status}</li>
+                      <li>Cantidad: {group.ammount}</li>
+                    </ul>
+
+                </Card.Body>
+              </Card>
+            </div>
+          );
+        })}
+      </div>
+    );
+  });
+};
+
+/* Auxiliary functions ------------------------------ */
+
+const groupAsTriplets = (items) => {
+  // Create a 2D array where every element is an array of 3 items.
+  // It can be used to make rows with 3 items each.
+
+  let triplets = [];
+  let triplet = [];
+  let count = 0;
+  items.forEach((item) => {
+    if (count < 2) {
+      triplet.push(item);
+      count++;
+    } else {
+      triplet.push(item);
+      triplets.push(triplet);
+      triplet = [];
+      count = 0;
+    }
+  });
+  if (triplet.length > 0) {
+    triplets.push(triplet);
+  }
+  return triplets;
 };
 
 export default Item;

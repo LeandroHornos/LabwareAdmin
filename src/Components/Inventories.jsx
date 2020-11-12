@@ -6,6 +6,8 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
+import Utils from "../utilities";
+
 // Router
 import { useHistory } from "react-router-dom";
 
@@ -163,12 +165,16 @@ const DinamicInventoriesWall = (props) => {
       <div className="row" key={"row-" + pair[0].id}>
         {pair.map((item) => {
           return (
-            <div className="col-lg-6" key={item.id} style={{marginBottom: "20px"}}>
+            <div
+              className="col-lg-6"
+              key={item.id}
+              style={{ marginBottom: "20px" }}
+            >
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
-                  <Card.Text>{item.description}</Card.Text>
+                  <Card.Text>{Utils.getTextPreview(item.description, 140)}</Card.Text>
                   <Button
                     variant="success"
                     onClick={() => HandleOpenInventory(item.id)}

@@ -1,5 +1,5 @@
 import React from "react";
-
+import Utils from "../utilities";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
@@ -21,7 +21,7 @@ const ItemsWall = (props) => {
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
-                  <Card.Text>{item.description}</Card.Text>
+                  <Card.Text>{Utils.getTextPreview(item.description, 140)}</Card.Text>
                   <Button
                     variant="success"
                     onClick={() => {

@@ -104,7 +104,6 @@ const InventoryInfo = (props) => {
     <div style={{ padding: "15px" }}>
       <h1>{props.inventory.name}</h1>
       <p>{props.inventory.description}</p>
-      <p>{props.inventory.id}</p>
     </div>
   );
 };

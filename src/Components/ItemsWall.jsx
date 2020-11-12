@@ -16,7 +16,7 @@ const ItemsWall = (props) => {
       <div className="row">
         {triplet.map((item) => {
           return (
-            <div className="col-lg-4">
+            <div className="col-lg-4" style={{ marginBottom: "20px" }}>
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body>
@@ -26,7 +26,7 @@ const ItemsWall = (props) => {
                     variant="success"
                     onClick={() => {
                       props.updateCurrentItem(item.id);
-                      history.push("./item")
+                      history.push("./item");
                     }}
                   >
                     Ver

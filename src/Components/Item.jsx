@@ -83,7 +83,7 @@ const GroupCards = (props) => {
       <div className="row">
         {triplet.map((group) => {
           return (
-            <div className="col-lg-4">
+            <div className="col-lg-4" style={{padding: "10px 10px"}}>
               <Card className="group-card">
                 <Card.Body>
                   <Card.Title>{group.groupname}</Card.Title>

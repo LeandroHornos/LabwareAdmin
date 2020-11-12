@@ -16,6 +16,7 @@ import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
 import Item from "./Components/Item.jsx";
 
+
 const App = () => {
   const { currentUser } = useContext(AuthContext);
   const [currentInventory, setCurrentInventory] = useState("");

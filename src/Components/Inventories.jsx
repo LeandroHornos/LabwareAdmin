@@ -163,7 +163,7 @@ const DinamicInventoriesWall = (props) => {
       <div className="row" key={"row-" + pair[0].id}>
         {pair.map((item) => {
           return (
-            <div className="col-lg-6" key={item.id}>
+            <div className="col-lg-6" key={item.id} style={{marginBottom: "20px"}}>
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body>

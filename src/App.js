@@ -46,7 +46,7 @@ const App = () => {
             {currentUser ? (
               <Inventories updateCurrentInventory={updateCurrentInventory} />
             ) : (
-              <SignIn />
+              <SignUp />
             )}
           </Route>
           <Route path="/signout">

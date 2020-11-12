@@ -19,11 +19,13 @@ const ItemsWall = (props) => {
             <div className="col-lg-4" style={{ marginBottom: "20px" }}>
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
-                <Card.Body>
+                <Card.Body className="d-flex flex-column justify-content-between align-items-left">
                   <Card.Title>{item.name}</Card.Title>
-                  <Card.Text>{Utils.getTextPreview(item.description, 140)}</Card.Text>
+                  <Card.Text>
+                    {Utils.getTextPreview(item.description, 140)}
+                  </Card.Text>
                   <Button
-                    variant="success"
+                    variant="outline-success"
                     onClick={() => {
                       props.updateCurrentItem(item.id);
                       history.push("./item");

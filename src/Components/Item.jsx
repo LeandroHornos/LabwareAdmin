@@ -6,11 +6,9 @@ import Utils from "../utilities";
 // Bootstrap components
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-// import Form from "react-bootstrap/Form";
-// import { FormControl, FormGroup } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import { FormControl, FormGroup } from "react-bootstrap";
 
-// Router
-// import { useHistory } from "react-router-dom";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
@@ -66,7 +64,13 @@ const Item = (props) => {
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
         <div className="col-md-3 inventory-sidepanel">
-          {!loading && <NewGroupForm item={item} inventory={inventory} setLoading={setLoading}/>}
+          {!loading && (
+            <NewGroupForm
+              item={item}
+              inventory={inventory}
+              setLoading={setLoading}
+            />
+          )}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           {loading ? (
@@ -114,6 +118,15 @@ const GroupCards = (props) => {
                     <li>Estatus: {group.status}</li>
                     <li>Cantidad: {group.ammount}</li>
                   </ul>
+
+                  <label>Ubicacion:</label>
+                  <input type="text" value={group.location}></input>
+                  <label>Sub ubicacion:</label>
+                  <input type="text" value={group.sublocation}></input>
+                  <label>Estatus:</label>
+                  <input type="text" value={group.status}></input>
+                  <label>Cantidad:</label>
+                  <input type="number" value={group.ammount}></input>
                 </Card.Body>
               </Card>
             </div>

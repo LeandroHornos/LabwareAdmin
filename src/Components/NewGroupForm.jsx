@@ -102,6 +102,14 @@ const NewGroupForm = (props) => {
         .doc(props.item.id)
         .update({
           groups: [...props.item.groups, groupdata],
+          changelog: [
+            ...props.item.changelog,
+            {
+              date: new Date(),
+              userId: currentUser.uid,
+              groups: [...props.item.groups, groupdata],
+            },
+          ],
         });
       console.log("Item.jsx dice: Se ha agregado el nuevo grupo al item");
       // AHORa TENGO QUE VER SI HAY NUEVAS OPCIONES QUE AGREGAR AL INVENTARIO Y METERLAS

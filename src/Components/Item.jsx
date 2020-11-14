@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 
+// General purpose functions
+import Utils from "../utilities";
+
 // Bootstrap components
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -19,27 +22,37 @@ import NavigationBar from "./NavigationBar.jsx";
 const Item = (props) => {
   const db = firebaseApp.firestore();
   const ref = db.collection("items");
+  const refInventories = db.collection("inventories");
 
   // hooks
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState({});
+  const [inventory, setInventory] = useState({});
   const [loaded, setLoaded] = useState(true);
 
   // methods
   const fetchData = async () => {
     console.log("id del item a buscar", props.itemId);
     try {
-      await ref
-        .doc(props.itemId)
-        .get()
-        .then((doc) => {
-          const data = { ...doc.data(), id: doc.id };
-          setItem(data);
-          console.log("item:", data);
-        });
+      const itemdoc = await ref.doc(props.itemId).get();
+      const itemdata = { ...itemdoc.data(), id: itemdoc.id };
+      setItem(itemdata);
+      console.log(
+        "Item.jsx dice: se ha obtenido el siguiente item de la base de datos:",
+        itemdata
+      );
+      const invdoc = await refInventories.doc(itemdata.inventoryId).get();
+
+      const invdata = { ...invdoc.data(), id: invdoc.id };
+      setInventory(invdata);
+      console.log("Item.jsx dice: Se ha obtenido el inventario:", invdata);
+
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(
+        "Item.jsx dice: Ha ocurrido un error al tratar de obtener el item de la base de datos:",
+        error
+      );
     }
   };
 
@@ -67,7 +80,7 @@ const Item = (props) => {
                 </li>
               </ul>
               <h2>Grupos:</h2>
-              <GroupCards groups={item.groups} />
+              <GroupCards groups={item.groups} inventory={inventory} />
             </div>
           )}
         </div>
@@ -80,21 +93,24 @@ const GroupCards = (props) => {
   const triplets = groupAsTriplets(props.groups);
   return triplets.map((triplet) => {
     return (
-      <div className="row">
+      <div className="row" key={Utils.makeid(8)}>
         {triplet.map((group) => {
           return (
-            <div className="col-lg-4" style={{padding: "10px 10px"}}>
+            <div
+              key={Utils.makeid(8)}
+              className="col-lg-4"
+              style={{ padding: "10px 10px" }}
+            >
               <Card className="group-card">
                 <Card.Body>
                   <Card.Title>{group.groupname}</Card.Title>
 
-                    <ul>
-                      <li>Ubicacion: {group.location}</li>
-                      <li>Sub ubicacion: {group.sublocation}</li>
-                      <li>Estatus: {group.status}</li>
-                      <li>Cantidad: {group.ammount}</li>
-                    </ul>
-
+                  <ul>
+                    <li>Ubicacion: {group.location}</li>
+                    <li>Sub ubicacion: {group.sublocation}</li>
+                    <li>Estatus: {group.status}</li>
+                    <li>Cantidad: {group.ammount}</li>
+                  </ul>
                 </Card.Body>
               </Card>
             </div>

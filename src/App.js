@@ -16,7 +16,6 @@ import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
 import Item from "./Components/Item.jsx";
 
-
 const App = () => {
   const { currentUser } = useContext(AuthContext);
   const [currentInventory, setCurrentInventory] = useState("");
@@ -36,21 +35,13 @@ const App = () => {
         <Switch>
           <Route path="/signin">
             {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
-            {currentUser ? (
-              <Inventories updateCurrentInventory={updateCurrentInventory} />
-            ) : (
-              <SignIn />
-            )}
+            {currentUser ? <Redirect to="inventories" /> : <SignIn />}
           </Route>
           <Route path="/signup">
-            {currentUser ? (
-              <Inventories updateCurrentInventory={updateCurrentInventory} />
-            ) : (
-              <SignUp />
-            )}
+            {currentUser ? <Redirect to="inventories" /> : <SignUp />}
           </Route>
           <Route path="/signout">
-            {currentUser ? <SignOut /> : <SignUp />}
+            <SignOut />
           </Route>
           <Route path="/inventory">
             {currentUser ? (
@@ -60,17 +51,21 @@ const App = () => {
                 updateCurrentItem={updateCurrentItem}
               />
             ) : (
-              <SignUp />
+              <Redirect to="/signup" />
             )}
           </Route>
           <Route path="/item">
-            {currentUser ? <Item itemId={currentItem} /> : <SignUp />}
+            {currentUser ? (
+              <Item itemId={currentItem} />
+            ) : (
+              <Redirect to="/signup" />
+            )}
           </Route>
           <Route path="/inventories">
             {currentUser ? (
               <Inventories updateCurrentInventory={updateCurrentInventory} />
             ) : (
-              <SignUp />
+              <Redirect to="/signup" />
             )}
           </Route>
           <Route path="/">

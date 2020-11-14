@@ -18,6 +18,7 @@ import { AuthContext } from "../Auth";
 
 // App components
 import NavigationBar from "./NavigationBar.jsx";
+import NewGroupForm from "./NewGroupForm.jsx";
 
 const Item = (props) => {
   const db = firebaseApp.firestore();
@@ -64,7 +65,9 @@ const Item = (props) => {
     <React.Fragment>
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
-        <div className="col-md-3 inventory-sidepanel"></div>
+        <div className="col-md-3 inventory-sidepanel">
+          {!loading && <NewGroupForm item={item} inventory={inventory} setLoading={setLoading}/>}
+        </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
           {loading ? (
             "Cargando Item..."

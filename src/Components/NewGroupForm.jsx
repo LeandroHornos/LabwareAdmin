@@ -34,17 +34,43 @@ const NewGroupForm = (props) => {
 
   const locations = props.inventory.locations.map((loc) => loc.name);
 
-  const cleanForm = () => {
-    setName("");
-    setDescription("");
-    setCategory("");
-    setSubcategory("");
-    setSubcatlist([]);
-    setLocation("");
-    setSublocation("");
-    setSublocationList([]);
-    setAmmount(0);
-    setStatus("");
+  // const cleanForm = () => {
+  //   setName("");
+  //   setDescription("");
+  //   setCategory("");
+  //   setSubcategory("");
+  //   setSubcatlist([]);
+  //   setLocation("");
+  //   setSublocation("");
+  //   setSublocationList([]);
+  //   setAmmount(0);
+  //   setStatus("");
+  // };
+
+  const updateInventory = () => {
+    let newInventory = props.inventory;
+    const hasChanged = newlocation || newsublocation || newstatus;
+
+    if (newlocation) {
+      newInventory.locations.push({
+        name: location,
+        sublocations: [sublocation],
+      });
+    }
+    if (!newlocation && newsublocation) {
+      let index = 0;
+      newInventory.locations.forEach((loc) => {
+        if (loc.name === location) {
+          newInventory.locations[index].sublocations.push(sublocation);
+        } else {
+          index++;
+        }
+      });
+    }
+    if (newstatus) {
+      newInventory.statuses.push(status);
+    }
+    return { hasChanged, newInventory };
   };
 
   const listSublocations = (name, locArray) => {
@@ -59,9 +85,8 @@ const NewGroupForm = (props) => {
 
   const handleCreateGroup = async () => {
     const db = firebaseApp.firestore();
-    const arrayUnion = db.FieldValue.arrayUnion;
 
-    let data = {
+    let groupdata = {
       date: new Date(),
       id: Utils.makeid(10),
       groupname,
@@ -75,26 +100,43 @@ const NewGroupForm = (props) => {
       await db
         .collection("items")
         .doc(props.item.id)
-        .update({ groups: arrayUnion(data) })
-        .then(() => {
-          console.log(
-            "Se ha agregado el nuevo grupo al item"
-          );
-          // AHORa TENGO QUE VER SI HAY NUEVAS OPCIONES QUE AGREGAR AL INVENTARIO Y METERLAS
-          history.push("./temp");
-          history.goBack();
+        .update({
+          groups: [...props.item.groups, groupdata],
         });
+      console.log("Item.jsx dice: Se ha agregado el nuevo grupo al item");
+      // AHORa TENGO QUE VER SI HAY NUEVAS OPCIONES QUE AGREGAR AL INVENTARIO Y METERLAS
+
+      history.push("./inventory");
+      history.goBack();
     } catch (error) {
       console.log(error);
     }
-
-    console.log("he aqui la data", data);
-
-    // cleanForm();
+    // Si se generaron nuevas opciones para el inventario, debo actualizar:
+    const { hasChanged, newInventory } = updateInventory();
+    if (hasChanged) {
+      console.log(
+        "Item.jsx dice: El inventario ha recibido nuevas opciones, he aquí la nueva versión:",
+        newInventory
+      );
+      try {
+        await db
+          .collection("inventories")
+          .doc(props.inventory.id)
+          .update(newInventory)
+          .then(() => {
+            console.log(
+              "Item.jsx dice: El inventario se ha actualizado con las nuevas opciones"
+            );
+            history.push("./item");
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
-    <AccordionFormWrap title={"Nuevo item"}>
+    <AccordionFormWrap title={"Nuevo grupo"}>
       <Form>
         {/* --- NAME ------------------------------------------------------- */}
 

@@ -7,20 +7,24 @@ import "./Welcome.css";
 const Welcome = () => {
   const history = useHistory();
   return (
-    <div className="row">
+    <div
+      className="row welcome"
+      style={{ backgroundImage: "url(./img/wavecut.png)" }}
+    >
       <div className="col-md-4"></div>
       <div
         className="col-md-4 d-flex flex-column aling-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}
+        style={{ minHeight: "100vh", padding: "10px" }}
       >
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center" }} className="welcome-box boxshadow">
           <img src="./img/logo3.png" alt="logo" style={style.logo} />
           <p>Te damos la bienvenida a</p>
           <h1 style={{ color: "rgb(0,160,60)" }}>LabwareAdmin</h1>
           <p style={{ fontStyle: "italic" }}>By Carbo</p>
           <p>Lleva el inventario de tu laboratorio!</p>
           <Button
-            variant="dark"
+            className="boxshadow"
+            variant="success"
             onClick={(e) => {
               history.push("/signin");
             }}
@@ -29,6 +33,7 @@ const Welcome = () => {
             Ingresar
           </Button>
           <Button
+            className="boxshadow"
             variant="info"
             onClick={(e) => {
               history.push("/signup");

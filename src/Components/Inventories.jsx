@@ -55,7 +55,13 @@ const Inventories = (props) => {
     <React.Fragment>
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
-        <div className="col-md-3 inventory-sidepanel">
+        <div
+          className="col-md-3 inventory-sidepanel"
+          style={{
+            marginBottom: "20px",
+            backgroundImage: "url(./img/wavecut.png)",
+          }}
+        >
           <NewInventoryForm
             updateCurrentInventory={props.updateCurrentInventory}
           />
@@ -165,11 +171,7 @@ const DinamicInventoriesWall = (props) => {
       <div className="row" key={"row-" + pair[0].id}>
         {pair.map((item) => {
           return (
-            <div
-              className="col-lg-6"
-              key={item.id}
-              style={{ marginBottom: "20px" }}
-            >
+            <div className="col-lg-6" key={item.id}>
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body className="d-flex flex-column justify-content-between align-items-left">

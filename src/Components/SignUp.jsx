@@ -12,11 +12,11 @@ import Form from "react-bootstrap/Form";
 function SignUp() {
   const history = useHistory();
 
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [repswd, setRepswd] = useState(null);
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [error, setError] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repswd, setRepswd] = useState("");
+  // const [acceptTerms, setAcceptTerms] = useState(false);
+  // const [error, setError] = useState(null);
 
   const handleSignOut = async () => {
     try {

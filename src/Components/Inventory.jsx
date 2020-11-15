@@ -9,7 +9,6 @@ import { FormControl, FormGroup } from "react-bootstrap";
 import firebaseApp from "../firebaseApp";
 // import { AuthContext } from "../Auth";
 
-
 import NavigationBar from "./NavigationBar.jsx";
 import NewItemForm from "./NewItemForm.jsx";
 import ItemsWall from "./ItemsWall.jsx";
@@ -67,7 +66,10 @@ const Inventory = (props) => {
     <React.Fragment>
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
-        <div className="col-md-3 inventory-sidepanel">
+        <div
+          className="col-md-3 inventory-sidepanel"
+          style={{ backgroundImage: "url(./img/wavecut.png)" }}
+        >
           <div style={{ padding: "20px" }}>
             <Button
               style={{ marginTop: "10px" }}
@@ -83,7 +85,11 @@ const Inventory = (props) => {
           {search
             ? !loading && <SearchItemForm inventory={inventory} />
             : !loading && (
-                <NewItemForm inventory={inventory} setReload={setReload} updateCurrentItem={props.updateCurrentItem}/>
+                <NewItemForm
+                  inventory={inventory}
+                  setReload={setReload}
+                  updateCurrentItem={props.updateCurrentItem}
+                />
               )}
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
@@ -91,7 +97,11 @@ const Inventory = (props) => {
           {loading ? (
             "Cargando..."
           ) : (
-            <ItemsWall items={items} reload={reload} updateCurrentItem={props.updateCurrentItem} />
+            <ItemsWall
+              items={items}
+              reload={reload}
+              updateCurrentItem={props.updateCurrentItem}
+            />
           )}
         </div>
       </div>

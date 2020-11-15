@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 // General purpose functions
 import Utils from "../utilities";
 
 // Bootstrap components
-import Button from "react-bootstrap/Button";
+// import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
-import { FormControl, FormGroup } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
+import { FormControl, FormGroup } from "react-bootstrap";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
-import { AuthContext } from "../Auth";
 
 // App components
 import NavigationBar from "./NavigationBar.jsx";
@@ -63,7 +63,10 @@ const Item = (props) => {
     <React.Fragment>
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
-        <div className="col-md-3 inventory-sidepanel">
+        <div
+          className="col-md-3 inventory-sidepanel"
+          style={{ backgroundImage: "url(./img/wavecut.png)" }}
+        >
           {!loading && (
             <NewGroupForm
               item={item}
@@ -77,16 +80,19 @@ const Item = (props) => {
             "Cargando Item..."
           ) : (
             <div>
-              <h1>{item.name}</h1>
-              <ul>
-                <li>
-                  <strong>Categoría:</strong> {item.category}
-                </li>
-                <li>
-                  <strong>Sub categoría:</strong> {item.subcategory}
-                </li>
-              </ul>
-              <h2>Grupos:</h2>
+              <div style={{ padding: "20px" }}>
+                <h1>{item.name}</h1>
+                <ul style={styles.unstyledList}>
+                  <li>
+                    <strong>Categoría:</strong> {item.category}
+                  </li>
+                  <li>
+                    <strong>Sub categoría:</strong> {item.subcategory}
+                  </li>
+                </ul>
+                <h2>Grupos:</h2>
+              </div>
+
               <GroupCards groups={item.groups} inventory={inventory} />
             </div>
           )}
@@ -108,27 +114,7 @@ const GroupCards = (props) => {
               className="col-lg-4"
               style={{ padding: "10px 10px" }}
             >
-              <Card className="group-card">
-                <Card.Body>
-                  <Card.Title>{group.groupname}</Card.Title>
-
-                  <ul>
-                    <li>Ubicacion: {group.location}</li>
-                    <li>Sub ubicacion: {group.sublocation}</li>
-                    <li>Estatus: {group.status}</li>
-                    <li>Cantidad: {group.ammount}</li>
-                  </ul>
-
-                  <label>Ubicacion:</label>
-                  <input type="text" value={group.location}></input>
-                  <label>Sub ubicacion:</label>
-                  <input type="text" value={group.sublocation}></input>
-                  <label>Estatus:</label>
-                  <input type="text" value={group.status}></input>
-                  <label>Cantidad:</label>
-                  <input type="number" value={group.ammount}></input>
-                </Card.Body>
-              </Card>
+              <GroupCard group={group} />
             </div>
           );
         })}
@@ -137,7 +123,69 @@ const GroupCards = (props) => {
   });
 };
 
-/* Auxiliary functions ------------------------------ */
+const GroupCard = (props) => {
+  return (
+    <Card className="group-card">
+      <Card.Body>
+        <Card.Title
+          style={{
+            fontSize: "1.5em",
+            color: "rgb(41, 107, 63)",
+          }}
+        >
+          {props.group.groupname}
+        </Card.Title>
+
+        <ul style={styles.unstyledList}>
+          <li>Ubicacion: {props.group.location}</li>
+          <li>Sub ubicacion: {props.group.sublocation}</li>
+          <li>Estatus: {props.group.status}</li>
+        </ul>
+        <FormGroup className="row d-flex align-items-center justify-content-center">
+          <Form.Label
+            className="col-6"
+            style={{
+              textAlign: "left",
+              padding: "0",
+              margin: "0",
+              fontSize: "1.3em",
+              color: "black",
+            }}
+          >
+            Cantidad:{" "}
+          </Form.Label>
+          <div className="col-6">
+            <FormControl
+              className="form-control-md"
+              type="number"
+              value={props.group.ammount}
+              style={{ color: "black" }}
+              // onChange={(e) => {
+              //   setAmmount(e.target.value);
+              // }}
+            />
+          </div>
+        </FormGroup>
+      </Card.Body>
+      <Card.Footer className="d-flex justify-content-between align-items-center">
+        <Button
+          variant="outline-info"
+          style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
+          size="sm"
+        >
+          Editar
+        </Button>
+        <Button
+          variant="outline-danger"
+          style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
+          size="sm"
+        >
+          Borrar
+        </Button>
+      </Card.Footer>
+    </Card>
+  );
+};
 
 const groupAsTriplets = (items) => {
   // Create a 2D array where every element is an array of 3 items.
@@ -161,6 +209,14 @@ const groupAsTriplets = (items) => {
     triplets.push(triplet);
   }
   return triplets;
+};
+
+const styles = {
+  unstyledList: {
+    listStyleType: "none",
+    margin: "0",
+    padding: "0",
+  },
 };
 
 export default Item;

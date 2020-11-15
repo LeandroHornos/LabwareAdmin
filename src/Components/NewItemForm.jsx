@@ -54,7 +54,7 @@ const NewItemForm = (props) => {
   const listSubcats = (name, catArray) => {
     let subcats = [];
     catArray.forEach((cat) => {
-      if (cat.name == name) {
+      if (cat.name === name) {
         subcats = cat.subcategories;
       }
     });
@@ -64,7 +64,7 @@ const NewItemForm = (props) => {
   const listSublocations = (name, locArray) => {
     let sublocs = [];
     locArray.forEach((loc) => {
-      if (loc.name == name) {
+      if (loc.name === name) {
         sublocs = loc.sublocations;
       }
     });

@@ -34,6 +34,7 @@ p {
 
 .inventory-sidepanel {
   background-color: rgb(41, 107, 63);
+  /* background-image: url("https://www.transparenttextures.com/patterns/wavecut.png"); */
   padding: 5px;
   border: "none";
 }
@@ -61,4 +62,22 @@ label {
 .navbar {
   box-shadow: 2px 2px 12px 1px rgba(0, 0, 0, 0.3);
   z-index: 100;
+}
+
+.welcome {
+  background-color: rgb(41, 107, 63);
+}
+
+.welcome p {
+  color: white;
+}
+
+.welcome-box {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.boxshadow {
+  box-shadow: 2px 3px 12px 2px rgba(0, 0, 0, 0.3);
 }

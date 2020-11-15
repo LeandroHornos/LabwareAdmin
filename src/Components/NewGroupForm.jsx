@@ -76,7 +76,7 @@ const NewGroupForm = (props) => {
   const listSublocations = (name, locArray) => {
     let sublocs = [];
     locArray.forEach((loc) => {
-      if (loc.name == name) {
+      if (loc.name === name) {
         sublocs = loc.sublocations;
       }
     });

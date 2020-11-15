@@ -124,6 +124,14 @@ const GroupCards = (props) => {
 };
 
 const GroupCard = (props) => {
+  const [ammount, setAmmount] = useState(props.group.ammount);
+  const [showUpdateButtons, setShowUpdateButtons] = useState(false);
+
+  const resetCard = () => {
+    setShowUpdateButtons(false);
+    setAmmount(props.group.ammount);
+  };
+
   return (
     <Card className="group-card">
       <Card.Body>
@@ -158,14 +166,36 @@ const GroupCard = (props) => {
             <FormControl
               className="form-control-md"
               type="number"
-              value={props.group.ammount}
+              value={ammount}
               style={{ color: "black" }}
-              // onChange={(e) => {
-              //   setAmmount(e.target.value);
-              // }}
+              onChange={(e) => {
+                setShowUpdateButtons(true);
+                setAmmount(e.target.value);
+              }}
             />
           </div>
         </FormGroup>
+        {showUpdateButtons && (
+          <div>
+            <Button
+              variant="outline-info"
+              style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
+              size="sm"
+            >
+              Actualizar
+            </Button>
+            <Button
+              variant="outline-danger"
+              style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
+              size="sm"
+              onClick={() => {
+                resetCard();
+              }}
+            >
+              Cancelar
+            </Button>
+          </div>
+        )}
       </Card.Body>
       <Card.Footer className="d-flex justify-content-between align-items-center">
         <Button

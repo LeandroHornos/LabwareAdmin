@@ -116,6 +116,13 @@ const GroupCards = (props) => {
     });
     return groups;
   };
+
+  const filterGroups = (groupId) => {
+    let groups = props.groups.filter((group) => {
+      return group.id === groupId;
+    });
+    return groups;
+  };
   const triplets = groupAsTriplets(props.groups);
   return triplets.map((triplet) => {
     return (
@@ -131,6 +138,7 @@ const GroupCards = (props) => {
                 group={group}
                 itemId={props.itemId}
                 updateGroups={updateGroups}
+                filterGroups={filterGroups}
                 changelog={props.changelog}
                 setLoading={props.setLoading}
               />
@@ -143,6 +151,7 @@ const GroupCards = (props) => {
 };
 
 const GroupCard = (props) => {
+  const db = firebaseApp.firestore();
   const history = useHistory();
   const { currentUser } = useContext(AuthContext);
   const [ammount, setAmmount] = useState(props.group.ammount);
@@ -160,7 +169,6 @@ const GroupCard = (props) => {
     Al guardar en el item, genera un nuevo array de grupos con
     el grupo actualizado, y agrega el nuevo array de grupos al changelog
     */
-    const db = firebaseApp.firestore();
     const updatedGroup = { ...props.group, ammount };
     const updatedGroups = props.updateGroups(updatedGroup);
 
@@ -176,6 +184,35 @@ const GroupCard = (props) => {
               date: new Date(),
               userId: currentUser.uid,
               groups: updatedGroups,
+            },
+          ],
+        });
+      props.setLoading(false);
+      history.push("./inventory");
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteGroup = async (groupId) => {
+    /* Elimina el grupo seleccionado
+     */
+
+    const filteredGroups = props.filterGroups(groupId);
+
+    try {
+      await db
+        .collection("items")
+        .doc(props.itemId)
+        .update({
+          groups: filteredGroups,
+          changelog: [
+            ...props.changelog,
+            {
+              date: new Date(),
+              userId: currentUser.uid,
+              groups: filteredGroups,
             },
           ],
         });
@@ -267,6 +304,9 @@ const GroupCard = (props) => {
           variant="outline-danger"
           style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
           size="sm"
+          onClick={() => {
+            handleDeleteGroup(props.group.id);
+          }}
         >
           Borrar
         </Button>

@@ -34,20 +34,14 @@ const Item = (props) => {
 
   // methods
   const fetchData = async () => {
-    console.log("id del item a buscar", props.itemId);
     try {
       const itemdoc = await ref.doc(props.itemId).get();
       const itemdata = { ...itemdoc.data(), id: itemdoc.id };
       setItem(itemdata);
-      console.log(
-        "Item.jsx dice: se ha obtenido el siguiente item de la base de datos:",
-        itemdata
-      );
       const invdoc = await refInventories.doc(itemdata.inventoryId).get();
 
       const invdata = { ...invdoc.data(), id: invdoc.id };
       setInventory(invdata);
-      console.log("Item.jsx dice: Se ha obtenido el inventario:", invdata);
 
       setLoading(false);
     } catch (error) {
@@ -113,9 +107,9 @@ const Item = (props) => {
 const GroupCards = (props) => {
   const updateGroups = (updatedGroup) => {
     let groups = props.groups;
-    groups.forEach((group) => {
+    groups.forEach((group, index) => {
       if (group.id === updatedGroup.id) {
-        group = updatedGroup;
+        groups[index] = updatedGroup;
       }
     });
     return groups;
@@ -159,6 +153,10 @@ const GroupCard = (props) => {
   };
 
   const handleUpdateGroupAmmount = async () => {
+    /* Actualiza la cantidad de elementos en un grupo. 
+    Al guardar en el item, genera un nuevo array de grupos con
+    el grupo actualizado, y agrega el nuevo array de grupos al changelog
+    */
     const db = firebaseApp.firestore();
     const updatedGroup = { ...props.group, ammount };
     const updatedGroups = props.updateGroups(updatedGroup);
@@ -178,9 +176,6 @@ const GroupCard = (props) => {
             },
           ],
         });
-      console.log(
-        "Item.jsx dice: Se ha actualizado la cantidad de elementos en el grupo"
-      );
 
       history.push("./inventory");
       history.goBack();

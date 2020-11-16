@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
+
+
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
@@ -51,7 +52,6 @@ const Inventory = (props) => {
           });
           setItems(items);
           setLoading(false);
-          console.log("FetchItems dice Hola!");
         });
     } catch (error) {
       console.log(error);
@@ -60,6 +60,7 @@ const Inventory = (props) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
   return (

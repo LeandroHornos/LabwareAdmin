@@ -54,6 +54,7 @@ const Item = (props) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded]);
 
   return (
@@ -95,6 +96,7 @@ const Item = (props) => {
                 itemId={item.id}
                 inventory={inventory}
                 changelog={item.changelog}
+                setLoading={setLoading}
               />
             </div>
           )}
@@ -130,6 +132,7 @@ const GroupCards = (props) => {
                 itemId={props.itemId}
                 updateGroups={updateGroups}
                 changelog={props.changelog}
+                setLoading={props.setLoading}
               />
             </div>
           );
@@ -176,7 +179,7 @@ const GroupCard = (props) => {
             },
           ],
         });
-
+      props.setLoading(false);
       history.push("./inventory");
       history.goBack();
     } catch (error) {

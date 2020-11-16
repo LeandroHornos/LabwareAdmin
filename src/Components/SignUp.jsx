@@ -50,7 +50,7 @@ function SignUp() {
             </Form.Text>
           </Form.Group>
 
-          <Form.Group controlId="formBasicPassword">
+          <Form.Group >
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -60,7 +60,7 @@ function SignUp() {
               }}
             />
           </Form.Group>
-          <Form.Group controlId="formBasicPassword">
+          <Form.Group >
             <Form.Label>Repite el password</Form.Label>
             <Form.Control
               type="password"
@@ -68,12 +68,6 @@ function SignUp() {
               onChange={(e) => {
                 setRepswd(e.target.value);
               }}
-            />
-          </Form.Group>
-          <Form.Group controlId="formBasicCheckbox">
-            <Form.Check
-              type="checkbox"
-              label="Acepto los términos y condiciones"
             />
           </Form.Group>
           <Button

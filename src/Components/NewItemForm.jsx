@@ -38,19 +38,6 @@ const NewItemForm = (props) => {
   const categories = props.inventory.categories.map((cat) => cat.name);
   const locations = props.inventory.locations.map((loc) => loc.name);
 
-  const cleanForm = () => {
-    setName("");
-    setDescription("");
-    setCategory("");
-    setSubcategory("");
-    setSubcatlist([]);
-    setLocation("");
-    setSublocation("");
-    setSublocationList([]);
-    setAmmount(0);
-    setStatus("");
-  };
-
   const listSubcats = (name, catArray) => {
     let subcats = [];
     catArray.forEach((cat) => {

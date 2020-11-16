@@ -30,25 +30,27 @@ const Inventories = (props) => {
   const [loaded, setLoaded] = useState(true);
 
   // methods
-  const fetchData = async () => {
-    try {
-      await ref
-        .where("users", "array-contains", currentUser.uid)
-        .get()
-        .then((inventories) => {
-          const items = inventories.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id };
-          });
-          setItems(items);
-          setLoading(false);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await ref
+          .where("users", "array-contains", currentUser.uid)
+          .get()
+          .then((inventories) => {
+            const items = inventories.docs.map((doc) => {
+              return { ...doc.data(), id: doc.id };
+            });
+            setItems(items);
+            setLoading(false);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded]);
 
   return (

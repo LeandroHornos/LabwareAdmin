@@ -13,10 +13,14 @@ const ItemsWall = (props) => {
   const triplets = groupAsTriplets(props.items);
   return triplets.map((triplet) => {
     return (
-      <div className="row">
+      <div className="row" key={Utils.makeid}>
         {triplet.map((item) => {
           return (
-            <div className="col-lg-4" style={{ marginBottom: "20px" }}>
+            <div
+              className="col-lg-4"
+              style={{ marginBottom: "20px" }}
+              key={Utils.makeid}
+            >
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body className="d-flex flex-column justify-content-between align-items-left">

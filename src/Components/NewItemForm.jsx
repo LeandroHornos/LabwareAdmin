@@ -157,11 +157,12 @@ const NewItemForm = (props) => {
     } catch (error) {
       console.log(error);
     }
-
     console.log("he aqui la data", data);
+
+    /* Si se han creado nuevas opciones, deben incorporarse al inventario: */
     const { hasChanged, newInventory } = updateInventory();
+
     if (hasChanged) {
-      /* Meter aquí el guardado a la base de datos */
       console.log(
         "El inventario ha recibido nuevas opciones, he aquí la nueva versión:",
         newInventory
@@ -175,14 +176,13 @@ const NewItemForm = (props) => {
             console.log(
               "El inventario se ha actualizado con las nuevas opciones"
             );
-            history.push("./item");
+            history.push("./inventories");
+            history.goBack();
           });
       } catch (error) {
         console.log(error);
       }
     }
-
-    // cleanForm();
   };
 
   return (

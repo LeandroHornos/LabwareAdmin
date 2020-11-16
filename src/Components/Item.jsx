@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 // General purpose functions
 import Utils from "../utilities";
+
+import { useHistory } from "react-router-dom";
 
 // Bootstrap components
 // import Button from "react-bootstrap/Button";
@@ -13,6 +15,7 @@ import { FormControl, FormGroup } from "react-bootstrap";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
+import { AuthContext } from "../Auth";
 
 // App components
 import NavigationBar from "./NavigationBar.jsx";
@@ -93,7 +96,12 @@ const Item = (props) => {
                 <h2>Grupos:</h2>
               </div>
 
-              <GroupCards groups={item.groups} inventory={inventory} />
+              <GroupCards
+                groups={item.groups}
+                itemId={item.id}
+                inventory={inventory}
+                changelog={item.changelog}
+              />
             </div>
           )}
         </div>
@@ -103,6 +111,15 @@ const Item = (props) => {
 };
 
 const GroupCards = (props) => {
+  const updateGroups = (updatedGroup) => {
+    let groups = props.groups;
+    groups.forEach((group) => {
+      if (group.id === updatedGroup.id) {
+        group = updatedGroup;
+      }
+    });
+    return groups;
+  };
   const triplets = groupAsTriplets(props.groups);
   return triplets.map((triplet) => {
     return (
@@ -114,7 +131,12 @@ const GroupCards = (props) => {
               className="col-lg-4"
               style={{ padding: "10px 10px" }}
             >
-              <GroupCard group={group} />
+              <GroupCard
+                group={group}
+                itemId={props.itemId}
+                updateGroups={updateGroups}
+                changelog={props.changelog}
+              />
             </div>
           );
         })}
@@ -124,12 +146,47 @@ const GroupCards = (props) => {
 };
 
 const GroupCard = (props) => {
+  const history = useHistory();
+  const { currentUser } = useContext(AuthContext);
   const [ammount, setAmmount] = useState(props.group.ammount);
   const [showUpdateButtons, setShowUpdateButtons] = useState(false);
+
+  //const currentUser = OBTENER EL USUARIO ACTUAL
 
   const resetCard = () => {
     setShowUpdateButtons(false);
     setAmmount(props.group.ammount);
+  };
+
+  const handleUpdateGroupAmmount = async () => {
+    const db = firebaseApp.firestore();
+    const updatedGroup = { ...props.group, ammount };
+    const updatedGroups = props.updateGroups(updatedGroup);
+
+    try {
+      await db
+        .collection("items")
+        .doc(props.itemId)
+        .update({
+          groups: updatedGroups,
+          changelog: [
+            ...props.changelog,
+            {
+              date: new Date(),
+              userId: currentUser.uid,
+              groups: updatedGroups,
+            },
+          ],
+        });
+      console.log(
+        "Item.jsx dice: Se ha actualizado la cantidad de elementos en el grupo"
+      );
+
+      history.push("./inventory");
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -181,6 +238,9 @@ const GroupCard = (props) => {
               variant="outline-info"
               style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
               size="sm"
+              onClick={() => {
+                handleUpdateGroupAmmount();
+              }}
             >
               Actualizar
             </Button>

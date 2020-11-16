@@ -135,7 +135,6 @@ const NewGroupForm = (props) => {
             console.log(
               "Item.jsx dice: El inventario se ha actualizado con las nuevas opciones"
             );
-            history.push("./item");
           });
       } catch (error) {
         console.log(error);

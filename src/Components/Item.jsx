@@ -119,7 +119,7 @@ const GroupCards = (props) => {
 
   const filterGroups = (groupId) => {
     let groups = props.groups.filter((group) => {
-      return group.id === groupId;
+      return !(group.id === groupId);
     });
     return groups;
   };

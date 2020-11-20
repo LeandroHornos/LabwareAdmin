@@ -20,9 +20,10 @@ import { AuthContext } from "../Auth";
 import NavigationBar from "./NavigationBar.jsx";
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
-const lang = "es";
+const lang = "en";
 
 const Inventories = (props) => {
+  const txt = GuiTexts.Inventories;
   const db = firebaseApp.firestore();
   const ref = db.collection("inventories");
   const { currentUser } = useContext(AuthContext);
@@ -72,7 +73,7 @@ const Inventories = (props) => {
           />
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
-          <h1 style={{ marginBottom: "40px" }}>Mis Inventarios</h1>
+          <h1 style={{ marginBottom: "40px" }}>{txt.title[lang] + ": "}</h1>
           {loading ? (
             "Cargando Inventarios..."
           ) : (

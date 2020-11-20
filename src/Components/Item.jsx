@@ -10,6 +10,8 @@ import { useHistory } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 import { FormControl, FormGroup } from "react-bootstrap";
 
@@ -227,14 +229,49 @@ const GroupCard = (props) => {
   return (
     <Card className="group-card">
       <Card.Body>
-        <Card.Title
-          style={{
-            fontSize: "1.5em",
-            color: "rgb(41, 107, 63)",
-          }}
-        >
-          {props.group.groupname}
-        </Card.Title>
+        <div className="d-flex justify-content-between align-items-center">
+          <Card.Title
+            style={{
+              fontSize: "1.5em",
+              color: "rgb(41, 107, 63)",
+            }}
+          >
+            {props.group.groupname}
+          </Card.Title>
+          <DropdownButton variant="outline-success" size="sm" title="">
+            <Dropdown.Item>
+              <Button
+                block
+                variant="outline-success"
+                style={{ argin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
+                size="sm"
+              >
+                <img
+                  src="./img/icons/053-edit.png"
+                  style={{ height: "24px", marginRight: "5px" }}
+                ></img>
+                Editar
+              </Button>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Button
+                block
+                variant="outline-danger"
+                style={{ fontSize: "0.7em" }}
+                size="sm"
+                onClick={() => {
+                  handleDeleteGroup(props.group.id);
+                }}
+              >
+                <img
+                  src="./img/icons/066-erase.png"
+                  style={{ height: "24px", marginRight: "5px" }}
+                ></img>
+                Borrar
+              </Button>
+            </Dropdown.Item>
+          </DropdownButton>
+        </div>
 
         <ul style={styles.unstyledList}>
           <li>Ubicacion: {props.group.location}</li>
@@ -292,25 +329,6 @@ const GroupCard = (props) => {
           </div>
         )}
       </Card.Body>
-      <Card.Footer className="d-flex justify-content-between align-items-center">
-        <Button
-          variant="outline-success"
-          style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
-          size="sm"
-        ><img src="./img/icons/053-edit.png" style={{height:"24px", marginRight:"5px"}}></img>
-          Editar
-        </Button>
-        <Button
-          variant="outline-danger"
-          style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
-          size="sm"
-          onClick={() => {
-            handleDeleteGroup(props.group.id);
-          }}
-        ><img src="./img/icons/066-erase.png" style={{height:"24px", marginRight:"5px"}}></img>
-          Borrar
-        </Button>
-      </Card.Footer>
     </Card>
   );
 };

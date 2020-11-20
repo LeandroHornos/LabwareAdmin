@@ -20,8 +20,6 @@ import { AuthContext } from "../Auth";
 import NavigationBar from "./NavigationBar.jsx";
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
-const lang = "en";
-
 const Inventories = (props) => {
   const txt = GuiTexts.Inventories;
   const db = firebaseApp.firestore();
@@ -70,10 +68,13 @@ const Inventories = (props) => {
         >
           <NewInventoryForm
             updateCurrentInventory={props.updateCurrentInventory}
+            lang={props.lang}
           />
         </div>
         <div className="col-md-9" style={{ minHeight: "100vh" }}>
-          <h1 style={{ marginBottom: "40px" }}>{txt.title[lang] + ": "}</h1>
+          <h1 style={{ marginBottom: "40px" }}>
+            {txt.title[props.lang] + ": "}
+          </h1>
           {loading ? (
             "Cargando Inventarios..."
           ) : (
@@ -131,7 +132,7 @@ const NewInventoryForm = (props) => {
     <AccordionFormWrap title={"Nuevo Inventario"}>
       <Form>
         <FormGroup>
-          <Form.Label>{txt.name[lang] + ": "}</Form.Label>
+          <Form.Label>{txt.name[props.lang] + ": "}</Form.Label>
           <FormControl
             type="text"
             onChange={(e) => {
@@ -140,7 +141,7 @@ const NewInventoryForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>{txt.description[lang] + ": "}</Form.Label>
+          <Form.Label>{txt.description[props.lang] + ": "}</Form.Label>
           <FormControl
             as="textarea"
             rows={3}
@@ -150,7 +151,7 @@ const NewInventoryForm = (props) => {
           ></FormControl>
         </FormGroup>
         <Button onClick={() => handleCreateInventory()} variant="info" block>
-          {txt.create[lang]}
+          {txt.create[props.lang]}
         </Button>
       </Form>
     </AccordionFormWrap>

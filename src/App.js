@@ -18,6 +18,7 @@ import Item from "./Components/Item.jsx";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
+  const currentLang = "es";
   const [currentInventory, setCurrentInventory] = useState("");
   const [currentItem, setCurrentItem] = useState("");
 
@@ -35,10 +36,18 @@ const App = () => {
         <Switch>
           <Route path="/signin">
             {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
-            {currentUser ? <Redirect to="inventories" /> : <SignIn />}
+            {currentUser ? (
+              <Redirect to="inventories" />
+            ) : (
+              <SignIn lang={currentLang} />
+            )}
           </Route>
           <Route path="/signup">
-            {currentUser ? <Redirect to="inventories" /> : <SignUp />}
+            {currentUser ? (
+              <Redirect to="inventories" />
+            ) : (
+              <SignUp lang={currentLang} />
+            )}
           </Route>
           <Route path="/signout">
             <SignOut />
@@ -46,6 +55,7 @@ const App = () => {
           <Route path="/inventory">
             {currentUser ? (
               <Inventory
+                lang={currentLang}
                 inventoryId={currentInventory}
                 updateCurrentInventory={updateCurrentInventory}
                 updateCurrentItem={updateCurrentItem}
@@ -56,20 +66,23 @@ const App = () => {
           </Route>
           <Route path="/item">
             {currentUser ? (
-              <Item itemId={currentItem} />
+              <Item itemId={currentItem} lang={currentLang} />
             ) : (
               <Redirect to="/signup" />
             )}
           </Route>
           <Route path="/inventories">
             {currentUser ? (
-              <Inventories updateCurrentInventory={updateCurrentInventory} />
+              <Inventories
+                updateCurrentInventory={updateCurrentInventory}
+                lang={currentLang}
+              />
             ) : (
               <Redirect to="/signup" />
             )}
           </Route>
           <Route path="/">
-            <Welcome />
+            <Welcome lang={currentLang} />
           </Route>
         </Switch>
       </div>

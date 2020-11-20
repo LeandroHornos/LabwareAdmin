@@ -39,7 +39,14 @@ const SignOut = () => {
           >
             Salir
           </Button>
-          <a href="./wall">Volver</a>
+          <Button
+            variant="link"
+            onClick={() => {
+              history.goBack();
+            }}
+          >
+            Volver
+          </Button>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
 import Utils from "../utilities";
+import GuiTexts from "./GuiTexts.js";
 
 // Router
 import { useHistory } from "react-router-dom";
@@ -18,6 +19,8 @@ import { AuthContext } from "../Auth";
 // App components
 import NavigationBar from "./NavigationBar.jsx";
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
+
+const lang = "es";
 
 const Inventories = (props) => {
   const db = firebaseApp.firestore();
@@ -88,6 +91,7 @@ const Inventories = (props) => {
 
 const NewInventoryForm = (props) => {
   // Hooks
+  const txt = GuiTexts.NewInventoryForm;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const history = useHistory();
@@ -126,7 +130,7 @@ const NewInventoryForm = (props) => {
     <AccordionFormWrap title={"Nuevo Inventario"}>
       <Form>
         <FormGroup>
-          <Form.Label>Nombre: </Form.Label>
+          <Form.Label>{txt.name[lang] + ": "}</Form.Label>
           <FormControl
             type="text"
             onChange={(e) => {
@@ -135,7 +139,7 @@ const NewInventoryForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>Descripción: </Form.Label>
+          <Form.Label>{txt.description[lang] + ": "}</Form.Label>
           <FormControl
             as="textarea"
             rows={3}
@@ -145,7 +149,7 @@ const NewInventoryForm = (props) => {
           ></FormControl>
         </FormGroup>
         <Button onClick={() => handleCreateInventory()} variant="info" block>
-          Crear inventario
+          {txt.create[lang]}
         </Button>
       </Form>
     </AccordionFormWrap>

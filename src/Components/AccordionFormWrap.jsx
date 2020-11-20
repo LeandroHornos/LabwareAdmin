@@ -29,11 +29,11 @@ const AccordionFormWrap = (props) => {
               style={{ color: "white", fontWeight: "bold" }}
               as={Button}
               size="md"
-              variant="outline-info"
+              variant="outline-success"
               eventKey="0"
               className="rounded-pill"
             >
-              +
+              <img src="./img/icons/057-plus.png" style={{height:"20px"}}></img>
             </Accordion.Toggle>
           </span>
         </Card.Header>

@@ -1,19 +1,49 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import { useHistory } from "react-router-dom";
+
 import { Link } from "react-router-dom";
 
-
 const NavigationBar = () => {
+  const history = useHistory();
   return (
-    <Navbar className="navbar" collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
-      <Navbar.Brand>
-        <Link to="/">LabwareAdmin</Link>
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav></Nav>
-      </Navbar.Collapse>
+    <Navbar
+      className="navbar"
+      collapseOnSelect
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      fixed="top"
+    >
+      <div
+        style={{ width: "100%" }}
+        className="d-flex justify-content-between align-items-center"
+      >
+        <Navbar.Brand>
+          <img src="./img/favicon-32x32.png" style={{height:"18px", marginRight:"5px"}}></img>
+          <Link to="/" style={{ color: "rgb(100,200,250)" }}>
+            LabwareAdmin
+          </Link>
+        </Navbar.Brand>
+        <Button
+          variant="outline-success"
+          onClick={() => {
+            history.push("./signout");
+          }}
+        >
+          <img src="./img/icons/013-arrow.png" style={{height:"24px", marginRight:"5px"}}></img>
+          LogOut
+        </Button>
+        {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse
+          id="responsive-navbar-nav"
+          style={{ width: "100%", background: "red" }}
+        >
+          <Nav>
+          </Nav>
+        </Navbar.Collapse> */}
+      </div>
     </Navbar>
   );
 };

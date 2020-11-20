@@ -80,7 +80,7 @@ const Inventory = (props) => {
                 search ? setSearch(false) : setSearch(true);
               }}
             >
-              {search ? "Nuevo item" : "Buscar"}
+              {search ? ("Nuevo item") : "Buscar"}
             </Button>
           </div>
           {search

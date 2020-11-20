@@ -294,10 +294,10 @@ const GroupCard = (props) => {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-between align-items-center">
         <Button
-          variant="outline-info"
+          variant="outline-success"
           style={{ margin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
           size="sm"
-        >
+        ><img src="./img/icons/053-edit.png" style={{height:"24px", marginRight:"5px"}}></img>
           Editar
         </Button>
         <Button
@@ -307,7 +307,7 @@ const GroupCard = (props) => {
           onClick={() => {
             handleDeleteGroup(props.group.id);
           }}
-        >
+        ><img src="./img/icons/066-erase.png" style={{height:"24px", marginRight:"5px"}}></img>
           Borrar
         </Button>
       </Card.Footer>

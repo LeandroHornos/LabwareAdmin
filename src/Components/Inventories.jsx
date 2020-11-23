@@ -230,7 +230,7 @@ const groupAsPairs = (items) => {
 const invDefaultData = {
   categories: [],
   locations: [],
-  statuses: ["Active", "Stored", "Inactive", "Lent", "For repair", "Repairing"],
+  statuses: [],
 };
 
 export default Inventories;

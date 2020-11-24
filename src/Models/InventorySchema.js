@@ -4,7 +4,6 @@ const InventorySchema = {
   date: "",
   lastupdated:"",
   creatoruid: "",
-  creatoremail: "",
   roles: [],
   users: [],
   items: [],

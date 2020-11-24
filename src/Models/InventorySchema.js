@@ -6,6 +6,7 @@ const InventorySchema = {
   creatoremail: "",
   roles: [],
   users: [],
+  items: [],
   categories: [],
   locations: [],
   statuses: [],

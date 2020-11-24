@@ -36,16 +36,20 @@ import InventorySchema from "../Models/InventorySchema";
 const NewItemForm = (props) => {
   // Browsing:
   const history = useHistory();
+
   // Auth:
   const { currentUser } = useContext(AuthContext);
+
   // Data:
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
+
   // Changes:
   const [newcat, setNewCat] = useState(false); // Indica si se han creado nuevas categorías
   const [newsubcat, setNewSubcat] = useState(false); // Indica si se han creado nuevas subcategorías
+
   // Options:
   const categories = props.inventory.categories.map((cat) => cat.name);
   const [subcatlist, setSubcatlist] = useState([]);
@@ -68,14 +72,17 @@ const NewItemForm = (props) => {
     /* Determina si se han creado nuevas categorías y/o subcategorías.
     De ser así, actualiza la lista de categorías en el inventario al que
     corresponde el item */
+
     let inventory = props.inventory;
     const hasChanged = newcat || newsubcat;
+
     if (newcat) {
       inventory.categories.push({
         name: category,
         subcategories: [subcategory],
       });
     }
+
     if (!newcat && newsubcat) {
       let index = 0;
       inventory.categories.forEach((cat) => {
@@ -86,6 +93,7 @@ const NewItemForm = (props) => {
         }
       });
     }
+
     return { hasChanged, newInventory: inventory };
   };
 
@@ -97,7 +105,7 @@ const NewItemForm = (props) => {
     const db = firebaseApp.firestore();
 
     let data = {
-      ...InventorySchema,
+      ...ItemSchema,
       inventoryId: props.inventory.id,
       creationdate: new Date(),
       creatorId: currentUser.uid,
@@ -116,7 +124,7 @@ const NewItemForm = (props) => {
         },
       ],
     };
-    console.log("he aqui la data a guardar", data);
+    console.log("he aqui el item a guardar", data);
     try {
       await db
         .collection("items")
@@ -127,6 +135,8 @@ const NewItemForm = (props) => {
             docref.id
           );
           props.updateCurrentItem(docref.id);
+          history.push("./inventories");
+          history.goBack();
         });
     } catch (error) {
       console.log(error);
@@ -150,8 +160,6 @@ const NewItemForm = (props) => {
             console.log(
               "El inventario se ha actualizado con las nuevas opciones"
             );
-            history.push("./inventories");
-            history.goBack();
           });
       } catch (error) {
         console.log(error);

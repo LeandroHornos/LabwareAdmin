@@ -3,25 +3,28 @@ import React, { useState, useContext } from "react";
 // General purpose functions
 import Utils from "../utilities";
 
+// React Bootstrap:
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
-/* Firebase */
+// Firebase
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
 
 // Router
 import { useHistory } from "react-router-dom";
 
+// Components
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
-/* New Item form ------------------------------------ */
-
 const NewGroupForm = (props) => {
+  // Browsing:
   const history = useHistory();
+  //
   const { currentUser } = useContext(AuthContext);
 
+  // Data:
   const [location, setLocation] = useState("");
   const [sublocation, setSublocation] = useState("");
   const [sublocationlist, setSublocationList] = useState([]);
@@ -32,22 +35,15 @@ const NewGroupForm = (props) => {
   const [newstatus, setNewStatus] = useState(false);
   const [groupname, setGroupName] = useState("");
 
+  // Options:
   const locations = props.inventory.locations.map((loc) => loc.name);
 
-  // const cleanForm = () => {
-  //   setName("");
-  //   setDescription("");
-  //   setCategory("");
-  //   setSubcategory("");
-  //   setSubcatlist([]);
-  //   setLocation("");
-  //   setSublocation("");
-  //   setSublocationList([]);
-  //   setAmmount(0);
-  //   setStatus("");
-  // };
+  // METHODS:
 
   const updateInventory = () => {
+    /* Determina si se han creado nuevas opciones para ubicaciones y estados.
+    De ser así, actualiza las listas en el inventario al que
+    corresponde el item */
     let newInventory = props.inventory;
     const hasChanged = newlocation || newsublocation || newstatus;
 
@@ -112,14 +108,16 @@ const NewGroupForm = (props) => {
           ],
         });
       console.log("Item.jsx dice: Se ha agregado el nuevo grupo al item");
-      // AHORa TENGO QUE VER SI HAY NUEVAS OPCIONES QUE AGREGAR AL INVENTARIO Y METERLAS
-
       history.push("./inventory");
-      history.goBack();
+      history.goBack(); //
     } catch (error) {
       console.log(error);
     }
-    // Si se generaron nuevas opciones para el inventario, debo actualizar:
+    /* Si se generaron nuevas opciones para el inventario, debo actualizar. 
+    Notar que esto ocurre luego de que se refresque la GuI, pero no importa 
+    porque la actualización puede hacerse en segundo plano mientras se recarga la interfaz.
+    Se asume que el primer guardado fue exitoso, el segundo lo será también.
+ */
     const { hasChanged, newInventory } = updateInventory();
     if (hasChanged) {
       console.log(
@@ -141,6 +139,8 @@ const NewGroupForm = (props) => {
       }
     }
   };
+
+  // RENDER:
 
   return (
     <AccordionFormWrap title={"Nuevo grupo"}>

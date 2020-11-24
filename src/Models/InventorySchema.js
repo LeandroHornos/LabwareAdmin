@@ -1,6 +1,6 @@
 const InventorySchema = {
-  name,
-  description,
+  name: "",
+  description: "",
   date: "",
   lastupdated:"",
   creatoruid: "",

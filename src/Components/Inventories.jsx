@@ -12,11 +12,12 @@ import GuiTexts from "./GuiTexts.js";
 // Router
 import { useHistory } from "react-router-dom";
 
-/* Firebase */
+// Firebase
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
+import InventorySchema from "../Models/InventorySchema";
 
-// App components
+// Components
 import NavigationBar from "./NavigationBar.jsx";
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
@@ -29,7 +30,7 @@ const Inventories = (props) => {
   // hooks
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
-  const [loaded, setLoaded] = useState(true);
+  const reload = false;
 
   // methods
 
@@ -53,7 +54,7 @@ const Inventories = (props) => {
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loaded]);
+  }, [reload]);
 
   return (
     <React.Fragment>
@@ -92,23 +93,28 @@ const Inventories = (props) => {
 // SUBCOMPONENTS-------------------------------------------------------
 
 const NewInventoryForm = (props) => {
-  // Hooks
+  // Browsing:
+  const history = useHistory();
+
+  // Auth:
+  const { currentUser } = useContext(AuthContext);
+
+  // Hooks:
   const txt = GuiTexts.NewInventoryForm;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const history = useHistory();
-  const { currentUser } = useContext(AuthContext);
 
-  // Methods
+  // METHODS:
+
   const handleCreateInventory = async () => {
     const db = firebaseApp.firestore();
     const data = {
-      ...invDefaultData,
+      ...InventorySchema,
       name,
       description,
       date: new Date(),
       creatoruid: currentUser.uid,
-      creatoremail: currentUser.email,
+      lastupdated: new Date(),
       roles: [{ uid: currentUser.uid, role: "admin" }],
       users: [currentUser.uid],
     };
@@ -127,7 +133,8 @@ const NewInventoryForm = (props) => {
     }
   };
 
-  //Component
+  // RENDER:
+
   return (
     <AccordionFormWrap title={"Nuevo Inventario"}>
       <Form>

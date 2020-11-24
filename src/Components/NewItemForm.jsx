@@ -74,7 +74,6 @@ const NewItemForm = (props) => {
     corresponde el item */
 
     let inventory = props.inventory;
-    const hasChanged = newcat || newsubcat;
 
     if (newcat) {
       inventory.categories.push({
@@ -94,7 +93,7 @@ const NewItemForm = (props) => {
       });
     }
 
-    return { hasChanged, newInventory: inventory };
+    return inventory;
   };
 
   const handleCreateItem = async () => {
@@ -103,7 +102,7 @@ const NewItemForm = (props) => {
     encargada de estructurar la data en base al schema y
     comunicarse con la base de datos. */
     const db = firebaseApp.firestore();
-
+    let newInventory = updateInventory();
     let data = {
       ...ItemSchema,
       inventoryId: props.inventory.id,
@@ -126,44 +125,18 @@ const NewItemForm = (props) => {
     };
     console.log("he aqui el item a guardar", data);
     try {
+      const docref = await db.collection("items").add(data); // Guardo el nuevo item, recupero la ref de firebase
+      props.updateCurrentItem(docref.id); // Guardo el id del item en el state de App
+      newInventory.items.push(docref.id);
       await db
-        .collection("items")
-        .add(data)
-        .then((docref) => {
-          console.log(
-            "El item se guardó con éxito, aquí está su id:",
-            docref.id
-          );
-          props.updateCurrentItem(docref.id);
-          history.push("./inventories");
-          history.goBack();
-        });
+        .collection("inventories")
+        .doc(props.inventory.id)
+        .update(newInventory);
+      console.log("Se ha creado el item y se ha actualizado el inventario");
+      history.push("./inventories");
+      history.goBack();
     } catch (error) {
       console.log(error);
-    }
-    console.log("he aqui la data", data);
-
-    /* Si se han creado nuevas opciones, deben incorporarse al inventario: */
-    const { hasChanged, newInventory } = updateInventory();
-
-    if (hasChanged) {
-      console.log(
-        "El inventario ha recibido nuevas opciones, he aquí la nueva versión:",
-        newInventory
-      );
-      try {
-        await db
-          .collection("inventories")
-          .doc(props.inventory.id)
-          .update(newInventory)
-          .then(() => {
-            console.log(
-              "El inventario se ha actualizado con las nuevas opciones"
-            );
-          });
-      } catch (error) {
-        console.log(error);
-      }
     }
   };
 

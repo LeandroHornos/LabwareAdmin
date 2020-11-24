@@ -75,7 +75,10 @@ const Item = (props) => {
             />
           )}
         </div>
-        <div className="col-md-9" style={{ minHeight: "100vh" }}>
+        <div
+          className="col-md-9"
+          style={{ minHeight: "100vh" }}
+        >
           {loading ? (
             "Cargando Item..."
           ) : (

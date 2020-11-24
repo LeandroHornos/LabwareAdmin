@@ -56,6 +56,7 @@ const Inventories = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
+  // RENDER
   return (
     <React.Fragment>
       <NavigationBar />
@@ -72,7 +73,10 @@ const Inventories = (props) => {
             lang={props.lang}
           />
         </div>
-        <div className="col-md-9" style={{ minHeight: "100vh" }}>
+        <div
+          className="col-md-9"
+          style={{ minHeight: "100vh", padding: "10px 0px" }}
+        >
           <h1 style={{ marginBottom: "40px" }}>
             {txt.title[props.lang] + ": "}
           </h1>
@@ -186,7 +190,11 @@ const DinamicInventoriesWall = (props) => {
       <div className="row" key={"row-" + pair[0].id}>
         {pair.map((item) => {
           return (
-            <div className="col-lg-6" key={item.id}>
+            <div
+              className="col-lg-6"
+              key={item.id}
+              style={{ marginBottom: "20px" }}
+            >
               <Card className="item-card">
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body className="d-flex flex-column justify-content-between align-items-left">

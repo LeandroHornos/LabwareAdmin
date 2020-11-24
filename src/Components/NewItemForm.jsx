@@ -34,17 +34,23 @@ import InventorySchema from "../Models/InventorySchema";
 /* New Item form ------------------------------------ */
 
 const NewItemForm = (props) => {
+  // Browsing:
   const history = useHistory();
+  // Auth:
   const { currentUser } = useContext(AuthContext);
+  // Data:
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [newcat, setNewCat] = useState(false);
-  const [newsubcat, setNewSubcat] = useState(false);
-  const [subcatlist, setSubcatlist] = useState([]);
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
-
+  // Changes:
+  const [newcat, setNewCat] = useState(false); // Indica si se han creado nuevas categorías
+  const [newsubcat, setNewSubcat] = useState(false); // Indica si se han creado nuevas subcategorías
+  // Options:
   const categories = props.inventory.categories.map((cat) => cat.name);
+  const [subcatlist, setSubcatlist] = useState([]);
+
+  // METHODS:
 
   const listSubcats = (name, catArray) => {
     /* Lista las subcategorías correspondientes 
@@ -152,6 +158,8 @@ const NewItemForm = (props) => {
       }
     }
   };
+
+  // RENDER:
 
   return (
     <AccordionFormWrap title={"Nuevo item"}>

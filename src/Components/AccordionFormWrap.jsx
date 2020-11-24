@@ -6,10 +6,15 @@ import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 
 const AccordionFormWrap = (props) => {
+  const [activeKey, setActiveKey] = useState(props.defaultActiveKey);
+
+  useEffect(() => {
+    setActiveKey(props.defaultActiveKey);
+  }, [props]);
 
   return (
     <Accordion
-      defaultActiveKey={props.defaultActiveKey}
+      activeKey={activeKey}
       className="accordion-form-container"
       style={{ backgroundColor: "none" }}
     >
@@ -27,19 +32,20 @@ const AccordionFormWrap = (props) => {
         >
           <h3 className="d-inline">{props.title}</h3>
           <span>
-            <Accordion.Toggle
+            <Button
               style={{ color: "white", fontWeight: "bold" }}
-              as={Button}
               size="md"
               variant="outline-success"
-              eventKey="0"
               className="rounded-pill"
+              onClick={() => {
+                setActiveKey(activeKey === "0" ? "1" : "0");
+              }}
             >
               <img
                 src="./img/icons/057-plus.png"
                 style={{ height: "20px" }}
               ></img>
-            </Accordion.Toggle>
+            </Button>
           </span>
         </Card.Header>
         <Accordion.Collapse eventKey="0">

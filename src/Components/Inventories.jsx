@@ -5,6 +5,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 import Utils from "../utilities";
 import GuiTexts from "./GuiTexts.js";
@@ -29,7 +31,9 @@ const Inventories = (props) => {
 
   // hooks
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]); // Almacena los inventarios
+  const [editMode, setEditMode] = useState(false); // Determina el comportamiento de NewInventoryForm
+  const [selectedInventoryData, setSelectedInventoryData] = useState({});
   const reload = false;
 
   // methods
@@ -68,10 +72,14 @@ const Inventories = (props) => {
             backgroundImage: "url(./img/wavecut.png)",
           }}
         >
-          <NewInventoryForm
-            updateCurrentInventory={props.updateCurrentInventory}
-            lang={props.lang}
-          />
+          {!loading && (
+            <NewInventoryForm
+              updateCurrentInventory={props.updateCurrentInventory}
+              editMode={editMode}
+              lang={props.lang}
+              inventory={selectedInventoryData}
+            />
+          )}
         </div>
         <div
           className="col-md-9"
@@ -86,6 +94,8 @@ const Inventories = (props) => {
             <DinamicInventoriesWall
               items={items}
               updateCurrentInventory={props.updateCurrentInventory}
+              setSelectedInventoryData={setSelectedInventoryData}
+              setEditMode={setEditMode}
             />
           )}
         </div>
@@ -107,6 +117,24 @@ const NewInventoryForm = (props) => {
   const txt = GuiTexts.NewInventoryForm;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [defaultKey, setDefaultKey] = useState("1");
+
+  useEffect(() => {
+    console.log(
+      "NewInventoryForm dice: este es props.inventory",
+      props.inventory
+    );
+    if (props.editMode) {
+      console.log("entrando a editMode");
+      //Si estoy en modo edit, cargo el inventario en el form:
+      setDefaultKey("0");
+      setName(props.inventory.name);
+      setDescription(props.inventory.description);
+    } else {
+      setName("");
+      setDescription("");
+    }
+  });
 
   // METHODS:
 
@@ -140,12 +168,13 @@ const NewInventoryForm = (props) => {
   // RENDER:
 
   return (
-    <AccordionFormWrap title={"Nuevo Inventario"}>
+    <AccordionFormWrap title={"Nuevo Inventario"} defaultActiveKey={defaultKey}>
       <Form>
         <FormGroup>
           <Form.Label>{txt.name[props.lang] + ": "}</Form.Label>
           <FormControl
             type="text"
+            value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
@@ -154,6 +183,7 @@ const NewInventoryForm = (props) => {
         <FormGroup>
           <Form.Label>{txt.description[props.lang] + ": "}</Form.Label>
           <FormControl
+            value={description}
             as="textarea"
             rows={3}
             onChange={(e) => {
@@ -177,12 +207,19 @@ las columnas se ubican una debajo de la otra quedando una tira de tarjetas.
 const DinamicInventoriesWall = (props) => {
   // data
   const pairs = groupAsPairs(props.items);
+
   // hooks
   const history = useHistory();
+
   // methods
   const HandleOpenInventory = (inventoryId) => {
     props.updateCurrentInventory(inventoryId);
     history.push("./inventory");
+  };
+
+  const HandleEditInventory = (inventoryData) => {
+    props.setEditMode(true);
+    props.setSelectedInventoryData(inventoryData);
   };
 
   return pairs.map((pair) => {
@@ -199,6 +236,44 @@ const DinamicInventoriesWall = (props) => {
                 <Card.Header className="item-card-header"></Card.Header>
                 <Card.Body className="d-flex flex-column justify-content-between align-items-left">
                   <Card.Title>{item.name}</Card.Title>
+                  <DropdownButton variant="outline-success" size="sm" title="">
+                    <Dropdown.Item>
+                      <Button
+                        block
+                        variant="outline-success"
+                        style={{
+                          argin: "0px 4px",
+                          padding: "4px",
+                          fontSize: "0.7em",
+                        }}
+                        size="sm"
+                        onClick={() => {
+                          console.log("vamos a editar el siguiente item", item);
+                          HandleEditInventory(item);
+                        }}
+                      >
+                        <img
+                          src="./img/icons/053-edit.png"
+                          style={{ height: "24px", marginRight: "5px" }}
+                        ></img>
+                        Editar
+                      </Button>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Button
+                        block
+                        variant="outline-danger"
+                        style={{ fontSize: "0.7em" }}
+                        size="sm"
+                      >
+                        <img
+                          src="./img/icons/066-erase.png"
+                          style={{ height: "24px", marginRight: "5px" }}
+                        ></img>
+                        Borrar
+                      </Button>
+                    </Dropdown.Item>
+                  </DropdownButton>
                   <Card.Text>
                     {Utils.getTextPreview(item.description, 140)}
                   </Card.Text>
@@ -240,12 +315,6 @@ const groupAsPairs = (items) => {
     pairs.push(pair);
   }
   return pairs;
-};
-
-const invDefaultData = {
-  categories: [],
-  locations: [],
-  statuses: [],
 };
 
 export default Inventories;

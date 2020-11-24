@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // Bootstrap components
 import Button from "react-bootstrap/Button";
@@ -6,10 +6,12 @@ import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 
 const AccordionFormWrap = (props) => {
+
   return (
     <Accordion
+      defaultActiveKey={props.defaultActiveKey}
       className="accordion-form-container"
-      style={{ backgroundColor: "none"}}
+      style={{ backgroundColor: "none" }}
     >
       <Card
         style={{
@@ -33,7 +35,10 @@ const AccordionFormWrap = (props) => {
               eventKey="0"
               className="rounded-pill"
             >
-              <img src="./img/icons/057-plus.png" style={{height:"20px"}}></img>
+              <img
+                src="./img/icons/057-plus.png"
+                style={{ height: "20px" }}
+              ></img>
             </Accordion.Toggle>
           </span>
         </Card.Header>

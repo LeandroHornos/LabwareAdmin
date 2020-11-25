@@ -10,7 +10,7 @@ const AccordionFormWrap = (props) => {
 
   useEffect(() => {
     setActiveKey(props.defaultActiveKey);
-  }, [props]);
+  },[props.defaultActiveKey]);
 
   return (
     <Accordion

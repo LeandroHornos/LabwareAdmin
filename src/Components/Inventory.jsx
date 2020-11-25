@@ -9,7 +9,7 @@ import firebaseApp from "../firebaseApp";
 // import { AuthContext } from "../Auth";
 
 import NavigationBar from "./NavigationBar.jsx";
-import NewItemForm from "./NewItemForm.jsx";
+import ItemForm from "./ItemForm.jsx";
 import ItemsWall from "./ItemsWall.jsx";
 
 /* Inventory ----------------------------------------- */
@@ -84,7 +84,7 @@ const Inventory = (props) => {
           {search
             ? !loading && <SearchItemForm inventory={inventory} />
             : !loading && (
-                <NewItemForm
+                <ItemForm
                   inventory={inventory}
                   setReload={setReload}
                   updateCurrentItem={props.updateCurrentItem}

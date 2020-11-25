@@ -6,7 +6,7 @@ const GuiTexts = {
     description: { es: "Descripción", en: "Description" },
     create: { es: "Crear inventario", en: "Create inventory" },
   },
-  NewItemForm: {
+  ItemForm: {
     newItemTitle: { es: "Nuevo item", en: "New Item" },
     name: { es: "Nombre", en: "Name" },
     cancel: { es: "Cancelar", en: "Cancel" },

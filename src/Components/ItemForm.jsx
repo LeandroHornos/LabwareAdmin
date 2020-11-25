@@ -1,5 +1,5 @@
 /* 
-NewItemForm:
+ItemForm:
 ************ 
 Este es el formulario para la creación de un nuevo item. 
 Durante el proceso se introduce la información que describe al objeto de
@@ -35,8 +35,8 @@ import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
 /* New Item form ------------------------------------ */
 
-const NewItemForm = (props) => {
-  const txt = GuiTexts.NewItemForm;
+const ItemForm = (props) => {
+  const txt = GuiTexts.ItemForm;
   // Browsing:
   const history = useHistory();
 
@@ -275,4 +275,4 @@ const NewItemForm = (props) => {
   );
 };
 
-export default NewItemForm;
+export default ItemForm;

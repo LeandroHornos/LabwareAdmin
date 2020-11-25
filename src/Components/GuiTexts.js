@@ -1,6 +1,6 @@
 const GuiTexts = {
   Inventories: { title: { es: "Mis inventarios", en: "My inventories" } },
-  NewInventoryForm: {
+  InventoryForm: {
     newInventoryTitle: { es: "Nuevo Inventario", en: "New Inventory" },
     name: { es: "Nombre", en: "Name" },
     description: { es: "Descripción", en: "Description" },

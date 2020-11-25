@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 // General purpose functions
 import Utils from "../utilities";
@@ -37,6 +37,32 @@ const GroupForm = (props) => {
 
   // Options:
   const locations = props.inventory.locations.map((loc) => loc.name);
+
+  useEffect(() => {
+    /* Selecciona el modo. Si hay que editar un grupo
+    existente que se recibe por props, se actualiza el estado
+    con dicha info para mostrarla en los inputs. Caso contrario se
+    muestran las entradas en blanco. */
+    if (props.editMode) {
+      // Setear la info de props en el state
+      setGroupName(props.group.groupname);
+      setLocation(props.group.location);
+      setSublocationList(
+        // En base a la ubicación seleccinada muestro las posibles sub-ubicaciones
+        listSublocations(props.group.location, props.inventory.locations)
+      );
+      setSublocation(props.group.sublocation); // Teniendo la lista de sub-ubicaciones selecciono la del grupo
+      setAmmount(props.group.ammount);
+      setStatus(props.group.status);
+    } else {
+      setGroupName("");
+      setLocation("");
+      setSublocationList([])
+      setSublocation("");
+      setAmmount(0);
+      setStatus("");
+    }
+  }, [props.editMode]);
 
   // METHODS:
 
@@ -153,6 +179,7 @@ const GroupForm = (props) => {
             Elije un nombre para identificar al grupo
           </Form.Text>
           <FormControl
+            value={groupname}
             placeholder="Ej: Marca Acme"
             type="text"
             onChange={(e) => {
@@ -164,7 +191,7 @@ const GroupForm = (props) => {
         {/* --- LOCATION ------------------------------------------------------- */}
 
         <FormGroup>
-          <Form.Label>Location: </Form.Label>
+          <Form.Label>Ubicación: </Form.Label>
           {/* SELECT LOCATION */}
           {!newlocation && (
             <Form.Control
@@ -191,6 +218,7 @@ const GroupForm = (props) => {
           {/* NEW LOCATION INPUT */}
           {newlocation && (
             <FormControl
+              value={location}
               placeholder="Ej: Armario C"
               style={{ marginTop: "10px" }}
               type="text"

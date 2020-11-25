@@ -32,6 +32,9 @@ const Item = (props) => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState({});
   const [inventory, setInventory] = useState({});
+  const [editGroup, setEditGroup] = useState(false); // Determina el comportamiento de GroupForm
+  const [selectedGroupData, setSelectedGroupData] = useState({})
+
   const [loaded, setLoaded] = useState(true);
 
   // methods
@@ -72,13 +75,12 @@ const Item = (props) => {
               item={item}
               inventory={inventory}
               setLoading={setLoading}
+              editMode={editGroup}
+              group={selectedGroupData}
             />
           )}
         </div>
-        <div
-          className="col-md-9"
-          style={{ minHeight: "100vh" }}
-        >
+        <div className="col-md-9" style={{ minHeight: "100vh" }}>
           {loading ? (
             "Cargando Item..."
           ) : (
@@ -102,6 +104,9 @@ const Item = (props) => {
                 inventory={inventory}
                 changelog={item.changelog}
                 setLoading={setLoading}
+                setEditGroup={setEditGroup} // Permite indicar al form que se desea editar un grupo
+                setSelectedGroupData={setSelectedGroupData} // Cargar en state de <Item/> el grupo a editar
+
               />
             </div>
           )}
@@ -146,6 +151,8 @@ const GroupCards = (props) => {
                 filterGroups={filterGroups}
                 changelog={props.changelog}
                 setLoading={props.setLoading}
+                setEditGroup={props.setEditGroup}
+                setSelectedGroupData={props.setSelectedGroupData}
               />
             </div>
           );
@@ -200,6 +207,12 @@ const GroupCard = (props) => {
     }
   };
 
+  const handleEditGroup = (group) => {
+    console.log("este es el grupo a editar", group)
+    props.setEditGroup(true);
+    props.setSelectedGroupData(group);
+  }
+
   const handleDeleteGroup = async (groupId) => {
     /* Elimina el grupo seleccionado
      */
@@ -245,6 +258,13 @@ const GroupCard = (props) => {
             <Dropdown.Item>
               <Button
                 block
+                onClick={() => {
+                  console.log(
+                    "vamos a editar el siguiente item",
+                    props.group
+                  );
+                  handleEditGroup(props.group);
+                }}
                 variant="outline-success"
                 style={{ argin: "0px 4px", padding: "4px", fontSize: "0.7em" }}
                 size="sm"

@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
 // Bootstrap components
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
-
-import Utils from "../utilities";
 import GuiTexts from "./GuiTexts.js";
-
-// Router
-import { useHistory } from "react-router-dom";
 
 // Firebase
 import firebaseApp from "../firebaseApp";

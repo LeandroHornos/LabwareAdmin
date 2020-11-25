@@ -21,7 +21,7 @@ import { AuthContext } from "../Auth";
 
 // App components
 import NavigationBar from "./NavigationBar.jsx";
-import NewGroupForm from "./NewGroupForm.jsx";
+import GroupForm from "./GroupForm.jsx";
 
 const Item = (props) => {
   const db = firebaseApp.firestore();
@@ -68,7 +68,7 @@ const Item = (props) => {
           style={{ backgroundImage: "url(./img/wavecut.png)" }}
         >
           {!loading && (
-            <NewGroupForm
+            <GroupForm
               item={item}
               inventory={inventory}
               setLoading={setLoading}
@@ -128,7 +128,7 @@ const GroupCards = (props) => {
     });
     return groups;
   };
-  const triplets = groupAsTriplets(props.groups);
+  const triplets = Utils.groupAsTriplets(props.groups);
   return triplets.map((triplet) => {
     return (
       <div className="row" key={Utils.makeid(8)}>
@@ -334,30 +334,6 @@ const GroupCard = (props) => {
       </Card.Body>
     </Card>
   );
-};
-
-const groupAsTriplets = (items) => {
-  // Create a 2D array where every element is an array of 3 items.
-  // It can be used to make rows with 3 items each.
-
-  let triplets = [];
-  let triplet = [];
-  let count = 0;
-  items.forEach((item) => {
-    if (count < 2) {
-      triplet.push(item);
-      count++;
-    } else {
-      triplet.push(item);
-      triplets.push(triplet);
-      triplet = [];
-      count = 0;
-    }
-  });
-  if (triplet.length > 0) {
-    triplets.push(triplet);
-  }
-  return triplets;
 };
 
 const styles = {

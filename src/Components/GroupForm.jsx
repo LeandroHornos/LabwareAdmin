@@ -18,7 +18,7 @@ import { useHistory } from "react-router-dom";
 // Components
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
-const NewGroupForm = (props) => {
+const GroupForm = (props) => {
   // Browsing:
   const history = useHistory();
   //
@@ -332,4 +332,4 @@ const NewGroupForm = (props) => {
   );
 };
 
-export default NewGroupForm;
+export default GroupForm;

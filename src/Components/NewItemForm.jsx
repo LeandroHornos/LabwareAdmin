@@ -20,6 +20,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
+import GuiTexts from "./GuiTexts.js";
+
 /* Firebase */
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
@@ -29,11 +31,12 @@ import ItemSchema from "../Models/ItemSchema";
 import { useHistory } from "react-router-dom";
 
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
-import InventorySchema from "../Models/InventorySchema";
+// import InventorySchema from "../Models/InventorySchema";
 
 /* New Item form ------------------------------------ */
 
 const NewItemForm = (props) => {
+  const txt = GuiTexts.NewItemForm;
   // Browsing:
   const history = useHistory();
 
@@ -143,10 +146,10 @@ const NewItemForm = (props) => {
   // RENDER:
 
   return (
-    <AccordionFormWrap title={"Nuevo item"}>
+    <AccordionFormWrap title={txt.newItemTitle[props.lang]}>
       <Form>
         <FormGroup>
-          <Form.Label>Nombre: </Form.Label>
+          <Form.Label>{txt.name[props.lang] + ": "} </Form.Label>
           <FormControl
             type="text"
             onChange={(e) => {
@@ -155,7 +158,7 @@ const NewItemForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>Descripción: </Form.Label>
+          <Form.Label>{txt.description[props.lang] + ": "}</Form.Label>
           <FormControl
             as="textarea"
             rows={3}
@@ -166,7 +169,7 @@ const NewItemForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>Categoria: </Form.Label>
+          <Form.Label>{txt.category[props.lang] + ": "}</Form.Label>
           {/* Si no voy a generar una nueva categoría muestro un menu 
           select con las opciones que tengo en el inventario, 
           caso contrario muestro un input */}
@@ -182,7 +185,9 @@ const NewItemForm = (props) => {
                 );
               }}
             >
-              <option value={""}>Elije una categoría</option>
+              <option value={""}>
+                {txt.catOptionMessage[props.lang] + ": "}
+              </option>
               {categories.map((cat) => {
                 return (
                   <option key={cat.index + "-" + cat} value={cat}>
@@ -195,7 +200,6 @@ const NewItemForm = (props) => {
 
           {newcat && (
             <FormControl
-              placeholder="Nombre de la categoría"
               style={{ marginTop: "10px" }}
               type="text"
               onChange={(e) => {
@@ -213,10 +217,10 @@ const NewItemForm = (props) => {
             newcat ? setNewCat(false) : setNewCat(true);
           }}
         >
-          {newcat ? "Cancelar" : "Nueva"}
+          {newcat ? txt.cancel[props.lang] : txt.new[props.lang]}
         </Button>
         <FormGroup>
-          <Form.Label>Subcategoria: </Form.Label>
+          <Form.Label>{txt.subcategory[props.lang] + ": "}</Form.Label>
 
           {!newcat && !newsubcat && (
             <Form.Control
@@ -226,7 +230,9 @@ const NewItemForm = (props) => {
                 setSubcategory(e.target.value);
               }}
             >
-              <option value={""}>Elije una subcategoría</option>
+              <option value={""}>
+                {txt.subcatOptionMessage[props.lang] + ": "}
+              </option>
               {subcatlist.map((subcat) => {
                 return (
                   <option key={subcat.index + "-" + subcat} value={subcat}>
@@ -239,7 +245,6 @@ const NewItemForm = (props) => {
 
           {(newcat || newsubcat) && (
             <FormControl
-              placeholder="Nombre de la subcategoría"
               value={subcategory}
               style={{ marginTop: "10px" }}
               type="text"
@@ -259,11 +264,11 @@ const NewItemForm = (props) => {
               newsubcat ? setNewSubcat(false) : setNewSubcat(true);
             }}
           >
-            {newsubcat ? "Cancelar" : "Nueva"}
+            {newsubcat ? txt.cancel[props.lang] : txt.new[props.lang]}
           </Button>
         )}
         <Button variant="info" block onClick={() => handleCreateItem()}>
-          Agregar item
+          {txt.createItemBtn[props.lang]}
         </Button>
       </Form>
     </AccordionFormWrap>

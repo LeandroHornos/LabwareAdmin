@@ -1,3 +1,8 @@
+/* AccordionFormWrap es un acordeon q de un sólo elemento que envuelve a un formulario
+en una tarjeta colapsable. Al  Atener una sola tarjeta, sólo hay dos posibilidades:
+que esté activa la única tarjeta existente, o nada. Recibe por props el valor
+de la tarjeta activa para permitir colapsar y descolapsar desde el componente
+padre.  */
 import React, { useState, useEffect } from "react";
 
 // Bootstrap components
@@ -6,11 +11,20 @@ import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 
 const AccordionFormWrap = (props) => {
+  // STATE:
   const [activeKey, setActiveKey] = useState(props.defaultActiveKey);
+  // METHODS:
 
   useEffect(() => {
+    /* Actualiza el elemento del acordeón que se encuentra activo 
+    cuando cambian las props.
+    Dado que el acordeón tiene un solo elemento, un valor de cero 
+    hace que se muestre el contenido, mientras que cualquier otro
+    número mantiene colapsada la tarjeta */
     setActiveKey(props.defaultActiveKey);
-  },[props.defaultActiveKey]);
+  }, [props.defaultActiveKey]);
+
+  // RENDER:
 
   return (
     <Accordion
@@ -32,6 +46,7 @@ const AccordionFormWrap = (props) => {
         >
           <h3 className="d-inline">{props.title}</h3>
           <span>
+            {/* Toggle Collapse: */}
             <Button
               style={{ color: "white", fontWeight: "bold" }}
               size="md"

@@ -4,8 +4,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
-
-
 /* Firebase */
 import firebaseApp from "../firebaseApp";
 // import { AuthContext } from "../Auth";
@@ -80,7 +78,7 @@ const Inventory = (props) => {
                 search ? setSearch(false) : setSearch(true);
               }}
             >
-              {search ? ("Nuevo item") : "Buscar"}
+              {search ? "Nuevo item" : "Buscar"}
             </Button>
           </div>
           {search
@@ -90,6 +88,7 @@ const Inventory = (props) => {
                   inventory={inventory}
                   setReload={setReload}
                   updateCurrentItem={props.updateCurrentItem}
+                  lang={props.lang}
                 />
               )}
         </div>

@@ -24,12 +24,15 @@ import NavigationBar from "./NavigationBar.jsx";
 import AccordionFormWrap from "./AccordionFormWrap.jsx";
 
 const Inventories = (props) => {
-  const txt = GuiTexts.Inventories;
+  const txt = GuiTexts.Inventories; // Da el texto correspondiente al idioma seleccinado
+  // Firebase: 
   const db = firebaseApp.firestore();
   const ref = db.collection("inventories");
+
+  // Auth:
   const { currentUser } = useContext(AuthContext);
 
-  // hooks
+  // STATE:
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(true);
   const [items, setItems] = useState([]); // Almacena los inventarios
@@ -37,7 +40,7 @@ const Inventories = (props) => {
   const [selectedInventoryData, setSelectedInventoryData] = useState({});
   const reload = false;
 
-  // methods
+  // METHODS:
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,11 +97,11 @@ const Inventories = (props) => {
             "Cargando Inventarios..."
           ) : (
             <DinamicInventoriesWall
-              items={items}
-              updateCurrentInventory={props.updateCurrentInventory}
-              setSelectedInventoryData={setSelectedInventoryData}
-              setEditMode={setEditMode}
-              setFormLoading={setFormLoading}
+              items={items} // Contenido para mostrar en las  tarjetas
+              updateCurrentInventory={props.updateCurrentInventory} // Setear en state de <App/> el id del inventario activo 
+              setSelectedInventoryData={setSelectedInventoryData} // Cargar en state de <Inventories/> el inventario a editar
+              setEditMode={setEditMode} // Setear en state de <Inventories/> el modo del formulario (Nuevo/Editar)
+              setFormLoading={setFormLoading} // Setear en state de <Inventories/> mostrar/ocultar el formularion de Nuevo/Editar
             />
           )}
         </div>
@@ -170,7 +173,7 @@ const NewInventoryForm = (props) => {
 
   return (
     <AccordionFormWrap
-      title={"Nuevo Inventario"}
+      title={txt.newInventoryTitle[props.lang]}
       defaultActiveKey={props.editMode ? "0" : "1"}
     >
       <Form>

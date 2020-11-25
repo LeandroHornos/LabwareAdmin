@@ -25,16 +25,21 @@ const InventoryForm = (props) => {
   // Auth:
   const { currentUser } = useContext(AuthContext);
 
-  // Hooks:
+  // Gui:
   const txt = GuiTexts.InventoryForm;
+
+  // STATE:
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
+  // LIFE CICLE:
+
   useEffect(() => {
-    console.log("InventoryForm dice: este es props.inventory", props.inventory);
+     /* Selecciona el modo. Si hay que editar un inventario
+     existente que se recibe por props, se actualiza el estado
+     con dicha info para mostrarla en los inputs. Caso contrario se
+     muestran las entradas en blanco. */
     if (props.editMode) {
-      console.log("entrando a editMode");
-      //Si estoy en modo edit, cargo el inventario en el form:
       setName(props.inventory.name);
       setDescription(props.inventory.description);
     } else {
@@ -46,7 +51,9 @@ const InventoryForm = (props) => {
   // METHODS:
 
   const handleCreateInventory = async () => {
+
     const db = firebaseApp.firestore();
+    
     const data = {
       ...InventorySchema,
       name,

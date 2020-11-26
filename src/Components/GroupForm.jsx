@@ -62,7 +62,7 @@ const GroupForm = (props) => {
       setAmmount(0);
       setStatus("");
     }
-  }, [props.editMode]);
+  }, [props]);
 
   // METHODS:
 

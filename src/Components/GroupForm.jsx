@@ -57,7 +57,7 @@ const GroupForm = (props) => {
     } else {
       setGroupName("");
       setLocation("");
-      setSublocationList([])
+      setSublocationList([]);
       setSublocation("");
       setAmmount(0);
       setStatus("");
@@ -169,7 +169,10 @@ const GroupForm = (props) => {
   // RENDER:
 
   return (
-    <AccordionFormWrap title={"Nuevo grupo"}>
+    <AccordionFormWrap
+      title={"Nuevo grupo"}
+      defaultActiveKey={props.editMode ? "0" : "1"}
+    >
       <Form>
         {/* --- NAME ------------------------------------------------------- */}
 

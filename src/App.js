@@ -35,6 +35,9 @@ const App = () => {
     <Router>
       <div className="main-container">
         <Switch>
+          <Route path="/error">
+            <ErrorPage />
+          </Route>
           <Route path="/signin">
             {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
             {currentUser ? (
@@ -82,9 +85,7 @@ const App = () => {
               <Redirect to="/error" />
             )}
           </Route>
-          <Route path="/error">
-             <ErrorPage />
-          </Route>
+
           <Route path="/">
             <Welcome lang={currentLang} />
           </Route>

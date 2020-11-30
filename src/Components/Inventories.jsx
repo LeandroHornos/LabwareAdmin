@@ -7,6 +7,8 @@ import GuiTexts from "./GuiTexts.js";
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
 
+import { useHistory } from "react-router-dom";
+
 // Components
 import NavigationBar from "./NavigationBar.jsx";
 import InventoryForm from "./InventoryForm.jsx";
@@ -20,6 +22,7 @@ const Inventories = (props) => {
 
   // Auth:
   const { currentUser } = useContext(AuthContext);
+  const history = useHistory();
 
   // STATE:
   const [loading, setLoading] = useState(true);
@@ -33,6 +36,7 @@ const Inventories = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         await ref
           .where("users", "array-contains", currentUser.uid)
@@ -47,6 +51,8 @@ const Inventories = (props) => {
           });
       } catch (error) {
         console.log(error);
+        history.push("/error")
+
       }
     };
 

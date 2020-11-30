@@ -15,6 +15,7 @@ import SignOut from "./Components/SignOut.jsx";
 import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
 import Item from "./Components/Item.jsx";
+import ErrorPage from "./Components/ErrorPage.jsx";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -61,14 +62,14 @@ const App = () => {
                 updateCurrentItem={updateCurrentItem}
               />
             ) : (
-              <Redirect to="/signup" />
+              <Redirect to="/error" />
             )}
           </Route>
           <Route path="/item">
             {currentUser ? (
               <Item itemId={currentItem} lang={currentLang} />
             ) : (
-              <Redirect to="/signup" />
+              <Redirect to="/error" />
             )}
           </Route>
           <Route path="/inventories">
@@ -78,8 +79,11 @@ const App = () => {
                 lang={currentLang}
               />
             ) : (
-              <Redirect to="/signup" />
+              <Redirect to="/error" />
             )}
+          </Route>
+          <Route path="/error">
+             <ErrorPage />
           </Route>
           <Route path="/">
             <Welcome lang={currentLang} />

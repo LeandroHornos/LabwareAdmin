@@ -37,6 +37,8 @@ const Item = (props) => {
 
   const [loaded, setLoaded] = useState(true);
 
+  const history = useHistory()
+
   // methods
   const fetchData = async () => {
     try {
@@ -108,6 +110,9 @@ const Item = (props) => {
                 setSelectedGroupData={setSelectedGroupData} // Cargar en state de <Item/> el grupo a editar
 
               />
+              <Button onClick={() => {
+                history.push("/error")
+              }}>Ver error</Button>
             </div>
           )}
         </div>

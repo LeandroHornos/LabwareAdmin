@@ -35,9 +35,10 @@ const App = () => {
     <Router>
       <div className="main-container">
         <Switch>
-          <Route path="/error">
+          {/* <Route path="/error">
             <ErrorPage />
-          </Route>
+          </Route> */}
+          <Route exact path="/error" component={ErrorPage} />
           <Route path="/signin">
             {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
             {currentUser ? (
@@ -65,14 +66,14 @@ const App = () => {
                 updateCurrentItem={updateCurrentItem}
               />
             ) : (
-              <Redirect to="/error" />
+              <Redirect to="/" />
             )}
           </Route>
           <Route path="/item">
             {currentUser ? (
               <Item itemId={currentItem} lang={currentLang} />
             ) : (
-              <Redirect to="/error" />
+              <Redirect to="/" />
             )}
           </Route>
           <Route path="/inventories">

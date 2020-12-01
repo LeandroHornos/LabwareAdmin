@@ -39,7 +39,7 @@ const App = () => {
           <Route exact path="/signin">
             {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
             {currentUser ? (
-              <Redirect to="/error" />
+              <Redirect to="/inventories" />
             ) : (
               <SignIn lang={currentLang} />
             )}

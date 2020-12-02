@@ -16,6 +16,7 @@ import Inventory from "./Components/Inventory.jsx";
 import Inventories from "./Components/Inventories.jsx";
 import Item from "./Components/Item.jsx";
 import ErrorPage from "./Components/ErrorPage.jsx";
+import ScrollToTop from "./Components/ScrollToTop.jsx";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -34,6 +35,7 @@ const App = () => {
   return (
     <Router>
       <div className="main-container">
+        <ScrollToTop />
         <Switch>
           <Route exact path="/error" component={ErrorPage} />
           <Route exact path="/signin">

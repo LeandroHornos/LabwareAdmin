@@ -60,6 +60,10 @@ const Inventories = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [editMode]);
+
   // RENDER
   return (
     <React.Fragment>

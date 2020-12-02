@@ -136,6 +136,7 @@ const GroupForm = (props) => {
       console.log("Item.jsx dice: Se ha agregado el nuevo grupo al item");
       history.push("./inventory");
       history.goBack(); //
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
     }

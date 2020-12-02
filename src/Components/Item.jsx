@@ -32,7 +32,7 @@ const Item = (props) => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState({});
   const [inventory, setInventory] = useState({});
-  const [editGroup, setEditGroup] = useState(false); // Determina el comportamiento de GroupForm
+  const [editMode, setEditGroup] = useState(false); // Determina el comportamiento de GroupForm
   const [selectedGroupData, setSelectedGroupData] = useState({})
 
   const [loaded, setLoaded] = useState(true);
@@ -64,6 +64,10 @@ const Item = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [editMode]);
+
   return (
     <React.Fragment>
       <NavigationBar />
@@ -77,7 +81,7 @@ const Item = (props) => {
               item={item}
               inventory={inventory}
               setLoading={setLoading}
-              editMode={editGroup}
+              editMode={editMode}
               group={selectedGroupData}
             />
           )}

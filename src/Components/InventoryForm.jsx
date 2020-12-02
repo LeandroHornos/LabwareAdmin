@@ -35,7 +35,7 @@ const InventoryForm = (props) => {
   // LIFE CICLE:
 
   useEffect(() => {
-     /* Selecciona el modo. Si hay que editar un inventario
+    /* Selecciona el modo. Si hay que editar un inventario
      existente que se recibe por props, se actualiza el estado
      con dicha info para mostrarla en los inputs. Caso contrario se
      muestran las entradas en blanco. */
@@ -51,9 +51,8 @@ const InventoryForm = (props) => {
   // METHODS:
 
   const handleCreateInventory = async () => {
-
     const db = firebaseApp.firestore();
-    
+
     const data = {
       ...InventorySchema,
       name,
@@ -74,6 +73,7 @@ const InventoryForm = (props) => {
           props.updateCurrentInventory(docref.id);
         });
       history.push("./inventory");
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
     }

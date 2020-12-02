@@ -138,6 +138,7 @@ const ItemForm = (props) => {
       console.log("Se ha creado el item y se ha actualizado el inventario");
       history.push("./inventories");
       history.goBack();
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
     }
@@ -157,6 +158,7 @@ const ItemForm = (props) => {
         listSubcats(props.item.category, props.inventory.categories)
       );
       setSubcategory(props.item.subcategory);
+      window.scrollTo(0, 0);
     } else {
       setName("");
       setDescription("");

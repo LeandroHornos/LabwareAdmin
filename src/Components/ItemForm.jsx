@@ -14,7 +14,7 @@ subcategoría. Todas las categorías deben tener al menos una subcategoría. Que
 a criterio del usuario como clasificar las categorías de los items.
 */
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -152,6 +152,10 @@ const ItemForm = (props) => {
       setName(props.item.name);
       setDescription(props.item.description);
       setCategory(props.item.category);
+      setSubcatlist(
+        // En base a la ubicación seleccinada muestro las posibles sub-ubicaciones
+        listSubcats(props.item.category, props.inventory.categories)
+      );
       setSubcategory(props.item.subcategory);
     } else {
       setName("");
@@ -172,6 +176,7 @@ const ItemForm = (props) => {
         <FormGroup>
           <Form.Label>{txt.name[props.lang] + ": "} </Form.Label>
           <FormControl
+            value={name}
             type="text"
             onChange={(e) => {
               setName(e.target.value);

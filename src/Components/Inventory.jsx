@@ -21,7 +21,7 @@ const Inventory = (props) => {
   const [items, setItems] = useState([]); // Contiene los items a mostrarse en el muro de items
   const [search, setSearch] = useState(true); // Indica si mostrar la búsqueda o el formulario
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
-  const [selectedItemData, setSelectedInventoryData] = useState({}); // Contiene la info actual del item a editar
+  const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
 
   const reload = false; //Variable para evitar que useEffect() haga un loop infinito, cambiar por array vacio?
 
@@ -43,7 +43,7 @@ const Inventory = (props) => {
             setInventory(data);
           });
         setLoading(false);
-        setformLoading(false);
+        setFormLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -88,9 +88,10 @@ const Inventory = (props) => {
           </div>
           {search
             ? !formLoading && <SearchItemForm inventory={inventory} />
-            : !formloading && (
+            : !formLoading && (
                 <ItemForm
                   inventory={inventory}
+                  item={selectedItemData}
                   editMode={editMode}
                   updateCurrentItem={props.updateCurrentItem}
                   lang={props.lang}

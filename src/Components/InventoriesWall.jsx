@@ -12,6 +12,7 @@ import Card from "react-bootstrap/Card";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
+// Auxiliary functions
 import Utils from "../utilities";
 
 // Router
@@ -58,6 +59,7 @@ const InventoriesWall = (props) => {
                       title=""
                     >
                       <Dropdown.Item>
+                        {/* --- Edit Inventory Button --- */}
                         <Button
                           block
                           variant="outline-success"
@@ -68,10 +70,6 @@ const InventoriesWall = (props) => {
                           }}
                           size="sm"
                           onClick={() => {
-                            console.log(
-                              "vamos a editar el siguiente item",
-                              item
-                            );
                             HandleEditInventory(item);
                           }}
                         >
@@ -83,6 +81,7 @@ const InventoriesWall = (props) => {
                         </Button>
                       </Dropdown.Item>
                       <Dropdown.Item>
+                        {/* --- Delete Inventory Button --- */}
                         <Button
                           block
                           variant="outline-danger"

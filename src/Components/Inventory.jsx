@@ -16,10 +16,14 @@ import ItemsWall from "./ItemsWall.jsx";
 
 const Inventory = (props) => {
   const [loading, setLoading] = useState(true);
-  const [inventory, setInventory] = useState(null);
-  const [items, setItems] = useState([]);
-  const [search, setSearch] = useState(true);
-  const [reload, setReload] = useState(false);
+  const [formLoading, setFormLoading] = useState(true); // Carga del formulario lateral/superior
+  const [inventory, setInventory] = useState(null); // Contiene la info del inventario al que corresponden los items
+  const [items, setItems] = useState([]); // Contiene los items a mostrarse en el muro de items
+  const [search, setSearch] = useState(true); // Indica si mostrar la búsqueda o el formulario
+  const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
+  const [selectedItemData, setSelectedInventoryData] = useState({}); // Contiene la info actual del item a editar
+
+  const reload = false; //Variable para evitar que useEffect() haga un loop infinito, cambiar por array vacio?
 
   // Firebase
   const db = firebaseApp.firestore();
@@ -27,36 +31,37 @@ const Inventory = (props) => {
   const refItems = db.collection("items");
 
   // Methods
-  const fetchData = async () => {
-    try {
-      await refInventories
-        .doc(props.inventoryId)
-        .get()
-        .then((inv) => {
-          const data = { ...inv.data(), id: inv.id };
-          setInventory(data);
-        });
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      await refItems
-        .where("inventoryId", "==", props.inventoryId)
-        .get()
-        .then((itemsArray) => {
-          const items = itemsArray.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id };
-          });
-          setItems(items);
-          setLoading(false);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await refInventories
+          .doc(props.inventoryId)
+          .get()
+          .then((inv) => {
+            const data = { ...inv.data(), id: inv.id };
+            setInventory(data);
+          });
+        setLoading(false);
+        setformLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        await refItems
+          .where("inventoryId", "==", props.inventoryId)
+          .get()
+          .then((itemsArray) => {
+            const items = itemsArray.docs.map((doc) => {
+              return { ...doc.data(), id: doc.id };
+            });
+            setItems(items);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
@@ -82,11 +87,11 @@ const Inventory = (props) => {
             </Button>
           </div>
           {search
-            ? !loading && <SearchItemForm inventory={inventory} />
-            : !loading && (
+            ? !formLoading && <SearchItemForm inventory={inventory} />
+            : !formloading && (
                 <ItemForm
                   inventory={inventory}
-                  setReload={setReload}
+                  editMode={editMode}
                   updateCurrentItem={props.updateCurrentItem}
                   lang={props.lang}
                 />
@@ -99,8 +104,10 @@ const Inventory = (props) => {
           ) : (
             <ItemsWall
               items={items}
-              reload={reload}
               updateCurrentItem={props.updateCurrentItem}
+              setSelectedItemData={setSelectedItemData} // Cargar en state de <Inventory /> el item a editar
+              setEditMode={setEditMode} // Setear en state de <Inventory /> el modo del formulario (Nuevo/Editar)
+              setFormLoading={setFormLoading} // Setear en state de <Inventory /> mostrar/ocultar el formulario de Nuevo/Editar
             />
           )}
         </div>

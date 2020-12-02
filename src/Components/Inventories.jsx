@@ -25,8 +25,8 @@ const Inventories = (props) => {
   const history = useHistory();
 
   // STATE:
-  const [loading, setLoading] = useState(true);
-  const [formLoading, setFormLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Carga de la vista principal
+  const [formLoading, setFormLoading] = useState(true); // Carga del formulario lateral/superior
   const [items, setItems] = useState([]); // Almacena los inventarios
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de InventoryForm
   const [selectedInventoryData, setSelectedInventoryData] = useState({});
@@ -35,8 +35,9 @@ const Inventories = (props) => {
   // METHODS:
 
   useEffect(() => {
+    // Cargar los inventarios al acceder a esta ruta:
+
     const fetchData = async () => {
-      
       try {
         await ref
           .where("users", "array-contains", currentUser.uid)
@@ -51,8 +52,7 @@ const Inventories = (props) => {
           });
       } catch (error) {
         console.log(error);
-        history.push("/error")
-
+        history.push("/error");
       }
     };
 
@@ -104,6 +104,5 @@ const Inventories = (props) => {
     </React.Fragment>
   );
 };
-
 
 export default Inventories;

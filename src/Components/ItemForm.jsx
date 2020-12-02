@@ -143,10 +143,31 @@ const ItemForm = (props) => {
     }
   };
 
+  useEffect(() => {
+    /* Selecciona el modo. Si hay que editar un item
+    existente que se recibe por props, se actualiza el estado
+    con dicha info para mostrarla en los inputs. Caso contrario se
+    muestran las entradas en blanco. */
+    if (props.editMode) {
+      setName(props.item.name);
+      setDescription(props.item.description);
+      setCategory(props.item.category);
+      setSubcategory(props.item.subcategory);
+    } else {
+      setName("");
+      setDescription("");
+      setCategory("");
+      setSubcategory("");
+    }
+  }, [props]);
+
   // RENDER:
 
   return (
-    <AccordionFormWrap title={txt.newItemTitle[props.lang]}>
+    <AccordionFormWrap
+      title={txt.newItemTitle[props.lang]}
+      defaultActiveKey={props.editMode ? "0" : "1"}
+    >
       <Form>
         <FormGroup>
           <Form.Label>{txt.name[props.lang] + ": "} </Form.Label>
@@ -201,6 +222,7 @@ const ItemForm = (props) => {
           {newcat && (
             <FormControl
               style={{ marginTop: "10px" }}
+              value={category}
               type="text"
               onChange={(e) => {
                 setCategory(e.target.value);

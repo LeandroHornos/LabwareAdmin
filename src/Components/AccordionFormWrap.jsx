@@ -57,7 +57,11 @@ const AccordionFormWrap = (props) => {
               }}
             >
               <img
-                src="./img/icons/057-plus.png"
+                src={
+                  activeKey === "1"
+                    ? "./img/icons/057-plus.png"
+                    : "./img/icons/048-delete.png"
+                }
                 style={{ height: "20px" }}
               ></img>
             </Button>

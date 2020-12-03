@@ -70,7 +70,7 @@ const Inventories = (props) => {
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
         <div
-          className="col-md-3 inventory-sidepanel"
+          className="col-md-5 col-lg-3 inventory-sidepanel"
           style={{
             marginBottom: "20px",
             backgroundImage: "url(./img/wavecut.png)",
@@ -86,7 +86,7 @@ const Inventories = (props) => {
           )}
         </div>
         <div
-          className="col-md-9"
+          className="col-md-7 col-lg-9"
           style={{ minHeight: "100vh", padding: "10px 0px" }}
         >
           <h1 style={{ marginBottom: "40px", padding: "20px" }}>

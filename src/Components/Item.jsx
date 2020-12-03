@@ -73,7 +73,7 @@ const Item = (props) => {
       <NavigationBar />
       <div className="row" style={{ marginTop: "50px" }}>
         <div
-          className="col-md-3 inventory-sidepanel"
+          className="col-md-5 col-lg-3 inventory-sidepanel"
           style={{ backgroundImage: "url(./img/wavecut.png)" }}
         >
           {!loading && (
@@ -86,7 +86,7 @@ const Item = (props) => {
             />
           )}
         </div>
-        <div className="col-md-9" style={{ minHeight: "100vh" }}>
+        <div className="col-md-7 col-lg-9" style={{ minHeight: "100vh" }}>
           {loading ? (
             "Cargando Item..."
           ) : (
@@ -114,9 +114,6 @@ const Item = (props) => {
                 setSelectedGroupData={setSelectedGroupData} // Cargar en state de <Item/> el grupo a editar
 
               />
-              <Button onClick={() => {
-                history.push("/error")
-              }}>Ver error</Button>
             </div>
           )}
         </div>

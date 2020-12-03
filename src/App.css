@@ -81,3 +81,25 @@ label {
 .boxshadow {
   box-shadow: 2px 3px 12px 2px rgba(0, 0, 0, 0.3);
 }
+
+.tabs-form-nav {
+  border-color: rgb(92, 184, 92);
+}
+.tabs-nav-item {
+  color: rgb(92, 184, 92);
+}
+
+.tabs-nav-item :hover {
+  color: white;
+  background: rgb(43, 165, 84);
+}
+
+.tabs-active-nav-item {
+  color: yellow;
+  background: red;
+}
+
+.tabs-nav-link {
+  text-decoration: none;
+  color: white;
+}

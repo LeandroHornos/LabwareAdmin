@@ -49,6 +49,8 @@ const ItemForm = (props) => {
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
 
+  const [editMode, setEditMode] = useState(props.editMode);
+
   // Changes:
   const [newcat, setNewCat] = useState(false); // Indica si se han creado nuevas categorías
   const [newsubcat, setNewSubcat] = useState(false); // Indica si se han creado nuevas subcategorías
@@ -164,6 +166,10 @@ const ItemForm = (props) => {
     }
   }, [props]);
 
+  useEffect(() => {
+    setEditMode(props.editMode);
+  }, [props]);
+
   const cleanForm = () => {
     setName("");
     setDescription("");
@@ -175,11 +181,9 @@ const ItemForm = (props) => {
   return (
     <AccordionFormWrap
       title={
-        props.editMode
-          ? txt.editItemTitle[props.lang]
-          : txt.newItemTitle[props.lang]
+        editMode ? txt.editItemTitle[props.lang] : txt.newItemTitle[props.lang]
       }
-      defaultActiveKey={props.editMode ? "0" : "1"}
+      defaultActiveKey={editMode ? "0" : "1"}
     >
       <Form>
         <FormGroup>
@@ -312,9 +316,10 @@ const ItemForm = (props) => {
           variant="danger"
           block
           onClick={() => {
-            props.setEditMode(false);
+            setEditMode(false);
             cleanForm();
-            
+            history.push("/inventories");
+            history.goBack();
           }}
         >
           {txt.cancel[props.lang]}

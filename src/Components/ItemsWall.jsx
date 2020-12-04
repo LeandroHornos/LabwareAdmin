@@ -16,17 +16,12 @@ const ItemsWall = (props) => {
   const history = useHistory();
   const triplets = Utils.groupAsTriplets(props.items);
 
-  // // methods
-  // const HandleOpenItem = (inventoryId) => {
-  //   props.updateCurrentInventory(inventoryId);
-  //   history.push("./inventory");
-  // };
-
   const HandleEditItem = (itemData) => {
-    props.setFormLoading(true);
-    props.setEditMode(true);
-    props.setSelectedItemData(itemData);
-    props.setFormLoading(false);
+    props.setFormLoading(true); // Oculta el formulario mientras se carga la data
+    props.setActiveTab("edit"); // Cambio la solapa activa a Edit
+    props.setEditMode(true); // Activo el modo edicion para que el form sepa que debe cargar los datos que vienen por props en los inputs
+    props.setSelectedItemData(itemData); // Carga los datos del item seleccionado en el state de inventario y los recibo por props en itemForm
+    props.setFormLoading(false); // Hechos los cambios, muestro el formulario.
   };
 
   return triplets.map((triplet) => {

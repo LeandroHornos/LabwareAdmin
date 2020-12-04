@@ -8,6 +8,7 @@ const GuiTexts = {
   },
   ItemForm: {
     newItemTitle: { es: "Nuevo item", en: "New Item" },
+    editItemTitle: { es: "Editar item", en: "Edit Item" },
     name: { es: "Nombre", en: "Name" },
     cancel: { es: "Cancelar", en: "Cancel" },
     new: { es: "Nueva", en: "New" },
@@ -20,6 +21,7 @@ const GuiTexts = {
       en: "Choose a sub-category",
     },
     createItemBtn: { es: "Agregar item", en: "Add item" },
+    updateItemBtn: { es: "Actualizar item", en: "Update item" },
   },
 };
 

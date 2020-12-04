@@ -160,18 +160,25 @@ const ItemForm = (props) => {
       setSubcategory(props.item.subcategory);
       window.scrollTo(0, 0);
     } else {
-      setName("");
-      setDescription("");
-      setCategory("");
-      setSubcategory("");
+      cleanForm();
     }
   }, [props]);
 
+  const cleanForm = () => {
+    setName("");
+    setDescription("");
+    setCategory("");
+    setSubcategory("");
+  };
   // RENDER:
 
   return (
     <AccordionFormWrap
-      title={txt.newItemTitle[props.lang]}
+      title={
+        props.editMode
+          ? txt.editItemTitle[props.lang]
+          : txt.newItemTitle[props.lang]
+      }
       defaultActiveKey={props.editMode ? "0" : "1"}
     >
       <Form>
@@ -297,7 +304,20 @@ const ItemForm = (props) => {
           </Button>
         )}
         <Button variant="info" block onClick={() => handleCreateItem()}>
-          {txt.createItemBtn[props.lang]}
+          {props.editMode
+            ? txt.updateItemBtn[props.lang]
+            : txt.createItemBtn[props.lang]}
+        </Button>
+        <Button
+          variant="danger"
+          block
+          onClick={() => {
+            props.setEditMode(false);
+            cleanForm();
+            
+          }}
+        >
+          {txt.cancel[props.lang]}
         </Button>
       </Form>
     </AccordionFormWrap>

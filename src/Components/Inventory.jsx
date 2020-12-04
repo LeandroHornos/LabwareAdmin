@@ -23,7 +23,7 @@ const Inventory = (props) => {
   const [filter, setFilter] = useState(true); // Indica si mostrar la búsqueda o el formulario
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
   const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
-
+  const [activeTab, setActiveTab] = useState("filter");
   const reload = false; //Variable para evitar que useEffect() haga un loop infinito, cambiar por array vacio?
 
   // Firebase
@@ -71,6 +71,10 @@ const Inventory = (props) => {
     window.scrollTo(0, 0);
   }, [editMode]);
 
+  useEffect(() => {
+    activeTab === "filter" ? setFilter(true) : setFilter(false);
+  }, [activeTab]);
+
   return (
     <React.Fragment>
       <NavigationBar />
@@ -83,7 +87,7 @@ const Inventory = (props) => {
             <Nav
               fill
               variant="tabs"
-              defaultActiveKey="/home"
+              activeKey={activeTab}
               className="tabs-form-nav"
             >
               <Nav.Item
@@ -93,11 +97,11 @@ const Inventory = (props) => {
                 <Nav.Link
                   className="tabs-nav-link"
                   variant="success"
-                  eventKey="/home"
+                  eventKey="filter"
                   onClick={(e) => {
                     e.preventDefault();
                     console.log("Filtrar");
-                    if (!filter) setFilter(true);
+                    setActiveTab("filter");
                   }}
                 >
                   Filtrar
@@ -109,11 +113,11 @@ const Inventory = (props) => {
               >
                 <Nav.Link
                   className="tabs-nav-link"
-                  eventKey="link-1"
+                  eventKey="edit"
                   onClick={(e) => {
                     e.preventDefault();
                     console.log("Editar/Nuevo");
-                    if (filter) setFilter(false);
+                    setActiveTab("edit");
                   }}
                 >
                   {editMode ? "Editar item" : "Nuevo item"}
@@ -128,12 +132,16 @@ const Inventory = (props) => {
                   inventory={inventory}
                   item={selectedItemData}
                   editMode={editMode}
+                  setEditMode={setEditMode}
                   updateCurrentItem={props.updateCurrentItem}
                   lang={props.lang}
                 />
               )}
         </div>
-        <div className="col-md-7 col-lg-9" style={{ minHeight: "100vh", padding: "0" }}>
+        <div
+          className="col-md-7 col-lg-9"
+          style={{ minHeight: "100vh", padding: "0" }}
+        >
           {!loading && <InventoryInfo inventory={inventory} />}
           {loading ? (
             "Cargando..."
@@ -142,7 +150,8 @@ const Inventory = (props) => {
               items={items}
               updateCurrentItem={props.updateCurrentItem}
               setSelectedItemData={setSelectedItemData} // Cargar en state de <Inventory /> el item a editar
-              setEditMode={setEditMode} // Setear en state de <Inventory /> el modo del formulario (Nuevo/Editar)
+              setEditMode={setEditMode}
+              setActiveTab={setActiveTab} // Setear en state de <Inventory /> el modo del formulario (Nuevo/Editar)
               setFormLoading={setFormLoading} // Setear en state de <Inventory /> mostrar/ocultar el formulario de Nuevo/Editar
             />
           )}

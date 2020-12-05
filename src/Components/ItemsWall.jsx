@@ -3,6 +3,8 @@ import Utils from "../utilities";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
+import Icons from "../Icons";
+
 // Bootstrap
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -90,7 +92,7 @@ const ItemsWall = (props) => {
                     </Card.Title>
                     <img
                       className="item-icon"
-                      src="img/icons/labware/erlenmeyer-flask.svg"
+                      src={Icons["condenser"].src}
                       style={{ height: "50px" }}
                     />
                   </div>

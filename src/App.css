@@ -103,3 +103,8 @@ label {
   text-decoration: none;
   color: white;
 }
+
+.item-icon {
+  width: "20px";
+  height: "20px";
+}

@@ -49,10 +49,8 @@ const InventoriesWall = (props) => {
               style={{ marginBottom: "20px" }}
             >
               <Card className="item-card">
-                <Card.Header className="item-card-header"></Card.Header>
-                <Card.Body className="d-flex flex-column justify-content-between align-items-left">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <Card.Title>{item.name}</Card.Title>
+                <Card.Header className="item-card-header">
+                  <div className="d-flex flex-row-reverse">
                     <DropdownButton
                       variant="outline-success"
                       size="sm"
@@ -96,6 +94,13 @@ const InventoriesWall = (props) => {
                         </Button>
                       </Dropdown.Item>
                     </DropdownButton>
+                  </div>
+                </Card.Header>
+                <Card.Body className="d-flex flex-column justify-content-between align-items-left">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <Card.Title style={{ fontSize: "1.8em", paddingTop: "0" }}>
+                      {item.name}
+                    </Card.Title>
                   </div>
                   <Card.Text>
                     {Utils.getTextPreview(item.description, 140)}

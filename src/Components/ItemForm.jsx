@@ -20,7 +20,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
-import GuiTexts from "./GuiTexts.js";
+import GuiTexts from "../GuiTexts.js";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
@@ -36,7 +36,7 @@ import AccordionFormWrap from "./AccordionFormWrap.jsx";
 /* New Item form ------------------------------------ */
 
 const ItemForm = (props) => {
-  const txt = GuiTexts.ItemForm;
+  const txt = GuiTexts.ItemForm[props.lang];
   // Browsing:
   const history = useHistory();
 
@@ -180,14 +180,12 @@ const ItemForm = (props) => {
 
   return (
     <AccordionFormWrap
-      title={
-        editMode ? txt.editItemTitle[props.lang] : txt.newItemTitle[props.lang]
-      }
+      title={editMode ? txt.editItemTitle : txt.newItemTitle}
       defaultActiveKey={editMode ? "0" : "1"}
     >
       <Form>
         <FormGroup>
-          <Form.Label>{txt.name[props.lang] + ": "} </Form.Label>
+          <Form.Label>{txt.name + ": "} </Form.Label>
           <FormControl
             value={name}
             type="text"
@@ -197,7 +195,7 @@ const ItemForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>{txt.description[props.lang] + ": "}</Form.Label>
+          <Form.Label>{txt.description + ": "}</Form.Label>
           <FormControl
             as="textarea"
             rows={3}
@@ -208,7 +206,7 @@ const ItemForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>{txt.category[props.lang] + ": "}</Form.Label>
+          <Form.Label>{txt.category + ": "}</Form.Label>
           {/* Si no voy a generar una nueva categoría muestro un menu 
           select con las opciones que tengo en el inventario, 
           caso contrario muestro un input */}
@@ -224,9 +222,7 @@ const ItemForm = (props) => {
                 );
               }}
             >
-              <option value={""}>
-                {txt.catOptionMessage[props.lang] + ": "}
-              </option>
+              <option value={""}>{txt.catOptionMessage + ": "}</option>
               {categories.map((cat) => {
                 return (
                   <option key={cat.index + "-" + cat} value={cat}>
@@ -257,10 +253,10 @@ const ItemForm = (props) => {
             newcat ? setNewCat(false) : setNewCat(true);
           }}
         >
-          {newcat ? txt.cancel[props.lang] : txt.new[props.lang]}
+          {newcat ? txt.cancel : txt.new}
         </Button>
         <FormGroup>
-          <Form.Label>{txt.subcategory[props.lang] + ": "}</Form.Label>
+          <Form.Label>{txt.subcategory + ": "}</Form.Label>
 
           {!newcat && !newsubcat && (
             <Form.Control
@@ -270,9 +266,7 @@ const ItemForm = (props) => {
                 setSubcategory(e.target.value);
               }}
             >
-              <option value={""}>
-                {txt.subcatOptionMessage[props.lang] + ": "}
-              </option>
+              <option value={""}>{txt.subcatOptionMessage + ": "}</option>
               {subcatlist.map((subcat) => {
                 return (
                   <option key={subcat.index + "-" + subcat} value={subcat}>
@@ -304,13 +298,11 @@ const ItemForm = (props) => {
               newsubcat ? setNewSubcat(false) : setNewSubcat(true);
             }}
           >
-            {newsubcat ? txt.cancel[props.lang] : txt.new[props.lang]}
+            {newsubcat ? txt.cancel : txt.new}
           </Button>
         )}
         <Button variant="info" block onClick={() => handleCreateItem()}>
-          {props.editMode
-            ? txt.updateItemBtn[props.lang]
-            : txt.createItemBtn[props.lang]}
+          {props.editMode ? txt.updateItemBtn : txt.createItemBtn}
         </Button>
         <Button
           variant="danger"
@@ -322,7 +314,7 @@ const ItemForm = (props) => {
             history.goBack();
           }}
         >
-          {txt.cancel[props.lang]}
+          {txt.cancel}
         </Button>
       </Form>
     </AccordionFormWrap>

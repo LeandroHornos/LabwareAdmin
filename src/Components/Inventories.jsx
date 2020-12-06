@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
 // Bootstrap components
-import GuiTexts from "./GuiTexts.js";
+import GuiTexts from "../GuiTexts.js";
 
 // Firebase
 import firebaseApp from "../firebaseApp";
@@ -15,7 +15,7 @@ import InventoryForm from "./InventoryForm.jsx";
 import InventoriesWall from "./InventoriesWall.jsx";
 
 const Inventories = (props) => {
-  const txt = GuiTexts.Inventories; // Da el texto correspondiente al idioma seleccinado
+  const txt = GuiTexts.Inventories[props.lang]; // Da el texto correspondiente al idioma seleccinado
   // Firebase:
   const db = firebaseApp.firestore();
   const ref = db.collection("inventories");
@@ -90,7 +90,7 @@ const Inventories = (props) => {
           style={{ minHeight: "100vh", padding: "10px 0px" }}
         >
           <h1 style={{ marginBottom: "40px", padding: "20px" }}>
-            {txt.title[props.lang] + ": "}
+            {txt.title}
           </h1>
           {loading ? (
             "Cargando Inventarios..."

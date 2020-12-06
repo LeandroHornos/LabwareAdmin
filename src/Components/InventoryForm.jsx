@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
-import GuiTexts from "./GuiTexts.js";
+import GuiTexts from "../GuiTexts.js";
 
 // Router
 import { useHistory } from "react-router-dom";
@@ -26,7 +26,7 @@ const InventoryForm = (props) => {
   const { currentUser } = useContext(AuthContext);
 
   // Gui:
-  const txt = GuiTexts.InventoryForm;
+  const txt = GuiTexts.InventoryForm[props.lang];
 
   // STATE:
   const [name, setName] = useState("");
@@ -83,12 +83,12 @@ const InventoryForm = (props) => {
 
   return (
     <AccordionFormWrap
-      title={txt.newInventoryTitle[props.lang]}
+      title={txt.newInventoryTitle}
       defaultActiveKey={props.editMode ? "0" : "1"}
     >
       <Form>
         <FormGroup>
-          <Form.Label>{txt.name[props.lang] + ": "}</Form.Label>
+          <Form.Label>{txt.name}</Form.Label>
           <FormControl
             type="text"
             value={name}
@@ -98,7 +98,7 @@ const InventoryForm = (props) => {
           ></FormControl>
         </FormGroup>
         <FormGroup>
-          <Form.Label>{txt.description[props.lang] + ": "}</Form.Label>
+          <Form.Label>{txt.description + ": "}</Form.Label>
           <FormControl
             value={description}
             as="textarea"
@@ -109,7 +109,7 @@ const InventoryForm = (props) => {
           ></FormControl>
         </FormGroup>
         <Button onClick={() => handleCreateInventory()} variant="info" block>
-          {txt.create[props.lang]}
+          {txt.create}
         </Button>
       </Form>
     </AccordionFormWrap>

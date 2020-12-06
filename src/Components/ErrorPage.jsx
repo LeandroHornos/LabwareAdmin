@@ -9,9 +9,9 @@ const ErrorPage = () => {
   const history = useHistory();
   return (
     <div className="row" style={{ minHeight: "100vh" }}>
-      <div className="col-md-3"></div>
-      <div className="col-md-6 d-flex flex-column align-items-center justify-content-around">
-        <div>
+      <div className="col-md-4"></div>
+      <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
+
           <img
             src="./img/boy-chem-explosion.svg"
             style={{ width: "90%" }}
@@ -20,8 +20,8 @@ const ErrorPage = () => {
             Oops, ha ocurrido un error
           </p>
           <Button
-            block
-            variant="link"
+
+            variant="success"
             onClick={() => {
               history.goBack();
             }}
@@ -37,9 +37,9 @@ const ErrorPage = () => {
           >
             Ir al inicio
           </Button>
-        </div>
+        
       </div>
-      <div className="col-md-3"></div>
+      <div className="col-md-4"></div>
     </div>
   );
 };

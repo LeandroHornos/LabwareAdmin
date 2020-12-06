@@ -24,14 +24,19 @@ const SignOut = () => {
 
   return (
     <div className="row">
+      <div className="col-md-4"></div>
       <div
-        className="col-md-12 d-flex flex-column justify-content-center align-items-center"
+        className="col-md-4 d-flex flex-column justify-content-center align-items-center"
         style={{ minHeight: "100vh" }}
       >
-        <div className="d-flex flex-column justify-content-around align-items-center">
-          <h1 style={{ padding: "20px 10px" }}>¿ Deseas cerrar sesión ?</h1>
+        <div
+          style={{ width: "100%" }}
+          className="d-flex flex-column justify-content-around align-items-center"
+        >
+          <img style={{ width: "70%" }} src="/img/girl-leaving-lab.svg"></img>
+          <h3 style={{ padding: "20px 10px" }}>¿ Te vas ?</h3>
           <Button
-            style={{ margin: "20px 10px" }}
+            variant="success"
             onClick={(e) => {
               e.preventDefault();
               handleSignOut();
@@ -49,6 +54,7 @@ const SignOut = () => {
           </Button>
         </div>
       </div>
+      <div className="col-md-4"></div>
     </div>
   );
 };

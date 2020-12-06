@@ -90,15 +90,27 @@ const Item = (props) => {
           ) : (
             <div>
               <div style={{ padding: "20px" }}>
-                <h1>{item.name}</h1>
-                <ul style={styles.unstyledList}>
-                  <li>
-                    <strong>Categoría:</strong> {item.category}
-                  </li>
-                  <li>
-                    <strong>Sub categoría:</strong> {item.subcategory}
-                  </li>
-                </ul>
+                <div className="row">
+                  <div style={{ padding: "0" }} className="col-9">
+                    <h1>{item.name}</h1>
+                    <ul style={styles.unstyledList}>
+                      <li>
+                        <strong>Categoría:</strong> {item.category}
+                      </li>
+                      <li>
+                        <strong>Sub categoría:</strong> {item.subcategory}
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col-3" style={{ paddingTop: "30epx" }}>
+                    <img
+                      style={{ width: "100%" }}
+                      src="/img/icons/labware/condenser.svg"
+                      alt=""
+                    />
+                  </div>
+                </div>
+
                 <h2>Grupos:</h2>
               </div>
 

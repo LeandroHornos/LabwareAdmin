@@ -11,9 +11,9 @@ const Welcome = () => {
       className="row welcome"
       style={{ backgroundImage: "url(./img/wavecut.png)" }}
     >
-      <div className="col-md-3"></div>
+      <div className="col-md-6 col-lg-7"></div>
       <div
-        className="col-md-6 d-flex flex-column aling-items-center justify-content-center"
+        className="col-md-5 col-lg-4 d-flex flex-column aling-items-center justify-content-center"
         style={{ minHeight: "100vh", padding: "10px" }}
       >
         <div style={{ textAlign: "center" }} className="welcome-box boxshadow">
@@ -44,7 +44,7 @@ const Welcome = () => {
           </Button>
         </div>
       </div>
-      <div className="col-md-3"></div>
+      <div className="col-lg-1"></div>
     </div>
   );
 };

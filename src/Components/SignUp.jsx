@@ -14,9 +14,6 @@ function SignUp() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [repswd, setRepswd] = useState("");
-  // const [acceptTerms, setAcceptTerms] = useState(false);
-  // const [error, setError] = useState(null);
 
   const handleSignOut = async () => {
     try {
@@ -57,16 +54,6 @@ function SignUp() {
               placeholder="Password"
               onChange={(e) => {
                 setPassword(e.target.value);
-              }}
-            />
-          </Form.Group>
-          <Form.Group >
-            <Form.Label>Repite el password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Repeat Password"
-              onChange={(e) => {
-                setRepswd(e.target.value);
               }}
             />
           </Form.Group>

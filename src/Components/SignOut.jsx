@@ -33,7 +33,7 @@ const SignOut = () => {
           style={{ width: "100%" }}
           className="d-flex flex-column justify-content-around align-items-center"
         >
-          <img style={{ width: "70%" }} src="/img/girl-leaving-lab.svg"></img>
+          <img alt="" style={{ width: "70%" }} src="/img/girl-leaving-lab.svg"></img>
           <h3 style={{ padding: "20px 10px" }}>¿ Te vas ?</h3>
           <Button
             variant="success"

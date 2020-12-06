@@ -61,6 +61,7 @@ const ItemsWall = (props) => {
                           }}
                         >
                           <img
+                            alt="edit"
                             src="./img/icons/053-edit.png"
                             style={{ height: "24px", marginRight: "5px" }}
                           ></img>
@@ -76,6 +77,7 @@ const ItemsWall = (props) => {
                           size="sm"
                         >
                           <img
+                            alt="del"
                             src="./img/icons/066-erase.png"
                             style={{ height: "24px", marginRight: "5px" }}
                           ></img>
@@ -91,6 +93,7 @@ const ItemsWall = (props) => {
                       {item.name}
                     </Card.Title>
                     <img
+                      alt="icon"
                       className="item-icon"
                       src={Icons["condenser"].src}
                       style={{ height: "50px" }}

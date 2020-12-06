@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
-import { FormControl, FormGroup } from "react-bootstrap";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";

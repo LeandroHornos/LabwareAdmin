@@ -33,11 +33,9 @@ const Item = (props) => {
   const [item, setItem] = useState({});
   const [inventory, setInventory] = useState({});
   const [editMode, setEditGroup] = useState(false); // Determina el comportamiento de GroupForm
-  const [selectedGroupData, setSelectedGroupData] = useState({})
+  const [selectedGroupData, setSelectedGroupData] = useState({});
 
-  const [loaded, setLoaded] = useState(true);
-
-  const history = useHistory()
+  const loaded = true;
 
   // methods
   const fetchData = async () => {
@@ -112,7 +110,6 @@ const Item = (props) => {
                 setLoading={setLoading}
                 setEditGroup={setEditGroup} // Permite indicar al form que se desea editar un grupo
                 setSelectedGroupData={setSelectedGroupData} // Cargar en state de <Item/> el grupo a editar
-
               />
             </div>
           )}
@@ -214,10 +211,10 @@ const GroupCard = (props) => {
   };
 
   const handleEditGroup = (group) => {
-    console.log("este es el grupo a editar", group)
+    console.log("este es el grupo a editar", group);
     props.setEditGroup(true);
     props.setSelectedGroupData(group);
-  }
+  };
 
   const handleDeleteGroup = async (groupId) => {
     /* Elimina el grupo seleccionado
@@ -265,10 +262,7 @@ const GroupCard = (props) => {
               <Button
                 block
                 onClick={() => {
-                  console.log(
-                    "vamos a editar el siguiente item",
-                    props.group
-                  );
+                  console.log("vamos a editar el siguiente item", props.group);
                   handleEditGroup(props.group);
                 }}
                 variant="outline-success"
@@ -276,6 +270,7 @@ const GroupCard = (props) => {
                 size="sm"
               >
                 <img
+                  alt="edit"
                   src="./img/icons/053-edit.png"
                   style={{ height: "24px", marginRight: "5px" }}
                 ></img>
@@ -293,6 +288,7 @@ const GroupCard = (props) => {
                 }}
               >
                 <img
+                  alt="del"
                   src="./img/icons/066-erase.png"
                   style={{ height: "24px", marginRight: "5px" }}
                 ></img>

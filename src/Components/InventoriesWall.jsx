@@ -72,6 +72,7 @@ const InventoriesWall = (props) => {
                           }}
                         >
                           <img
+                            alt="edit"
                             src="./img/icons/053-edit.png"
                             style={{ height: "24px", marginRight: "5px" }}
                           ></img>
@@ -87,6 +88,7 @@ const InventoriesWall = (props) => {
                           size="sm"
                         >
                           <img
+                            alt="erase"
                             src="./img/icons/066-erase.png"
                             style={{ height: "24px", marginRight: "5px" }}
                           ></img>

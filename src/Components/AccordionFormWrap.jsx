@@ -57,6 +57,7 @@ const AccordionFormWrap = (props) => {
               }}
             >
               <img
+                alt=""
                 src={
                   activeKey === "1"
                     ? "./img/icons/057-plus.png"

@@ -6,6 +6,7 @@ const GroupSchema = {
   sublocation: "",
   status: "",
   ammount: 0,
+  history: [],
 };
 
 export default GroupChema;

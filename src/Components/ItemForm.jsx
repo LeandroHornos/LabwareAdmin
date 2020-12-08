@@ -114,19 +114,10 @@ const ItemForm = (props) => {
       creationdate: new Date(),
       creatorId: currentUser.uid,
       name,
+      icon: "computer", // le harcodeo un icono, luego permito elegirlo y cambiarlo
       description,
       category,
       subcategory,
-    };
-    data = {
-      ...data,
-      changelog: [
-        {
-          date: data.creationdate,
-          userId: currentUser.uid,
-          groups: data.groups,
-        },
-      ],
     };
     console.log("he aqui el item a guardar", data);
     try {

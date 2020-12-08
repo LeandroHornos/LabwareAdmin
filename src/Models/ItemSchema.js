@@ -8,6 +8,7 @@ const ItemSchema = {
   lastUpdate: "",
   creatorId: "",
   name: "",
+  icon: "",
   description: "",
   category: "",
   subcategory: "",

@@ -205,14 +205,6 @@ const GroupCard = (props) => {
         .doc(props.itemId)
         .update({
           groups: updatedGroups,
-          changelog: [
-            ...props.changelog,
-            {
-              date: new Date(),
-              userId: currentUser.uid,
-              groups: updatedGroups,
-            },
-          ],
         });
       props.setLoading(false);
       history.push("./inventory");

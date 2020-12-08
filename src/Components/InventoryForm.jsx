@@ -58,9 +58,9 @@ const InventoryForm = (props) => {
       name,
       description,
       date: new Date(),
-      creatoruid: currentUser.uid,
+      creator: currentUser.uid,
       lastupdated: new Date(),
-      roles: [{ uid: currentUser.uid, role: "admin" }],
+      roles: [{ user: currentUser.uid, role: "admin" }],
       users: [currentUser.uid],
     };
 

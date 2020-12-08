@@ -1,5 +1,6 @@
 const InventorySchema = {
   name: "",
+  icon: "",
   description: "",
   date: "",
   lastupdated:"",

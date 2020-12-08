@@ -116,6 +116,18 @@ const GroupForm = (props) => {
       sublocation,
       status,
       ammount,
+      history: [
+        // Guardo un snapshot del grupo al crearlo.
+        {
+          user: currentUser.uid,
+          date: new Date(),
+          groupname,
+          location,
+          sublocation,
+          status,
+          ammount,
+        },
+      ],
     };
 
     try {
@@ -124,16 +136,8 @@ const GroupForm = (props) => {
         .doc(props.item.id)
         .update({
           groups: [...props.item.groups, groupdata],
-          changelog: [
-            ...props.item.changelog,
-            {
-              date: new Date(),
-              userId: currentUser.uid,
-              groups: [...props.item.groups, groupdata],
-            },
-          ],
         });
-      console.log("Item.jsx dice: Se ha agregado el nuevo grupo al item");
+      console.log("HandleCreateItem: Se ha agregado el nuevo grupo al item");
       history.push("./inventory");
       history.goBack(); //
       window.scrollTo(0, 0);
@@ -147,10 +151,6 @@ const GroupForm = (props) => {
  */
     const { hasChanged, newInventory } = updateInventory();
     if (hasChanged) {
-      console.log(
-        "Item.jsx dice: El inventario ha recibido nuevas opciones, he aquí la nueva versión:",
-        newInventory
-      );
       try {
         await db
           .collection("inventories")
@@ -158,7 +158,66 @@ const GroupForm = (props) => {
           .update(newInventory)
           .then(() => {
             console.log(
-              "Item.jsx dice: El inventario se ha actualizado con las nuevas opciones"
+              "handleCreateItem dice: El inventario se ha actualizado con las nuevas opciones"
+            );
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleUpdateGroup = async () => {
+    const db = firebaseApp.firestore();
+
+    let updatedGroups = props.item.groups.map((group) => {
+      if (group.id === props.group.id) {
+        group = {
+          ...group,
+          groupname,
+          location,
+          sublocation,
+          status,
+          ammount,
+        };
+        group.history.push({
+          date: new Date(),
+          user: currentUser.uid,
+          location,
+          sublocation,
+          status,
+          ammount,
+        });
+      }
+      return group;
+    });
+
+    try {
+      await db.collection("items").doc(props.item.id).update({
+        groups: updatedGroups,
+      });
+      console.log("handleUpdateGroup dice: Se ha actualizado el grupo");
+      history.push("./inventory");
+      history.goBack(); //
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.log(error);
+    }
+    /* Si se generaron nuevas opciones para el inventario, debo actualizar. 
+    Notar que esto ocurre luego de que se refresque la GuI, pero no importa 
+    porque la actualización puede hacerse en segundo plano mientras se recarga la interfaz.
+    Se asume que el primer guardado fue exitoso, el segundo lo será también.
+ */
+    const { hasChanged, newInventory } = updateInventory();
+    if (hasChanged) {
+      try {
+        await db
+          .collection("inventories")
+          .doc(props.inventory.id)
+          .update(newInventory)
+          .then(() => {
+            console.log(
+              "handleUpdateItem dice: El inventario se ha actualizado con las nuevas opciones"
             );
           });
       } catch (error) {
@@ -356,8 +415,14 @@ const GroupForm = (props) => {
           ></FormControl>
         </FormGroup>
 
-        <Button variant="info" block onClick={() => handleCreateGroup()}>
-          Agregar item
+        <Button
+          variant="info"
+          block
+          onClick={() =>
+            props.editMode ? handleUpdateGroup() : handleCreateGroup()
+          }
+        >
+          {props.editMode ? "Actualizar grupo" : "Crear grupo"}
         </Button>
       </Form>
     </AccordionFormWrap>

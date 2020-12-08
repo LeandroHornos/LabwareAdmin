@@ -137,6 +137,45 @@ const ItemForm = (props) => {
     }
   };
 
+  const handleUpdateItem = async () => {
+    /* Maneja la accion que se dispara cuando el
+    usuario le da al botón de crear item. Es la 
+    encargada de estructurar la data en base al schema y
+    comunicarse con la base de datos. */
+    const db = firebaseApp.firestore();
+    let newInventory = updateInventory();
+    let data = {
+      ...props.item,
+      lastupdate: new Date(),
+      name,
+      icon: "computer", // le harcodeo un icono, luego permito elegirlo y cambiarlo
+      description,
+      category,
+      subcategory,
+    };
+    console.log("he aqui el item a guardar", data);
+    try {
+      await db.collection("items").doc(props.item.id).update({
+        lastupdate: new Date(),
+        name,
+        icon: "computer", // le harcodeo un icono, luego permito elegirlo y cambiarlo
+        description,
+        category,
+        subcategory,
+      }); // Guardo el nuevo item, recupero la ref de firebase
+      await db
+        .collection("inventories")
+        .doc(props.inventory.id)
+        .update(newInventory);
+      console.log("Se ha creado el item y se ha actualizado el inventario");
+      history.push("./inventories");
+      history.goBack();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     /* Selecciona el modo. Si hay que editar un item
     existente que se recibe por props, se actualiza el estado
@@ -292,7 +331,13 @@ const ItemForm = (props) => {
             {newsubcat ? txt.cancel : txt.new}
           </Button>
         )}
-        <Button variant="info" block onClick={() => handleCreateItem()}>
+        <Button
+          variant="info"
+          block
+          onClick={() =>
+            props.editMode ? handleUpdateItem() : handleCreateItem()
+          }
+        >
           {props.editMode ? txt.updateItemBtn : txt.createItemBtn}
         </Button>
         <Button

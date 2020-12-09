@@ -81,10 +81,12 @@ const ItemForm = (props) => {
     let inventory = props.inventory;
 
     if (newcat) {
-      inventory.categories.push({
-        name: category,
-        subcategories: [subcategory],
-      });
+      if (!categories.includes(category)) {
+        inventory.categories.push({
+          name: category,
+          subcategories: [subcategory],
+        });
+      }
     }
 
     if (!newcat && newsubcat) {

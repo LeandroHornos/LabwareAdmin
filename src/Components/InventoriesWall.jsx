@@ -55,7 +55,7 @@ const InventoriesWall = (props) => {
 
   return pairs.map((pair) => {
     return (
-      <div className="row" key={"row-" + pair[0].id}>
+      <div className="row" key={Utils.makeId(4)}>
         {pair.map((item) => {
           return (
             <div

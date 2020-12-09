@@ -151,11 +151,11 @@ const GroupCards = (props) => {
   const triplets = Utils.groupAsTriplets(props.groups);
   return triplets.map((triplet) => {
     return (
-      <div className="row" key={Utils.makeid(8)}>
+      <div className="row" key={Utils.makeId(4)}>
         {triplet.map((group) => {
           return (
             <div
-              key={Utils.makeid(8)}
+              key={Utils.makeId(4)}
               className="col-lg-4"
               style={{ padding: "10px 10px" }}
             >

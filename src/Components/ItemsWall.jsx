@@ -42,13 +42,13 @@ const ItemsWall = (props) => {
   };
   return triplets.map((triplet) => {
     return (
-      <div className="row" key={Utils.makeid}>
+      <div className="row" key={Utils.makeId(4)}>
         {triplet.map((item) => {
           return (
             <div
               className="col-lg-4"
               style={{ marginBottom: "20px" }}
-              key={Utils.makeid}
+              key={Utils.makeId(4)}
             >
               <Card className="item-card">
                 <Card.Header className="item-card-header">

@@ -20,7 +20,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
 
+import Utils from "../utilities.js";
+
 import GuiTexts from "../GuiTexts.js";
+import Icons from "../Icons.js";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
@@ -45,6 +48,7 @@ const ItemForm = (props) => {
 
   // Data:
   const [name, setName] = useState("");
+  const [icon, setIcon] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
@@ -57,6 +61,7 @@ const ItemForm = (props) => {
 
   // Options:
   const categories = props.inventory.categories.map((cat) => cat.name);
+
   const [subcatlist, setSubcatlist] = useState([]);
 
   // METHODS:
@@ -102,6 +107,17 @@ const ItemForm = (props) => {
 
     return inventory;
   };
+
+  const getIconList = (IconsObject) => {
+    const keys = Object.keys(IconsObject);
+    const iconList = keys.map((key) => {
+      return IconsObject[key];
+    });
+    console.log("esta es la lista de iconos:", iconList);
+    return iconList;
+  };
+
+  let iconList = getIconList(Icons);
 
   const handleCreateItem = async () => {
     /* Maneja la accion que se dispara cuando el
@@ -226,6 +242,27 @@ const ItemForm = (props) => {
             }}
           ></FormControl>
         </FormGroup>
+
+        <FormGroup>
+          <Form.Label>Icon</Form.Label>
+          <Form.Control
+            as="select"
+            value={icon}
+            onChange={(e) => {
+              setIcon(e.target.value);
+            }}
+          >
+            <option value={""}>Default</option>
+            {iconList.map((icon) => {
+              return (
+                <option key={Utils.makeId(4)} value={icon.name}>
+                  {icon.displayname[props.lang]}
+                </option>
+              );
+            })}
+          </Form.Control>
+        </FormGroup>
+
         <FormGroup>
           <Form.Label>{txt.description + ": "}</Form.Label>
           <FormControl
@@ -257,7 +294,7 @@ const ItemForm = (props) => {
               <option value={""}>{txt.catOptionMessage + ": "}</option>
               {categories.map((cat) => {
                 return (
-                  <option key={cat.index + "-" + cat} value={cat}>
+                  <option key={Utils.makeId(4)} value={cat}>
                     {cat}
                   </option>
                 );
@@ -301,7 +338,7 @@ const ItemForm = (props) => {
               <option value={""}>{txt.subcatOptionMessage + ": "}</option>
               {subcatlist.map((subcat) => {
                 return (
-                  <option key={subcat.index + "-" + subcat} value={subcat}>
+                  <option key={Utils.makeId(4)} value={subcat}>
                     {subcat}
                   </option>
                 );

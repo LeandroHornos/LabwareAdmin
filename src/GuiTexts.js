@@ -9,12 +9,14 @@ const GuiTexts = {
       name: "Nombre",
       description: "Descripción",
       create: "Crear inventario",
+      update: "Actualizar inventario",
     },
     en: {
       newInventoryTitle: "New inventory",
       name: "Name",
       description: "Description",
       create: "Create inventory",
+      update: "Update inventory",
     },
   },
   ItemForm: {

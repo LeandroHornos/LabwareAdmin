@@ -79,6 +79,33 @@ const InventoryForm = (props) => {
     }
   };
 
+  const handleUpdateInventory = async () => {
+    const db = firebaseApp.firestore();
+
+    const data = {
+      name,
+      description,
+      date: new Date(),
+      creator: currentUser.uid,
+      lastupdated: new Date(),
+      roles: [{ user: currentUser.uid, role: "admin" }],
+      users: [currentUser.uid],
+    };
+
+    // Save data to database
+    try {
+      await db
+        .collection("inventories")
+        .doc(props.inventory.id)
+        .update({ name, description, lastupdated: new Date() });
+      history.push("./welcome");
+      history.goBack();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // RENDER:
 
   return (
@@ -108,8 +135,14 @@ const InventoryForm = (props) => {
             }}
           ></FormControl>
         </FormGroup>
-        <Button onClick={() => handleCreateInventory()} variant="info" block>
-          {txt.create}
+        <Button
+          onClick={() =>
+            props.editMode ? handleUpdateInventory() : handleCreateInventory()
+          }
+          variant="info"
+          block
+        >
+          {props.editMode ? txt.update : txt.create}
         </Button>
       </Form>
     </AccordionFormWrap>

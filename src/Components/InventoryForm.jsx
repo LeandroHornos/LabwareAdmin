@@ -82,16 +82,6 @@ const InventoryForm = (props) => {
   const handleUpdateInventory = async () => {
     const db = firebaseApp.firestore();
 
-    const data = {
-      name,
-      description,
-      date: new Date(),
-      creator: currentUser.uid,
-      lastupdated: new Date(),
-      roles: [{ user: currentUser.uid, role: "admin" }],
-      users: [currentUser.uid],
-    };
-
     // Save data to database
     try {
       await db
@@ -105,6 +95,7 @@ const InventoryForm = (props) => {
       console.log(error);
     }
   };
+
 
   // RENDER:
 

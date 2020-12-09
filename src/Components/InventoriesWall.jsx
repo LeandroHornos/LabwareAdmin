@@ -15,6 +15,9 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 // Auxiliary functions
 import Utils from "../utilities";
 
+// Firebase
+import firebaseApp from "../firebaseApp";
+
 // Router
 import { useHistory } from "react-router-dom";
 
@@ -36,6 +39,18 @@ const InventoriesWall = (props) => {
     props.setEditMode(true);
     props.setSelectedInventoryData(inventoryData);
     props.setFormLoading(false);
+  };
+
+  const handleDeleteInventory = async (inventoryId) => {
+    try {
+      const db = firebaseApp.firestore();
+      await db.collection("inventories").doc(inventoryId).delete();
+      history.push("./welcome");
+      history.goBack();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return pairs.map((pair) => {
@@ -86,6 +101,7 @@ const InventoriesWall = (props) => {
                           variant="outline-danger"
                           style={{ fontSize: "0.7em" }}
                           size="sm"
+                          onClick={() => handleDeleteInventory(item.id)}
                         >
                           <img
                             alt="erase"

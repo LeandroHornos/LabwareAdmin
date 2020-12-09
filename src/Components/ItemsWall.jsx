@@ -5,6 +5,9 @@ import Card from "react-bootstrap/Card";
 
 import Icons from "../Icons";
 
+// Firebase
+import firebaseApp from "../firebaseApp";
+
 // Bootstrap
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -26,6 +29,17 @@ const ItemsWall = (props) => {
     props.setFormLoading(false); // Hechos los cambios, muestro el formulario.
   };
 
+  const handleDeleteItem = async (itemId) => {
+    try {
+      const db = firebaseApp.firestore();
+      await db.collection("items").doc(itemId).delete();
+      history.push("./inventories");
+      history.goBack();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return triplets.map((triplet) => {
     return (
       <div className="row" key={Utils.makeid}>
@@ -75,6 +89,9 @@ const ItemsWall = (props) => {
                           variant="outline-danger"
                           style={{ fontSize: "0.7em" }}
                           size="sm"
+                          onClick={() => {
+                            handleDeleteItem(item.id);
+                          }}
                         >
                           <img
                             alt="del"

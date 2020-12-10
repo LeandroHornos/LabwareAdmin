@@ -239,7 +239,7 @@ const Icons = {
   safetyShower: {
     name: "safetyShower",
     displayname: { es: "Ducha de Seguridad", en: "Safety Shower" },
-    src: labware + "",
+    src: labware + "safety-shower.svg",
   },
   scale: {
     name: "scale",
@@ -279,7 +279,7 @@ const Icons = {
   testTubeRack: {
     name: "testTubeRack",
     displayname: { es: "Gradilla", en: "Test Tube Rack" },
-    src: labware + "test-tube-rack",
+    src: labware + "test-tube-rack.svg",
   },
   thermometer: {
     name: "thermometer",

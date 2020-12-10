@@ -19,14 +19,27 @@ import { useHistory } from "react-router-dom";
 
 const ItemsWall = (props) => {
   const history = useHistory();
-  const triplets = Utils.groupAsTriplets(props.items);
+  const sortedItems = props.items.sort((a, b) => {
+    const nameA = a.name.toUpperCase(); // ignoro mayusculas y minusculas
+    const nameB = b.name.toUpperCase(); // ignoro mayusculas y minusculas
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // Si los nombres son iguales:
+    return 0;
+  });
+  const triplets = Utils.groupAsTriplets(sortedItems); // Junto de a tres en array 2D para organizar tarjetas
 
   const HandleEditItem = (itemData) => {
     props.setFormLoading(true); // Oculta el formulario mientras se carga la data
     props.setActiveTab("edit"); // Cambio la solapa activa a Edit
-    props.setEditMode(true); // Activo el modo edicion para que el form sepa que debe cargar los datos que vienen por props en los inputs
-    props.setSelectedItemData(itemData); // Carga los datos del item seleccionado en el state de inventario y los recibo por props en itemForm
-    props.setFormLoading(false); // Hechos los cambios, muestro el formulario.
+    props.setEditMode(true); // Activa el modo edicion para que el form sepa que debe cargar los datos que vienen por props en los inputs
+    props.setSelectedItemData(itemData); // Carga los datos del item seleccionado en el state de inventario y los recibe por props en itemForm
+    props.setFormLoading(false); // Hechos los cambios, muestra el formulario.
   };
 
   const handleDeleteItem = async (itemId) => {
@@ -112,7 +125,7 @@ const ItemsWall = (props) => {
                     <img
                       alt="icon"
                       className="item-icon"
-                      src={Icons["condenser"].src}
+                      src={Icons[item.icon].src}
                       style={{ height: "50px" }}
                     />
                   </div>

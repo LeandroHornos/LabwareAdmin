@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 // General purpose functions
 import Utils from "../utilities";
+import Icons from "../Icons.js";
 
 import { useHistory } from "react-router-dom";
 
@@ -102,10 +103,10 @@ const Item = (props) => {
                       </li>
                     </ul>
                   </div>
-                  <div className="col-3" style={{ paddingTop: "30epx" }}>
+                  <div className="col-3" style={{ paddingTop: "30px" }}>
                     <img
-                      style={{ width: "100%" }}
-                      src="/img/icons/labware/condenser.svg"
+                      style={{ width: "100%", maxHeight: "100px" }}
+                      src={Icons[item.icon].src}
                       alt=""
                     />
                   </div>
@@ -200,12 +201,9 @@ const GroupCard = (props) => {
     const updatedGroups = props.updateGroups(updatedGroup);
 
     try {
-      await db
-        .collection("items")
-        .doc(props.itemId)
-        .update({
-          groups: updatedGroups,
-        });
+      await db.collection("items").doc(props.itemId).update({
+        groups: updatedGroups,
+      });
       props.setLoading(false);
       history.push("./inventory");
       history.goBack();

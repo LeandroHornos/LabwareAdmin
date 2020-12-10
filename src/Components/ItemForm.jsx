@@ -19,6 +19,8 @@ import React, { useState, useContext, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { FormControl, FormGroup } from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 import Utils from "../utilities.js";
 
@@ -114,6 +116,20 @@ const ItemForm = (props) => {
       return IconsObject[key];
     });
     console.log("esta es la lista de iconos:", iconList);
+    iconList.sort();
+    iconList.sort((a, b) => {
+      const nameA = a.displayname[props.lang].toUpperCase(); // ignoro mayusculas y minusculas
+      const nameB = b.displayname[props.lang].toUpperCase(); // ignoro mayusculas y minusculas
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      // Si los nombres son iguales:
+      return 0;
+    });
     return iconList;
   };
 
@@ -132,7 +148,7 @@ const ItemForm = (props) => {
       creationdate: new Date(),
       creatorId: currentUser.uid,
       name,
-      icon: "computer", // le harcodeo un icono, luego permito elegirlo y cambiarlo
+      icon, // le harcodeo un icono, luego permito elegirlo y cambiarlo
       description,
       category,
       subcategory,
@@ -162,21 +178,12 @@ const ItemForm = (props) => {
     comunicarse con la base de datos. */
     const db = firebaseApp.firestore();
     let newInventory = updateInventory();
-    let data = {
-      ...props.item,
-      lastupdate: new Date(),
-      name,
-      icon: "computer", // le harcodeo un icono, luego permito elegirlo y cambiarlo
-      description,
-      category,
-      subcategory,
-    };
-    console.log("he aqui el item a guardar", data);
+
     try {
       await db.collection("items").doc(props.item.id).update({
         lastupdate: new Date(),
         name,
-        icon: "computer", // le harcodeo un icono, luego permito elegirlo y cambiarlo
+        icon, // le harcodeo un icono, luego permito elegirlo y cambiarlo
         description,
         category,
         subcategory,
@@ -201,6 +208,7 @@ const ItemForm = (props) => {
     muestran las entradas en blanco. */
     if (props.editMode) {
       setName(props.item.name);
+      setIcon(props.item.icon);
       setDescription(props.item.description);
       setCategory(props.item.category);
       setSubcatlist(
@@ -233,6 +241,55 @@ const ItemForm = (props) => {
     >
       <Form>
         <FormGroup>
+          <Form.Label>Icono: </Form.Label>
+          <div
+            className="d-flex justify-content-left align-items-center"
+            style={{ background: "white", padding: "5px", borderRadius: "5px" }}
+          >
+            <DropdownButton
+              style={{ marginRight: "5px" }}
+              variant="outline-success"
+              id="dropdown-item-button"
+              title=""
+            >
+              <div style={{ maxHeight: "50vh", overflowY: "auto" }}>
+                <Dropdown.ItemText>
+                  Selecciona un ícono de la lista:
+                </Dropdown.ItemText>
+                {iconList.map((icon) => {
+                  return (
+                    <Dropdown.Item
+                      as="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIcon(icon.name);
+                        console.log("seteando Icono:", icon);
+                      }}
+                    >
+                      <img
+                        src={icon.src}
+                        style={{ height: "36px", marginRight: "10px" }}
+                      ></img>
+                      <span>{icon.displayname[props.lang]}</span>
+                    </Dropdown.Item>
+                  );
+                })}
+              </div>
+            </DropdownButton>
+            <span style={{ padding: "5px" }}>
+              {icon != "" && (
+                <img
+                  src={Icons[icon].src}
+                  alt="icon"
+                  style={{ height: "26px", marginRight: "5px" }}
+                ></img>
+              )}
+              {icon === "" ? "Default" : Icons[icon].displayname[props.lang]}
+            </span>
+          </div>
+        </FormGroup>
+
+        <FormGroup>
           <Form.Label>{txt.name + ": "} </Form.Label>
           <FormControl
             value={name}
@@ -241,26 +298,6 @@ const ItemForm = (props) => {
               setName(e.target.value);
             }}
           ></FormControl>
-        </FormGroup>
-
-        <FormGroup>
-          <Form.Label>Icon</Form.Label>
-          <Form.Control
-            as="select"
-            value={icon}
-            onChange={(e) => {
-              setIcon(e.target.value);
-            }}
-          >
-            <option value={""}>Default</option>
-            {iconList.map((icon) => {
-              return (
-                <option key={Utils.makeId(4)} value={icon.name}>
-                  {icon.displayname[props.lang]}
-                </option>
-              );
-            })}
-          </Form.Control>
         </FormGroup>
 
         <FormGroup>

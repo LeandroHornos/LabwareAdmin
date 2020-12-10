@@ -110,7 +110,7 @@ const GroupForm = (props) => {
 
     let groupdata = {
       date: new Date(),
-      id: Utils.makeid(10),
+      id: Utils.makeId(10),
       groupname,
       location,
       sublocation,
@@ -143,6 +143,7 @@ const GroupForm = (props) => {
       window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
+      history.push("./error");
     }
     /* Si se generaron nuevas opciones para el inventario, debo actualizar. 
     Notar que esto ocurre luego de que se refresque la GuI, pero no importa 

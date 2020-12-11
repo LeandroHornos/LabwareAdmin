@@ -55,8 +55,8 @@ const Welcome = () => {
 
 const style = {
   logo: {
-    width: "90%",
-    maxWidth: "200px",
+    width: "70%",
+    maxWidth: "150px",
     margin: "auto",
     animation: "rotation 60s infinite linear",
   },

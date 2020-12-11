@@ -17,7 +17,11 @@ const Welcome = () => {
         style={{ minHeight: "100vh", padding: "10px" }}
       >
         <div style={{ textAlign: "center" }} className="welcome-box boxshadow">
-          <img src="./img/logo3.png" alt="logo" style={style.logo} />
+          <img
+            src="./img/carbo-logo-2-rojo.svg"
+            alt="logo"
+            style={style.logo}
+          />
           <p>Te damos la bienvenida a</p>
           <h1 style={{ color: "rgb(0,160,60)" }}>LabwareAdmin</h1>
           <p style={{ fontStyle: "italic" }}>By Carbo</p>
@@ -51,9 +55,10 @@ const Welcome = () => {
 
 const style = {
   logo: {
-    width: "30%",
+    width: "90%",
+    maxWidth: "200px",
     margin: "auto",
-    animation: "rotation 10s infinite linear",
+    animation: "rotation 60s infinite linear",
   },
 };
 

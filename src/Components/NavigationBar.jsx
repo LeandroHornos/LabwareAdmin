@@ -21,7 +21,7 @@ const NavigationBar = () => {
         className="d-flex justify-content-between align-items-center"
       >
         <Navbar.Brand>
-          <img alt="" src="./img/favicon-32x32.png" style={{height:"18px", marginRight:"5px"}}></img>
+          <img alt="" src="./img/carbo-logo-2-rojo.svg" style={{height:"20px", marginRight:"5px"}}></img>
           <Link to="/" style={{ color: "rgb(100,200,250)" }}>
             LabwareAdmin
           </Link>

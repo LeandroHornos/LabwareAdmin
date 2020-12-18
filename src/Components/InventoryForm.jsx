@@ -77,6 +77,7 @@ const InventoryForm = (props) => {
       window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
+      history.push("./error");
     }
   };
 
@@ -94,6 +95,7 @@ const InventoryForm = (props) => {
       window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
+      history.push("./error");
     }
   };
 

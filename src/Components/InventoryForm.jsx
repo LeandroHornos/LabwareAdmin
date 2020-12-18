@@ -62,6 +62,7 @@ const InventoryForm = (props) => {
       lastupdated: new Date(),
       roles: [{ user: currentUser.uid, role: "admin" }],
       users: [currentUser.uid],
+      editors: [currentUser.uid],
     };
 
     // Save data to database
@@ -95,7 +96,6 @@ const InventoryForm = (props) => {
       console.log(error);
     }
   };
-
 
   // RENDER:
 

@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Nav from "react-bootstrap/Nav";
+import Form from "react-bootstrap/Form";
+import { FormControl } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
-// import { AuthContext } from "../Auth";
+import { AuthContext } from "../Auth";
 
 import NavigationBar from "./NavigationBar.jsx";
 import ItemForm from "./ItemForm.jsx";
@@ -27,8 +30,18 @@ const Inventory = (props) => {
   const db = firebaseApp.firestore();
   const refInventories = db.collection("inventories");
   const refItems = db.collection("items");
+  const { currentUser } = useContext(AuthContext);
 
   // Methods
+
+  const handleAddUserToInventory = (user) => {
+    const { email, role } = user;
+    //Obtener usuario por email, recuperar id
+    // Agregar id a users
+    // role == "editor"? entonces agregar a editors
+    // actualizar inventario
+    console.log(email, role);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -139,24 +152,31 @@ const Inventory = (props) => {
           className="col-md-7 col-lg-9"
           style={{ minHeight: "100vh", padding: "0" }}
         >
-          {!loading && <InventoryInfo inventory={inventory} />}
           {loading ? (
             "Cargando..."
           ) : (
-            <ItemsWall
-              items={items}
-              updateCurrentItem={props.updateCurrentItem}
-              setSelectedItemData={setSelectedItemData} // Cargar en state de <Inventory /> el item a editar
-              setEditMode={setEditMode}
-              setActiveTab={setActiveTab} // Setear en state de <Inventory /> el modo del formulario (Nuevo/Editar)
-              setFormLoading={setFormLoading} // Setear en state de <Inventory /> mostrar/ocultar el formulario de Nuevo/Editar
-            />
+            <React.Fragment>
+              <InventoryInfo inventory={inventory} />
+              {currentUser.uid === inventory.creator && (
+                <AddUserForm add={handleAddUserToInventory} />
+              )}
+              <ItemsWall
+                items={items}
+                updateCurrentItem={props.updateCurrentItem}
+                setSelectedItemData={setSelectedItemData} // Cargar en state de <Inventory /> el item a editar
+                setEditMode={setEditMode}
+                setActiveTab={setActiveTab} // Setear en state de <Inventory /> el modo del formulario (Nuevo/Editar)
+                setFormLoading={setFormLoading} // Setear en state de <Inventory /> mostrar/ocultar el formulario de Nuevo/Editar
+              />
+            </React.Fragment>
           )}
         </div>
       </div>
     </React.Fragment>
   );
 };
+
+// Subcomponents:
 
 const InventoryInfo = (props) => {
   return (
@@ -167,7 +187,74 @@ const InventoryInfo = (props) => {
   );
 };
 
-/* Search Item form --------------------------------- */
+const AddUserForm = (props) => {
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+
+  useEffect(() => {}, [email, role]);
+
+  const isValid = () => {
+    let emailIsValid = email.includes("@") && email.includes("."); // Validación muy básica, en la db se comprueba la existencia del email
+    let roleIsValid = role !== "";
+
+    return emailIsValid && roleIsValid;
+  };
+
+  return (
+    <Form style={{ padding: "40px 0px" }}>
+      <div className="row">
+        <div className="col-12">
+          <h4>Agrega un usuario</h4>
+          <p style={{ fontSize: "0.8em" }}>
+            Introduce el email de un usuario con quien deseas compartir el
+            inventario. Los editores pueden crear y modificar items, mientras
+            que los invitados sólo pueden consultar la información.
+            Solo el creador del inventario puede agregar o quitar usuarios y definir roles.
+          </p>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-sm-6" style={{ padding: "10px" }}>
+          <FormControl
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          ></FormControl>
+        </div>
+        <div className="col-sm-3" style={{ padding: "10px" }}>
+          <FormControl
+            as="select"
+            value={role}
+            onChange={(e) => {
+              setRole(e.target.value);
+            }}
+          >
+            <option value="">Rol del usuario...</option>
+            <option value="guest">Invitado</option>
+            <option value="editor">Editor</option>
+          </FormControl>
+        </div>
+        <div className="col-sm-3" style={{ padding: "10px" }}>
+          <Button
+            disabled={!isValid()}
+            block
+            variant="outline-success"
+            onClick={(e) => {
+              e.preventDefault();
+              props.add({ email, role });
+            }}
+          >
+            Agregar
+          </Button>
+        </div>
+      </div>
+    </Form>
+  );
+};
 
 const SearchItemForm = (props) => {
   return (

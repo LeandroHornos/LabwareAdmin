@@ -52,13 +52,6 @@ const FlowerSpinner = () => {
     let limit = 300;
     let factor = 3;
 
-    const reset = () => {
-      positionX = centerX;
-      positionY = centerY;
-      angle = 0;
-      radius = 0;
-    };
-
     const drawFlower = () => {
       let radius = scale * Math.sqrt(number);
       let angle = number * factor;
@@ -70,8 +63,8 @@ const FlowerSpinner = () => {
         radius = scale * Math.sqrt(number);
         angle = number * factor;
         size = 3;
-        positionX = centerX + radius * Math.sin(angle);
-        positionY = centerY + radius * Math.cos(angle);
+        positionX = canvas.width / 2 + radius * Math.sin(angle);
+        positionY = canvas.height / 2 + radius * Math.cos(angle);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
       number++;
@@ -87,6 +80,7 @@ const FlowerSpinner = () => {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
+      console.log("dibujo flor")
     };
 
     const animate = () => {
@@ -101,9 +95,6 @@ const FlowerSpinner = () => {
   return (
     <canvas
       ref={canvasRef}
-      onMouseDown={startDrawing}
-      onMouseUp={stopDrawing}
-      onMouseMove={draw}
     />
   );
 };

@@ -191,8 +191,6 @@ const AddUserForm = (props) => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
-  useEffect(() => {}, [email, role]);
-
   const isValid = () => {
     let emailIsValid = email.includes("@") && email.includes("."); // Validación muy básica, en la db se comprueba la existencia del email
     let roleIsValid = role !== "";

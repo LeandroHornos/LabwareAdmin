@@ -15,6 +15,7 @@ import { AuthContext } from "../Auth";
 import NavigationBar from "./NavigationBar.jsx";
 import ItemForm from "./ItemForm.jsx";
 import ItemsWall from "./ItemsWall.jsx";
+import CircleSpinner from "./CircleSpinner.jsx";
 
 /* Inventory ----------------------------------------- */
 
@@ -156,7 +157,7 @@ const Inventory = (props) => {
           style={{ minHeight: "100vh", padding: "0" }}
         >
           {loading ? (
-            "Cargando..."
+            <CircleSpinner />
           ) : (
             <React.Fragment>
               <InventoryInfo inventory={inventory} />

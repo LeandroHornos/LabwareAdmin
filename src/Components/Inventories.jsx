@@ -9,10 +9,11 @@ import { AuthContext } from "../Auth";
 
 import { useHistory } from "react-router-dom";
 
-// Components
+// App Components
 import NavigationBar from "./NavigationBar.jsx";
 import InventoryForm from "./InventoryForm.jsx";
 import InventoriesWall from "./InventoriesWall.jsx";
+import CircleSpinner from "./CircleSpinner.jsx";
 
 const Inventories = (props) => {
   const txt = GuiTexts.Inventories[props.lang]; // Da el texto correspondiente al idioma seleccinado
@@ -89,19 +90,21 @@ const Inventories = (props) => {
           className="col-md-7 col-lg-9"
           style={{ minHeight: "100vh", padding: "10px 0px" }}
         >
-          <h1 style={{ marginBottom: "40px", padding: "20px" }}>
-            {txt.title}
-          </h1>
           {loading ? (
-            "Cargando Inventarios..."
+            <CircleSpinner />
           ) : (
-            <InventoriesWall
-              items={items} // Contenido para mostrar en las  tarjetas
-              updateCurrentInventory={props.updateCurrentInventory} // Setear en state de <App/> el id del inventario activo
-              setSelectedInventoryData={setSelectedInventoryData} // Cargar en state de <Inventories/> el inventario a editar
-              setEditMode={setEditMode} // Setear en state de <Inventories/> el modo del formulario (Nuevo/Editar)
-              setFormLoading={setFormLoading} // Setear en state de <Inventories/> mostrar/ocultar el formularion de Nuevo/Editar
-            />
+            <React.Fragment>
+              <h1 style={{ marginBottom: "40px", padding: "20px" }}>
+                {txt.title}
+              </h1>
+              <InventoriesWall
+                items={items} // Contenido para mostrar en las  tarjetas
+                updateCurrentInventory={props.updateCurrentInventory} // Setear en state de <App/> el id del inventario activo
+                setSelectedInventoryData={setSelectedInventoryData} // Cargar en state de <Inventories/> el inventario a editar
+                setEditMode={setEditMode} // Setear en state de <Inventories/> el modo del formulario (Nuevo/Editar)
+                setFormLoading={setFormLoading} // Setear en state de <Inventories/> mostrar/ocultar el formularion de Nuevo/Editar
+              />
+            </React.Fragment>
           )}
         </div>
       </div>

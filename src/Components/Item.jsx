@@ -23,6 +23,7 @@ import { AuthContext } from "../Auth";
 // App components
 import NavigationBar from "./NavigationBar.jsx";
 import GroupForm from "./GroupForm.jsx";
+import CircleSpinner from "./CircleSpinner.jsx";
 
 const Item = (props) => {
   const db = firebaseApp.firestore();
@@ -87,7 +88,7 @@ const Item = (props) => {
         </div>
         <div className="col-md-7 col-lg-9" style={{ minHeight: "100vh" }}>
           {loading ? (
-            "Cargando Item..."
+            <CircleSpinner />
           ) : (
             <div>
               <div style={{ padding: "20px" }}>

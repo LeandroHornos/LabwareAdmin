@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 
+/* React-Bootstrap */
 import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import { FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
 /* Firebase */
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
 
+/* App Components */
 import NavigationBar from "./NavigationBar.jsx";
 import ItemForm from "./ItemForm.jsx";
 import ItemsWall from "./ItemsWall.jsx";
@@ -23,7 +26,7 @@ const Inventory = (props) => {
   const [filter, setFilter] = useState(true); // Indica si mostrar la búsqueda o el formulario
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
   const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
-  const [activeTab, setActiveTab] = useState("filter");
+  const [activeTab, setActiveTab] = useState("filter"); // Determina el boton activo del menu de tabs en panel izquierdo
   const reload = false; //Variable para evitar que useEffect() haga un loop infinito, cambiar por array vacio?
 
   // Firebase
@@ -102,7 +105,7 @@ const Inventory = (props) => {
             >
               <Nav.Item
                 className="tabs-nav-item"
-                activeClassName="tabs-active-nav-item"
+                // activeClassName="tabs-active-nav-item"
               >
                 <Nav.Link
                   className="tabs-nav-link"
@@ -119,7 +122,7 @@ const Inventory = (props) => {
               </Nav.Item>
               <Nav.Item
                 className="tabs-nav-item"
-                activeClassName="tabs-active-nav-item"
+                // activeClassName="tabs-active-nav-item"
               >
                 <Nav.Link
                   className="tabs-nav-link"
@@ -180,14 +183,84 @@ const Inventory = (props) => {
 
 const InventoryInfo = (props) => {
   return (
-    <div style={{ padding: "15px" }}>
-      <h1>{props.inventory.name}</h1>
-      <p>{props.inventory.description}</p>
-    </div>
+    <React.Fragment>
+      <div className="row">
+        <div className="col-sm-6" style={{ padding: "15px" }}>
+          <h1>{props.inventory.name}</h1>
+          <p>{props.inventory.description}</p>
+        </div>
+        <div
+          className="col-sm-6"
+          style={{
+            padding: "40px 15px",
+          }}
+        >
+          <h4>Usuarios</h4>
+          <div
+            style={{ padding: "0px", maxHeight: "150px", overflowY: "auto" }}
+          >
+            <Table responsive size="sm" style={{ fontSize: "0.7em" }}>
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>pepito@gmail.com</td>
+                  <td>Editor</td>
+                </tr>
+                <tr>
+                  <td>jorgito@hotmail.com</td>
+                  <td>Invitado</td>
+                </tr>
+                <tr>
+                  <td>pepito@gmail.com</td>
+                  <td>Editor</td>
+                </tr>
+                <tr>
+                  <td>jorgito@hotmail.com</td>
+                  <td>Invitado</td>
+                </tr>
+                <tr>
+                  <td>pepito@gmail.com</td>
+                  <td>Editor</td>
+                </tr>
+                <tr>
+                  <td>jorgito@hotmail.com</td>
+                  <td>Invitado</td>
+                </tr>
+                <tr>
+                  <td>pepito@gmail.com</td>
+                  <td>Editor</td>
+                </tr>
+                <tr>
+                  <td>jorgito@hotmail.com</td>
+                  <td>Invitado</td>
+                </tr>
+                <tr>
+                  <td>pepito@gmail.com</td>
+                  <td>Editor</td>
+                </tr>
+                <tr>
+                  <td>jorgito@hotmail.com</td>
+                  <td>Invitado</td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 
 const AddUserForm = (props) => {
+  /* Brinda un formulario para agregar usuarios a un inventario.
+  La funcion para actualizar la base de datos se recibe por props 
+  desde <Inventory /> para dejar que sea el componente padre el 
+  que se comunique con firebase */
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
@@ -206,8 +279,9 @@ const AddUserForm = (props) => {
           <p style={{ fontSize: "0.8em" }}>
             Introduce el email de un usuario con quien deseas compartir el
             inventario. Los editores pueden crear y modificar items, mientras
-            que los invitados sólo pueden consultar la información.
-            Solo el creador del inventario puede agregar o quitar usuarios y definir roles.
+            que los invitados sólo pueden consultar la información. Solo el
+            creador del inventario puede agregar o quitar usuarios y definir
+            roles.
           </p>
         </div>
       </div>

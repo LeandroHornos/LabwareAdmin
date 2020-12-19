@@ -14,7 +14,7 @@ import NavigationBar from "./NavigationBar.jsx";
 import InventoryForm from "./InventoryForm.jsx";
 import InventoriesWall from "./InventoriesWall.jsx";
 import CircleSpinner from "./CircleSpinner.jsx";
-import FlowerSpinner from "./FlowerSpinner.jsx";
+
 
 const Inventories = (props) => {
   const txt = GuiTexts.Inventories[props.lang]; // Da el texto correspondiente al idioma seleccinado

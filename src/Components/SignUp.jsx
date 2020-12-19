@@ -9,15 +9,28 @@ import firebaseApp from "../firebaseApp";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
+import UserSchema from "../Models/UserSchema.js";
+
 function SignUp() {
+  const db = firebaseApp.firestore();
   const history = useHistory();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignOut = async () => {
+  const handleSignUp = async () => {
     try {
       await firebaseApp.auth().createUserWithEmailAndPassword(email, password);
+      const newUser = firebaseApp.auth().currentUser;
+      const userData = {
+        ...UserSchema,
+        email: newUser.email,
+        uid: newUser.uid,
+      };
+      await db.collection("users").add(userData);
+      console.log(
+        "nuevo usuario creado con exito"
+      );
       history.push("./inventories");
     } catch (error) {
       console.log(error);
@@ -47,7 +60,7 @@ function SignUp() {
             </Form.Text>
           </Form.Group>
 
-          <Form.Group >
+          <Form.Group>
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -63,7 +76,7 @@ function SignUp() {
             type="submit"
             onClick={(e) => {
               e.preventDefault();
-              handleSignOut();
+              handleSignUp();
             }}
           >
             Registrarme

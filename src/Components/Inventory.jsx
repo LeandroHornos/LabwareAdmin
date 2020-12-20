@@ -31,12 +31,13 @@ const Inventory = (props) => {
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
   const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
   const [activeTab, setActiveTab] = useState("filter"); // Determina el boton activo del menu de tabs en panel izquierdo
+  const [users, setUsers] = useState([]);
 
   // Firebase
   const db = firebaseApp.firestore();
   const refInventories = db.collection("inventories");
   const refItems = db.collection("items");
-  const refUsers = db.collection("users");
+  const usersRef = db.collection("users");
   const { currentUser } = useContext(AuthContext);
 
   // Router
@@ -50,7 +51,7 @@ const Inventory = (props) => {
 
     try {
       console.log(("email a buscar", email));
-      const result = await refUsers.where("email", "==", email).get(); //Obtener usuario por email, recuperar id
+      const result = await usersRef.where("email", "==", email).get(); //Obtener usuario por email, recuperar id
       const matches = result.docs.map((doc) => {
         return { ...doc.data() };
       });
@@ -73,15 +74,28 @@ const Inventory = (props) => {
   };
 
   useEffect(() => {
+    const fetchInventoryUsers = async (idsArray) => {
+      // Obtiene la info de los usuarios del inventario
+      try {
+        let dbResponse = await usersRef.where("uid", "in", idsArray).get();
+        const inventoryUsers = dbResponse.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        setUsers(inventoryUsers);
+        console.log("los usuarios del inventario son:", inventoryUsers);
+      } catch (error) {
+        console.log(error);
+        history.push("/error");
+      }
+    };
+
     const fetchData = async () => {
       try {
-        await refInventories
-          .doc(props.inventoryId)
-          .get()
-          .then((inv) => {
-            const data = { ...inv.data(), id: inv.id };
-            setInventory(data);
-          });
+        const inventoryDoc = await refInventories.doc(props.inventoryId).get();
+        const data = { ...inventoryDoc.data(), id: inventoryDoc.id };
+        await fetchInventoryUsers(data.users);
+        setInventory(data);
+
         setLoading(false);
         setFormLoading(false);
       } catch (error) {
@@ -102,6 +116,7 @@ const Inventory = (props) => {
         history.push("./error");
       }
     };
+
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

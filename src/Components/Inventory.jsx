@@ -7,6 +7,9 @@ import { FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 
+// Router
+import { useHistory } from "react-router-dom";
+
 /* Firebase */
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
@@ -34,17 +37,40 @@ const Inventory = (props) => {
   const db = firebaseApp.firestore();
   const refInventories = db.collection("inventories");
   const refItems = db.collection("items");
+  const refUsers = db.collection("users");
   const { currentUser } = useContext(AuthContext);
+
+  // Router
+  const history = useHistory();
 
   // Methods
 
-  const handleAddUserToInventory = (user) => {
+  const handleAddUserToInventory = async (user) => {
     const { email, role } = user;
-    //Obtener usuario por email, recuperar id
-    // Agregar id a users
-    // role == "editor"? entonces agregar a editors
-    // actualizar inventario
-    console.log(email, role);
+    let { users, editors } = inventory;
+
+    try {
+      console.log(("email a buscar", email));
+      const result = await refUsers.where("email", "==", email).get(); //Obtener usuario por email, recuperar id
+      const matches = result.docs.map((doc) => {
+        return { ...doc.data() };
+      });
+      const user = matches[0]; //Solo debe haber un resultado en el array
+
+      console.log("este seria el usuario:", user);
+
+      users.push(user.uid); // Agregar uid a users
+      if (role === "editor") {
+        editors.push(user.uid); // Si es editor, agregar uid a editors
+      }
+      await refInventories.doc(inventory.id).update({ users, editors }); // actualizar inventario
+      console.log("El usuario se ha agregado con exito al inventario");
+      history.push("./inventories");
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+      history.push("./error");
+    }
   };
 
   useEffect(() => {
@@ -74,6 +100,7 @@ const Inventory = (props) => {
           });
       } catch (error) {
         console.log(error);
+        history.push("./error");
       }
     };
 

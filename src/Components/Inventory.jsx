@@ -45,6 +45,32 @@ const Inventory = (props) => {
 
   // Methods
 
+  const classifyUsers = (usersArray, inventoryData) => {
+    /* Luego de obtener los datos de todos los usuarios que figuran en el array "users" del inventario,
+    quiero clasificarlos en el creador, los editores y los invitados para mostrar una tabla de roles en 
+    pantalla. Para ello, clasifico los elementos en el array de usuarios en base a si sus uids coinciden o no
+    con los que figuran como creador o editores en el inventario. 
+    Devuelvo un objeto con el creador y un array para cada rol */
+
+    const creatorSearch = usersArray.filter((user) => {
+      return user.uid === inventoryData.creator; // Busco en el array de users aquel cuyo id es el del creador del inventario
+    });
+    const creator = creatorSearch[0]; // Debo tener un solo resultado porque hay un solo creador por inventario
+    const editors = usersArray.filter((user) => {
+      return (
+        inventoryData.editors.includes(user.uid) &&
+        user.uid != inventoryData.creator
+      ); // Devuelvo aquellos usuarios cuyos uid estan en el array "editors" del inventario y que no son el creador
+    });
+    const others = inventoryData.users.filter((user) => {
+      return !inventoryData.editors.includes(user); // Filtro del array "users" aquellos que tambien están en "editors", los que quedan son los invitados
+    });
+    const guests = usersArray.filter((user) => {
+      return others.includes(user.uid); // Con la lista de uids de los invitados, filtro el array de usuarios
+    });
+    console.log("Usuarios clasificados", { creator, editors, guests });
+  };
+
   const handleAddUserToInventory = async (user) => {
     const { email, role } = user;
     let { users, editors } = inventory;
@@ -74,7 +100,10 @@ const Inventory = (props) => {
   };
 
   useEffect(() => {
-    const fetchInventoryUsers = async (idsArray) => {
+    const fetchInventoryUsers = async (inventory) => {
+      /* Obtiene la información de los usuarios que tienen acceso al inventario,
+      a partir del array de usuarios. Luego los clasifica segun su rol */
+      const idsArray = inventory.users;
       // Obtiene la info de los usuarios del inventario
       try {
         let dbResponse = await usersRef.where("uid", "in", idsArray).get();
@@ -83,6 +112,7 @@ const Inventory = (props) => {
         });
         setUsers(inventoryUsers);
         console.log("los usuarios del inventario son:", inventoryUsers);
+        classifyUsers(inventoryUsers, inventory);
       } catch (error) {
         console.log(error);
         history.push("/error");
@@ -93,9 +123,8 @@ const Inventory = (props) => {
       try {
         const inventoryDoc = await refInventories.doc(props.inventoryId).get();
         const data = { ...inventoryDoc.data(), id: inventoryDoc.id };
-        await fetchInventoryUsers(data.users);
+        await fetchInventoryUsers(data);
         setInventory(data);
-
         setLoading(false);
         setFormLoading(false);
       } catch (error) {

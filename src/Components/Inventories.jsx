@@ -15,7 +15,6 @@ import InventoryForm from "./InventoryForm.jsx";
 import InventoriesWall from "./InventoriesWall.jsx";
 import CircleSpinner from "./CircleSpinner.jsx";
 
-
 const Inventories = (props) => {
   const txt = GuiTexts.Inventories[props.lang]; // Da el texto correspondiente al idioma seleccinado
   // Firebase:
@@ -24,17 +23,18 @@ const Inventories = (props) => {
 
   // Auth:
   const { currentUser } = useContext(AuthContext);
+
+  // Router
   const history = useHistory();
 
-  // STATE:
+  // State:
   const [loading, setLoading] = useState(true); // Carga de la vista principal
   const [formLoading, setFormLoading] = useState(true); // Carga del formulario lateral/superior
   const [items, setItems] = useState([]); // Almacena los inventarios
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de InventoryForm
   const [selectedInventoryData, setSelectedInventoryData] = useState({});
-  const reload = false;
 
-  // METHODS:
+  // Methods:
 
   useEffect(() => {
     // Cargar los inventarios al acceder a esta ruta:
@@ -60,13 +60,14 @@ const Inventories = (props) => {
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload]);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [editMode]);
 
-  // RENDER
+  // Render
+
   return (
     <React.Fragment>
       <NavigationBar />

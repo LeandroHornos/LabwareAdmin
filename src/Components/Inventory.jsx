@@ -31,7 +31,6 @@ const Inventory = (props) => {
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
   const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
   const [activeTab, setActiveTab] = useState("filter"); // Determina el boton activo del menu de tabs en panel izquierdo
-  const reload = false; //Variable para evitar que useEffect() haga un loop infinito, cambiar por array vacio?
 
   // Firebase
   const db = firebaseApp.firestore();
@@ -103,10 +102,9 @@ const Inventory = (props) => {
         history.push("./error");
       }
     };
-
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload]);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);

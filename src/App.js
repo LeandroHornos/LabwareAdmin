@@ -24,6 +24,7 @@ const App = () => {
   const currentLang = "es";
   const [currentInventory, setCurrentInventory] = useState("");
   const [currentItem, setCurrentItem] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const updateCurrentInventory = (inv) => {
     setCurrentInventory(inv);
@@ -33,6 +34,18 @@ const App = () => {
     setCurrentItem(item);
   };
 
+  const deleteMessage = (id) => {
+    /* Permite a un componente eliminar un mensaje */
+    const updatedMessages = messages.filter((msg) => {
+      return msg.id !== id;
+    });
+    setMessages(updatedMessages);
+    console.log(
+      "se han eliminado los mensajes, he aqui la nueva lista",
+      updatedMessages
+    );
+  };
+
   return (
     <Router>
       <div className="main-container">
@@ -40,13 +53,13 @@ const App = () => {
         <Switch>
           <Route exact path="/error" component={ErrorPage} />
           <Route exact path="/signin">
-            {/* {!currentUser ? <SignIn /> : <Redirect to="/inventories" />} */}
             {currentUser ? (
               <Redirect to="/inventories" />
             ) : (
               <SignIn lang={currentLang} />
             )}
           </Route>
+
           <Route path="/signup">
             {currentUser ? (
               <Redirect to="inventories" />
@@ -54,9 +67,11 @@ const App = () => {
               <SignUp lang={currentLang} />
             )}
           </Route>
+
           <Route path="/signout">
             <SignOut />
           </Route>
+
           <Route path="/inventory">
             {currentUser ? (
               <Inventory
@@ -64,11 +79,14 @@ const App = () => {
                 inventoryId={currentInventory}
                 updateCurrentInventory={updateCurrentInventory}
                 updateCurrentItem={updateCurrentItem}
+                deleteMessage={deleteMessage}
+                messages={messages}
               />
             ) : (
               <Redirect to="/error" />
             )}
           </Route>
+
           <Route path="/item">
             {currentUser ? (
               <Item itemId={currentItem} lang={currentLang} />
@@ -98,5 +116,44 @@ const App = () => {
     </Router>
   );
 };
+
+// var sampleMessages = [
+//   {
+//     id: "bu9545kf896kffiuobce",
+//     component: "inventory",
+//     variant: "danger",
+//     body: "Hola señor don pepito",
+//   },
+//   {
+//     id: "bu954behe554g4g54hh4wesgve",
+//     component: "inventory",
+//     variant: "warning",
+//     body: "Hola señor don josé",
+//   },
+//   {
+//     id: "i93f9n3f9n3f9hw2df9hhfw9h922",
+//     component: "inventory",
+//     variant: "success",
+//     body: "La olio usté a mi abuela?",
+//   },
+//   {
+//     id: "09kut43wdrt67890piujhgw45rtgh",
+//     component: "items",
+//     variant: "success",
+//     body: "A su abuela yo la olí",
+//   },
+//   {
+//     id: "ftyu9okjhgr43wsdrt6789oi",
+//     component: "inventory",
+//     variant: "success",
+//     body: "Adiós don pepito",
+//   },
+//   {
+//     id: "0okmngt54334567fghnjiu",
+//     component: "inventory",
+//     variant: "success",
+//     body: "Adiós don josé",
+//   },
+// ];
 
 export default App;

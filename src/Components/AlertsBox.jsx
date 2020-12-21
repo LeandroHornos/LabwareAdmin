@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Alert } from "react-bootstrap";
 
@@ -7,30 +7,46 @@ const styles = {
   row: { padding: "40px 10px" },
 };
 
-let sampleMessages = [
-  { component: "inventory", variant: "danger", body: "Hola señor don pepito" },
-  { component: "inventory", variant: "warning", body: "Hola señor don josé" },
-  {
-    component: "inventory",
-    variant: "success",
-    body: "La olio usté a mi abuela?",
-  },
-  { component: "inventory", variant: "success", body: "A su abuela yo la olí" },
-  { component: "inventory", variant: "success", body: "Adiós don pepito" },
-  { component: "inventory", variant: "success", body: "Adiós don josé" },
-];
+const AlertsBox = (props) => {
+  const [loading, setLoading] = useState(true);
+  const [messages, setMessages] = useState([]);
 
-const AlertsBox = () => {
+  useEffect(() => {
+    /* Filtro los mensajes para dejar sólo aquellos que corresponden a este al 
+componente indicado en props.messageComponent */
+    const filterMessages = (messages) => {
+      const filtered = messages.filter((msg) => {
+        return msg.component === props.messageComponent;
+      });
+
+      return filtered;
+    };
+
+    const filteredMessages = filterMessages(props.messages);
+    console.log(
+      "AlertsBox dice: estos son los mensajes filtrados,",
+      filteredMessages
+    );
+    setMessages(filteredMessages);
+    setLoading(false);
+  }, [props]);
+
   return (
     <div className="row">
       <div className="col-12 d-flex flex-column align-items-center justify-content-between">
-        {sampleMessages.map((message) => {
-          return (
-            <AlertDismissible variant={message.variant}>
-              {message.body}
-            </AlertDismissible>
-          );
-        })}
+        {!loading &&
+          messages.map((message) => {
+            return (
+              <AlertDismissible
+                key={message.id}
+                variant={message.variant}
+                msgid={message.id}
+                deleteMessage={props.deleteMessage}
+              >
+                {message.body}
+              </AlertDismissible>
+            );
+          })}
       </div>
     </div>
   );
@@ -41,6 +57,7 @@ const AlertDismissible = (props) => {
 
   const handleCloseAlert = () => {
     setShow(false);
+    props.deleteMessage(props.msgid);
   };
 
   if (show) {

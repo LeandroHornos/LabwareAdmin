@@ -223,7 +223,15 @@ const Inventory = (props) => {
             <CircleSpinner />
           ) : (
             <React.Fragment>
-              <InventoryInfo inventory={inventory} users={users} />
+              <AlertsBox
+                messages={props.messages}
+                deleteMessage={props.deleteMessage}
+                messageComponent="inventory"
+              />
+              <InventoryInfo
+                inventory={inventory}
+                users={users}
+              />
               {currentUser.uid === inventory.creator && (
                 <AddUserForm add={handleAddUserToInventory} />
               )}
@@ -248,7 +256,6 @@ const Inventory = (props) => {
 const InventoryInfo = (props) => {
   return (
     <React.Fragment>
-      <AlertsBox />
       <div className="row">
         <div className="col-sm-6" style={{ padding: "15px" }}>
           <h1>{props.inventory.name}</h1>

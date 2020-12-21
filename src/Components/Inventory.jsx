@@ -14,6 +14,8 @@ import { useHistory } from "react-router-dom";
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
 
+import Utils from "../utilities.js";
+
 /* App Components */
 import NavigationBar from "./NavigationBar.jsx";
 import ItemForm from "./ItemForm.jsx";
@@ -31,7 +33,7 @@ const Inventory = (props) => {
   const [editMode, setEditMode] = useState(false); // Determina el comportamiento de ItemForm
   const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
   const [activeTab, setActiveTab] = useState("filter"); // Determina el boton activo del menu de tabs en panel izquierdo
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({});
 
   // Firebase
   const db = firebaseApp.firestore();
@@ -59,7 +61,7 @@ const Inventory = (props) => {
     const editors = usersArray.filter((user) => {
       return (
         inventoryData.editors.includes(user.uid) &&
-        user.uid != inventoryData.creator
+        user.uid !== inventoryData.creator
       ); // Devuelvo aquellos usuarios cuyos uid estan en el array "editors" del inventario y que no son el creador
     });
     const others = inventoryData.users.filter((user) => {
@@ -68,7 +70,7 @@ const Inventory = (props) => {
     const guests = usersArray.filter((user) => {
       return others.includes(user.uid); // Con la lista de uids de los invitados, filtro el array de usuarios
     });
-    console.log("Usuarios clasificados", { creator, editors, guests });
+    return { creator, editors, guests };
   };
 
   const handleAddUserToInventory = async (user) => {
@@ -76,21 +78,17 @@ const Inventory = (props) => {
     let { users, editors } = inventory;
 
     try {
-      console.log(("email a buscar", email));
       const result = await usersRef.where("email", "==", email).get(); //Obtener usuario por email, recuperar id
       const matches = result.docs.map((doc) => {
         return { ...doc.data() };
       });
       const user = matches[0]; //Solo debe haber un resultado en el array
 
-      console.log("este seria el usuario:", user);
-
       users.push(user.uid); // Agregar uid a users
       if (role === "editor") {
         editors.push(user.uid); // Si es editor, agregar uid a editors
       }
       await refInventories.doc(inventory.id).update({ users, editors }); // actualizar inventario
-      console.log("El usuario se ha agregado con exito al inventario");
       history.push("./inventories");
       history.goBack();
     } catch (error) {
@@ -100,31 +98,26 @@ const Inventory = (props) => {
   };
 
   useEffect(() => {
-    const fetchInventoryUsers = async (inventory) => {
-      /* Obtiene la información de los usuarios que tienen acceso al inventario,
-      a partir del array de usuarios. Luego los clasifica segun su rol */
-      const idsArray = inventory.users;
-      // Obtiene la info de los usuarios del inventario
-      try {
-        let dbResponse = await usersRef.where("uid", "in", idsArray).get();
-        const inventoryUsers = dbResponse.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        setUsers(inventoryUsers);
-        console.log("los usuarios del inventario son:", inventoryUsers);
-        classifyUsers(inventoryUsers, inventory);
-      } catch (error) {
-        console.log(error);
-        history.push("/error");
-      }
-    };
-
     const fetchData = async () => {
       try {
+        // Obtengo el inventario
         const inventoryDoc = await refInventories.doc(props.inventoryId).get();
-        const data = { ...inventoryDoc.data(), id: inventoryDoc.id };
-        await fetchInventoryUsers(data);
-        setInventory(data);
+        const inventoryData = { ...inventoryDoc.data(), id: inventoryDoc.id };
+        // Obtengo los usuarios
+        let dbResponse = await usersRef
+          .where("uid", "in", inventoryData.users)
+          .get();
+        let unclassifiedUsersArray = dbResponse.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        // Clasifico los usuarios por roles
+        const inventoryUsers = classifyUsers(
+          unclassifiedUsersArray,
+          inventoryData
+        );
+        // Actualizo el state
+        setInventory(inventoryData);
+        setUsers(inventoryUsers);
         setLoading(false);
         setFormLoading(false);
       } catch (error) {
@@ -229,7 +222,7 @@ const Inventory = (props) => {
             <CircleSpinner />
           ) : (
             <React.Fragment>
-              <InventoryInfo inventory={inventory} />
+              <InventoryInfo inventory={inventory} users={users} />
               {currentUser.uid === inventory.creator && (
                 <AddUserForm add={handleAddUserToInventory} />
               )}
@@ -278,45 +271,25 @@ const InventoryInfo = (props) => {
               </thead>
               <tbody>
                 <tr>
-                  <td>pepito@gmail.com</td>
-                  <td>Editor</td>
+                  <td>{props.users.creator.email}</td>
+                  <td>Creador</td>
                 </tr>
-                <tr>
-                  <td>jorgito@hotmail.com</td>
-                  <td>Invitado</td>
-                </tr>
-                <tr>
-                  <td>pepito@gmail.com</td>
-                  <td>Editor</td>
-                </tr>
-                <tr>
-                  <td>jorgito@hotmail.com</td>
-                  <td>Invitado</td>
-                </tr>
-                <tr>
-                  <td>pepito@gmail.com</td>
-                  <td>Editor</td>
-                </tr>
-                <tr>
-                  <td>jorgito@hotmail.com</td>
-                  <td>Invitado</td>
-                </tr>
-                <tr>
-                  <td>pepito@gmail.com</td>
-                  <td>Editor</td>
-                </tr>
-                <tr>
-                  <td>jorgito@hotmail.com</td>
-                  <td>Invitado</td>
-                </tr>
-                <tr>
-                  <td>pepito@gmail.com</td>
-                  <td>Editor</td>
-                </tr>
-                <tr>
-                  <td>jorgito@hotmail.com</td>
-                  <td>Invitado</td>
-                </tr>
+                {props.users.editors.map((user) => {
+                  return (
+                    <tr key={Utils.makeId(5)}>
+                      <td>{user.email}</td>
+                      <td>Editor</td>
+                    </tr>
+                  );
+                })}
+                {props.users.guests.map((user) => {
+                  return (
+                    <tr key={Utils.makeId(5)}>
+                      <td>{user.email}</td>
+                      <td>Invitado</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </Table>
           </div>

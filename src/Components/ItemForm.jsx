@@ -267,6 +267,7 @@ const ItemForm = (props) => {
                       }}
                     >
                       <img
+                        alt="icon"
                         src={icon.src}
                         style={{ height: "36px", marginRight: "10px" }}
                       ></img>
@@ -277,7 +278,7 @@ const ItemForm = (props) => {
               </div>
             </DropdownButton>
             <span style={{ padding: "5px" }}>
-              {icon != "" && (
+              {icon !== "" && (
                 <img
                   src={Icons[icon].src}
                   alt="icon"

@@ -206,7 +206,7 @@ const GroupCard = (props) => {
         groups: updatedGroups,
       });
       props.setLoading(false);
-      history.push("./inventory");
+      history.push("./loading");
       history.goBack();
     } catch (error) {
       console.log(error);
@@ -241,7 +241,7 @@ const GroupCard = (props) => {
           ],
         });
       props.setLoading(false);
-      history.push("./inventory");
+      history.push("./loading");
       history.goBack();
     } catch (error) {
       console.log(error);

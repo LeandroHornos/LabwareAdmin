@@ -163,7 +163,7 @@ const ItemForm = (props) => {
         .doc(props.inventory.id)
         .update(newInventory);
       console.log("Se ha creado el item y se ha actualizado el inventario");
-      history.push("./inventories");
+      history.push("./loading");
       history.goBack();
       window.scrollTo(0, 0);
     } catch (error) {
@@ -193,7 +193,7 @@ const ItemForm = (props) => {
         .doc(props.inventory.id)
         .update(newInventory);
       console.log("Se ha creado el item y se ha actualizado el inventario");
-      history.push("./inventories");
+      history.push("./loading");
       history.goBack();
       window.scrollTo(0, 0);
     } catch (error) {
@@ -423,7 +423,7 @@ const ItemForm = (props) => {
           onClick={() => {
             setEditMode(false);
             cleanForm();
-            history.push("/inventories");
+            history.push("/loading");
             history.goBack();
           }}
         >

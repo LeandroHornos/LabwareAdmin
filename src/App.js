@@ -17,6 +17,7 @@ import Inventories from "./Components/Inventories.jsx";
 import Item from "./Components/Item.jsx";
 import ErrorPage from "./Components/ErrorPage.jsx";
 import ScrollToTop from "./Components/ScrollToTop.jsx";
+import Blank from "./Components/Blank.jsx";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -84,6 +85,9 @@ const App = () => {
             ) : (
               <Redirect to="/error" />
             )}
+          </Route>
+          <Route path="/loading">
+            <Blank />
           </Route>
 
           <Route path="/">

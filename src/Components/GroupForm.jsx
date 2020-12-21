@@ -138,7 +138,7 @@ const GroupForm = (props) => {
           groups: [...props.item.groups, groupdata],
         });
       console.log("HandleCreateItem: Se ha agregado el nuevo grupo al item");
-      history.push("./inventory");
+      history.push("./loading");
       history.goBack(); //
       window.scrollTo(0, 0);
     } catch (error) {
@@ -198,7 +198,7 @@ const GroupForm = (props) => {
         groups: updatedGroups,
       });
       console.log("handleUpdateGroup dice: Se ha actualizado el grupo");
-      history.push("./inventory");
+      history.push("./loading");
       history.goBack(); //
       window.scrollTo(0, 0);
     } catch (error) {

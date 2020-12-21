@@ -46,7 +46,7 @@ const ItemsWall = (props) => {
     try {
       const db = firebaseApp.firestore();
       await db.collection("items").doc(itemId).delete();
-      history.push("./inventories");
+      history.push("./loading");
       history.goBack();
       window.scrollTo(0, 0);
     } catch (error) {

@@ -89,7 +89,7 @@ const Inventory = (props) => {
         editors.push(user.uid); // Si es editor, agregar uid a editors
       }
       await refInventories.doc(inventory.id).update({ users, editors }); // actualizar inventario
-      history.push("./inventories");
+      history.push("./loading");
       history.goBack();
     } catch (error) {
       console.log(error);

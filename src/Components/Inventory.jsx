@@ -21,6 +21,7 @@ import NavigationBar from "./NavigationBar.jsx";
 import ItemForm from "./ItemForm.jsx";
 import ItemsWall from "./ItemsWall.jsx";
 import CircleSpinner from "./CircleSpinner.jsx";
+import AlertsBox from "./AlertsBox.jsx";
 
 /* Inventory ----------------------------------------- */
 
@@ -247,6 +248,7 @@ const Inventory = (props) => {
 const InventoryInfo = (props) => {
   return (
     <React.Fragment>
+      <AlertsBox />
       <div className="row">
         <div className="col-sm-6" style={{ padding: "15px" }}>
           <h1>{props.inventory.name}</h1>

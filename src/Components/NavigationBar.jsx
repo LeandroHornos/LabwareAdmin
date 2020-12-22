@@ -21,8 +21,12 @@ const NavigationBar = () => {
         className="d-flex justify-content-between align-items-center"
       >
         <Navbar.Brand>
-          <img alt="" src="./img/carbo-logo-2-rojo.svg" style={{height:"20px", marginRight:"5px"}}></img>
-          <Link to="/" style={{ color: "rgb(100,200,250)" }}>
+          <img
+            alt=""
+            src="./img/carbo-logo-2-rojo.svg"
+            style={{ height: "20px", marginRight: "5px" }}
+          ></img>
+          <Link to="/" style={{ color: "rgb(230, 230, 230)" }}>
             LabwareAdmin
           </Link>
         </Navbar.Brand>
@@ -32,7 +36,11 @@ const NavigationBar = () => {
             history.push("./signout");
           }}
         >
-          <img alt="" src="./img/icons/013-arrow.png" style={{height:"24px", marginRight:"5px"}}></img>
+          <img
+            alt=""
+            src="./img/icons/013-arrow.png"
+            style={{ height: "24px", marginRight: "5px" }}
+          ></img>
           LogOut
         </Button>
         {/* <Navbar.Toggle aria-controls="responsive-navbar-nav" />

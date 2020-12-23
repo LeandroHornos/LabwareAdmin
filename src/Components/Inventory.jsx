@@ -90,6 +90,11 @@ const Inventory = (props) => {
         editors.push(user.uid); // Si es editor, agregar uid a editors
       }
       await refInventories.doc(inventory.id).update({ users, editors }); // actualizar inventario
+      props.addMessage({
+        id: Utils.makeId(8),
+        variant: "success",
+        body: `El usuario ${email} se ha agregado con éxito al inventario`,
+      });
       history.push("./loading");
       history.goBack();
     } catch (error) {
@@ -225,13 +230,10 @@ const Inventory = (props) => {
             <React.Fragment>
               <AlertsBox
                 messages={props.messages}
-                deleteMessage={props.deleteMessage}
-                messageComponent="inventory"
+                delMessageById={props.delMessageById}
+                ownerComponent="inventory"
               />
-              <InventoryInfo
-                inventory={inventory}
-                users={users}
-              />
+              <InventoryInfo inventory={inventory} users={users} />
               {currentUser.uid === inventory.creator && (
                 <AddUserForm add={handleAddUserToInventory} />
               )}

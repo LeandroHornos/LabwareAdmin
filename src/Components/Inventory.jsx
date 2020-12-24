@@ -91,16 +91,26 @@ const Inventory = (props) => {
         editors.push(user.uid); // Si es editor, agregar uid a editors
       }
       await refInventories.doc(inventory.id).update({ users, editors }); // actualizar inventario
-      props.addMessage({
-        id: Utils.makeId(8),
-        variant: "success",
-        body: `El usuario ${email} se ha agregado con éxito al inventario`,
-      });
-      history.push("./loading");
-      history.goBack();
+      setAlerts([
+        ...alerts,
+        {
+          id: Utils.makeId(8),
+          variant: "success",
+          body: `El usuario ${email} se ha agregado con éxito al inventario`,
+        },
+      ]);
+      // history.push("./loading");
+      // history.goBack();
     } catch (error) {
-      console.log(error);
-      history.push("./error");
+      setAlerts([
+        ...alerts,
+        {
+          id: Utils.makeId(8),
+          variant: "danger",
+          body: `El usuario ${email} no se ha podido agregar al inventario. Comprueba que el email que ingresaste
+          esté bien escrito. Recuerda que solo puedes agregar emails de usuarios que hayan creado una cuenta en la aplicación con dicho email`,
+        },
+      ]);
     }
   };
 
@@ -148,7 +158,7 @@ const Inventory = (props) => {
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [alerts]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -216,6 +226,7 @@ const Inventory = (props) => {
                   item={selectedItemData}
                   editMode={editMode}
                   setEditMode={setEditMode}
+                  setAlerts={setAlerts}
                   updateCurrentItem={props.updateCurrentItem}
                   lang={props.lang}
                 />
@@ -229,10 +240,7 @@ const Inventory = (props) => {
             <CircleSpinner />
           ) : (
             <React.Fragment>
-              <AlertsBox
-                alerts={alerts}
-                setAlerts={setAlerts}
-              />
+              <AlertsBox alerts={alerts} setAlerts={setAlerts} />
               <InventoryInfo inventory={inventory} users={users} />
               {currentUser.uid === inventory.creator && (
                 <AddUserForm add={handleAddUserToInventory} />

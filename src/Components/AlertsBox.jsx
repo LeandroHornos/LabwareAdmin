@@ -1,23 +1,17 @@
 /* AlertsBox brinda una cajita donde se muestran bloques de alerta
-para mostrarles mensajes al usuario. Está basado en los Alerts de react-bootstrap.
+para mostrarle mensajes al usuario. Está basado en los Alerts de react-bootstrap.
 Recibe por props un array con los mensajes a mostrar, así como funciones para
-agregar y eliminar mensajes en el state de <App /> 
+modificar el state del componente dentro del cual se encuentra. <App /> 
 
 props: 
--messages: Array con mensajes que recibe del state de <App/>, los cuales son objetos con la 
-estructura {variant, body, component}. variant indica la variante
-del Alert de bootstrap (danger, warning, success, etc), body contiene
-el texto a mostrar en el alert y component indica el componente en el que
-debe renderizarse el mensaje. Por default <AlertsBox> recibe todos los mensajes
-y mediante la funcion filterMessages() filtra el array dejando sólo aquellos que
-corresponden al componente al que corresponde.
+-alerts: Array con mensajes de alerta que recibe del state del componente que lo contiene. 
+Son objetos con la estructura {id, variant, body}. id es una string que idientifica el alert
+para poder manipularlo; variant indica la variante del Alert de bootstrap 
+(danger, warning, success, etc), body contiene el texto a mostrar en el alert.
 
--delMessageById: es una funcion  que elimina el mensaje del state de <App/>
-pasandole el id del mensaje: delMessageById(id)
-
--ownerComponent: String. Es el nombre del componente que contiene a <AlertsBox />
-tal y como se especifica en la propiedad "component" de los objetos dentro de "messages"
-Se utiliza para identificar aquellos mensajes que se deben mostrar en el componente actual. 
+-setAlerts: seter del hook para actualizar el estado del componente padre. Dicho
+componente usa setAlerts para decirle a AlertsBox que mensajes mostrar, mientras que
+alertsBox lo usa para eliminar los mensajes al darle al boton x del Alert correspondiente
 */
 import React, { useState, useEffect } from "react";
 
@@ -29,26 +23,23 @@ const styles = {
 };
 
 const AlertsBox = (props) => {
-  const [loading, setLoading] = useState(true);
-  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true); // Determina cuando mostrar el componente
+  const [alerts, setAlerts] = useState([]); // Mensajes para mostrar
+
+  const delAlertById = (id) => {
+    /* Permite eliminar un mensaje a partir del id */
+    const updatedAlerts = alerts.filter((msg) => {
+      return msg.id !== id;
+    });
+    props.setAlerts(updatedAlerts);
+    console.log(
+      "se han eliminado los mensajes, he aqui la nueva lista",
+      updatedAlerts
+    );
+  };
 
   useEffect(() => {
-    /* Filtro los mensajes para dejar sólo aquellos que corresponden a este al 
-componente indicado en props.ownerComponent */
-    const filterMessages = (messages) => {
-      const filtered = messages.filter((msg) => {
-        return msg.component === props.ownerComponent;
-      });
-
-      return filtered;
-    };
-
-    const filteredMessages = filterMessages(props.messages);
-    console.log(
-      "AlertsBox dice: estos son los mensajes filtrados,",
-      filteredMessages
-    );
-    setMessages(filteredMessages);
+    setAlerts(props.alerts);
     setLoading(false);
   }, [props]);
 
@@ -56,15 +47,15 @@ componente indicado en props.ownerComponent */
     <div className="row">
       <div className="col-12 d-flex flex-column align-items-center justify-content-between">
         {!loading &&
-          messages.map((message) => {
+          alerts.map((alert) => {
             return (
               <AlertDismissible
-                key={message.id}
-                variant={message.variant}
-                msgid={message.id}
-                delMessageById={props.delMessageById}
+                key={alert.id}
+                variant={alert.variant}
+                alertid={alert.id}
+                delAlertById={delAlertById}
               >
-                {message.body}
+                {alert.body}
               </AlertDismissible>
             );
           })}
@@ -78,7 +69,7 @@ const AlertDismissible = (props) => {
 
   const handleCloseAlert = () => {
     setShow(false);
-    props.delMessageById(props.msgid);
+    props.delAlertById(props.alertid);
   };
 
   if (show) {

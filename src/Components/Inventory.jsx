@@ -35,6 +35,7 @@ const Inventory = (props) => {
   const [selectedItemData, setSelectedItemData] = useState({}); // Contiene la info actual del item a editar
   const [activeTab, setActiveTab] = useState("filter"); // Determina el boton activo del menu de tabs en panel izquierdo
   const [users, setUsers] = useState({});
+  const [alerts, setAlerts] = useState([]);
 
   // Firebase
   const db = firebaseApp.firestore();
@@ -229,9 +230,8 @@ const Inventory = (props) => {
           ) : (
             <React.Fragment>
               <AlertsBox
-                messages={props.messages}
-                delMessageById={props.delMessageById}
-                ownerComponent="inventory"
+                alerts={alerts}
+                setAlerts={setAlerts}
               />
               <InventoryInfo inventory={inventory} users={users} />
               {currentUser.uid === inventory.creator && (

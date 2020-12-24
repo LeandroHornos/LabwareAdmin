@@ -24,7 +24,6 @@ const App = () => {
   const currentLang = "es";
   const [currentInventory, setCurrentInventory] = useState("");
   const [currentItem, setCurrentItem] = useState("");
-  const [messages, setMessages] = useState([]);
 
   // App Navigation:
 
@@ -34,49 +33,6 @@ const App = () => {
 
   const updateCurrentItem = (item) => {
     setCurrentItem(item);
-  };
-
-  // Message Handling. "messages" needs. CRUD-like operations:
-
-  const delMessageById = (id) => {
-    /* Permite eliminar un mensaje a partir del id */
-    const updatedMessages = messages.filter((msg) => {
-      return msg.id !== id;
-    });
-    setMessages(updatedMessages);
-    console.log(
-      "se han eliminado los mensajes, he aqui la nueva lista",
-      updatedMessages
-    );
-  };
-
-  const delMessagesByComponent = (componentName) => {
-    /* Permite eliminar loss mensajes del componente indicado */
-    const updatedMessages = messages.filter((msg) => {
-      return msg.component !== componentName;
-    });
-    setMessages(updatedMessages);
-    console.log(
-      "se han eliminado los mensajes, he aqui la nueva lista",
-      updatedMessages
-    );
-  };
-
-  const delShownMessages = () => {
-    /* Permite eliminar loss mensajes del componente indicado */
-    const updatedMessages = messages.filter((msg) => {
-      return msg.shown == false;
-    });
-    setMessages(updatedMessages);
-    console.log(
-      "se han eliminado los mensajes, he aqui la nueva lista",
-      updatedMessages
-    );
-  };
-
-  const addMessage = (msg) => {
-    console.log("agregando mensajes...");
-    setMessages([...messages, msg]);
   };
 
   return (
@@ -112,11 +68,6 @@ const App = () => {
                 inventoryId={currentInventory}
                 updateCurrentInventory={updateCurrentInventory}
                 updateCurrentItem={updateCurrentItem}
-                addMessage={addMessage}
-                delMessageById={delMessageById}
-                delMessagesByComponent={delMessagesByComponent}
-                delShownMessages={delShownMessages}
-                messages={messages}
               />
             ) : (
               <Redirect to="/error" />

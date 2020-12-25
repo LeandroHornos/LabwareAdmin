@@ -11,6 +11,7 @@ import { Table } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 /* Firebase */
+import * as firebase from "firebase/app";
 import firebaseApp from "../firebaseApp";
 import { AuthContext } from "../Auth";
 
@@ -39,9 +40,11 @@ const Inventory = (props) => {
   const [alerts, setAlerts] = useState([]);
 
   // Firebase
+
   const db = firebaseApp.firestore();
-  const refInventories = db.collection("inventories");
-  const refItems = db.collection("items");
+  const arrayRemove = firebase.firestore.FieldValue.arrayRemove;
+  const inventoriesRef = db.collection("inventories");
+  const itemsRef = db.collection("items");
   const usersRef = db.collection("users");
   const { currentUser } = useContext(AuthContext);
 
@@ -76,7 +79,7 @@ const Inventory = (props) => {
     return { creator, editors, guests };
   };
 
-  const handleAddUserToInventory = async (user) => {
+  const addUserToInventory = async (user) => {
     const { email, role } = user;
     let { users, editors } = inventory;
 
@@ -91,7 +94,7 @@ const Inventory = (props) => {
       if (role === "editor") {
         editors.push(user.uid); // Si es editor, agregar uid a editors
       }
-      await refInventories.doc(inventory.id).update({ users, editors }); // actualizar inventario
+      await inventoriesRef.doc(inventory.id).update({ users, editors }); // actualizar inventario
       setAlerts([
         ...alerts,
         {
@@ -115,11 +118,37 @@ const Inventory = (props) => {
     }
   };
 
+  const removeUserFromInventory = async (userId) => {
+    try {
+      await inventoriesRef
+        .doc(inventory.id)
+        .update({ users: arrayRemove(userId), editors: arrayRemove(userId) });
+      setAlerts([
+        ...alerts,
+        {
+          id: Utils.makeId(8),
+          variant: "success",
+          body: "Se ha eliminado el usuario con exito",
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+      setAlerts([
+        ...alerts,
+        {
+          id: Utils.makeId(8),
+          variant: "danger",
+          body: "No se ha podido eliminar el usuario indicado",
+        },
+      ]);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Obtengo el inventario
-        const inventoryDoc = await refInventories.doc(props.inventoryId).get();
+        const inventoryDoc = await inventoriesRef.doc(props.inventoryId).get();
         const inventoryData = { ...inventoryDoc.data(), id: inventoryDoc.id };
         // Obtengo los usuarios
         let dbResponse = await usersRef
@@ -142,7 +171,7 @@ const Inventory = (props) => {
         console.log(error);
       }
       try {
-        await refItems
+        await itemsRef
           .where("inventoryId", "==", props.inventoryId)
           .get()
           .then((itemsArray) => {
@@ -242,9 +271,13 @@ const Inventory = (props) => {
           ) : (
             <React.Fragment>
               <AlertsBox alerts={alerts} setAlerts={setAlerts} />
-              <InventoryInfo inventory={inventory} users={users} />
+              <InventoryInfo
+                inventory={inventory}
+                users={users}
+                removeUserFromInventory={removeUserFromInventory}
+              />
               {currentUser.uid === inventory.creator && (
-                <AddUserForm addUserToInventory={handleAddUserToInventory} />
+                <AddUserForm addUserToInventory={addUserToInventory} />
               )}
               <ItemsWall
                 items={items}
@@ -287,18 +320,37 @@ const InventoryInfo = (props) => {
                 <tr>
                   <th>Email</th>
                   <th>Rol</th>
+                  <th>Del</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{props.users.creator.email}</td>
                   <td>Creador</td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        props.removeUserFromInventory(props.users.creator.uid);
+                      }}
+                    >
+                      x
+                    </button>
+                  </td>
                 </tr>
                 {props.users.editors.map((user) => {
                   return (
                     <tr key={Utils.makeId(5)}>
                       <td>{user.email}</td>
                       <td>Editor</td>
+                      <td>
+                        <button
+                          onClick={() => {
+                            props.removeUserFromInventory(user.uid);
+                          }}
+                        >
+                          x
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
@@ -307,6 +359,13 @@ const InventoryInfo = (props) => {
                     <tr key={Utils.makeId(5)}>
                       <td>{user.email}</td>
                       <td>Invitado</td>
+                      <button
+                        onClick={() => {
+                          props.removeUserFromInventory(user.uid);
+                        }}
+                      >
+                        x
+                      </button>
                     </tr>
                   );
                 })}

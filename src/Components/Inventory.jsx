@@ -26,6 +26,7 @@ import AlertsBox from "./AlertsBox.jsx";
 /* Inventory ----------------------------------------- */
 
 const Inventory = (props) => {
+  // State Hooks
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(true); // Carga del formulario lateral/superior
   const [inventory, setInventory] = useState(null); // Contiene la info del inventario al que corresponden los items
@@ -243,7 +244,7 @@ const Inventory = (props) => {
               <AlertsBox alerts={alerts} setAlerts={setAlerts} />
               <InventoryInfo inventory={inventory} users={users} />
               {currentUser.uid === inventory.creator && (
-                <AddUserForm add={handleAddUserToInventory} />
+                <AddUserForm addUserToInventory={handleAddUserToInventory} />
               )}
               <ItemsWall
                 items={items}
@@ -333,6 +334,11 @@ const AddUserForm = (props) => {
     return emailIsValid && roleIsValid;
   };
 
+  const cleanForm = () => {
+    setEmail("");
+    setRole("");
+  };
+
   return (
     <Form style={{ padding: "40px 0px" }}>
       <div className="row">
@@ -379,7 +385,8 @@ const AddUserForm = (props) => {
             variant="outline-success"
             onClick={(e) => {
               e.preventDefault();
-              props.add({ email, role });
+              props.addUserToInventory({ email, role });
+              cleanForm();
             }}
           >
             Agregar

@@ -38,6 +38,7 @@ const Inventory = (props) => {
   const [activeTab, setActiveTab] = useState("filter"); // Determina el boton activo del menu de tabs en panel izquierdo
   const [users, setUsers] = useState({});
   const [alerts, setAlerts] = useState([]);
+  const [userIsCreator, setUserIsCreator] = useState(false);
 
   // Firebase
 
@@ -163,6 +164,7 @@ const Inventory = (props) => {
           inventoryData
         );
         // Actualizo el state
+        setUserIsCreator(inventoryData.creator === currentUser.uid);
         setInventory(inventoryData);
         setUsers(inventoryUsers);
         setLoading(false);
@@ -272,11 +274,12 @@ const Inventory = (props) => {
             <React.Fragment>
               <AlertsBox alerts={alerts} setAlerts={setAlerts} />
               <InventoryInfo
+                userIsCreator={userIsCreator}
                 inventory={inventory}
                 users={users}
                 removeUserFromInventory={removeUserFromInventory}
               />
-              {currentUser.uid === inventory.creator && (
+              {userIsCreator && (
                 <AddUserForm addUserToInventory={addUserToInventory} />
               )}
               <ItemsWall
@@ -320,30 +323,32 @@ const InventoryInfo = (props) => {
                 <tr>
                   <th>Email</th>
                   <th>Rol</th>
-                  <th>Del</th>
+                  {props.userIsCreator && <th>Del</th>}
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{props.users.creator.email}</td>
                   <td>Creador</td>
-                  <td></td>
+                  {props.userIsCreator && <td></td>}
                 </tr>
                 {props.users.editors.map((user) => {
                   return (
                     <tr key={Utils.makeId(5)}>
                       <td>{user.email}</td>
                       <td>Editor</td>
-                      <td>
-                        <button
-                          style={styles.delUserBtn}
-                          onClick={() => {
-                            props.removeUserFromInventory(user.uid);
-                          }}
-                        >
-                          x
-                        </button>
-                      </td>
+                      {props.userIsCreator && (
+                        <td>
+                          <button
+                            style={styles.delUserBtn}
+                            onClick={() => {
+                              props.removeUserFromInventory(user.uid);
+                            }}
+                          >
+                            x
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
@@ -352,16 +357,18 @@ const InventoryInfo = (props) => {
                     <tr key={Utils.makeId(5)}>
                       <td>{user.email}</td>
                       <td>Invitado</td>
-                      <td>
-                        <button
-                          style={styles.delUserBtn}
-                          onClick={() => {
-                            props.removeUserFromInventory(user.uid);
-                          }}
-                        >
-                          x
-                        </button>
-                      </td>
+                      {props.userIsCreator && (
+                        <td>
+                          <button
+                            style={styles.delUserBtn}
+                            onClick={() => {
+                              props.removeUserFromInventory(user.uid);
+                            }}
+                          >
+                            x
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   );
                 })}

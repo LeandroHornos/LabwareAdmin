@@ -327,15 +327,7 @@ const InventoryInfo = (props) => {
                 <tr>
                   <td>{props.users.creator.email}</td>
                   <td>Creador</td>
-                  <td>
-                    <button
-                      onClick={() => {
-                        props.removeUserFromInventory(props.users.creator.uid);
-                      }}
-                    >
-                      x
-                    </button>
-                  </td>
+                  <td></td>
                 </tr>
                 {props.users.editors.map((user) => {
                   return (
@@ -344,6 +336,7 @@ const InventoryInfo = (props) => {
                       <td>Editor</td>
                       <td>
                         <button
+                          style={styles.delUserBtn}
                           onClick={() => {
                             props.removeUserFromInventory(user.uid);
                           }}
@@ -359,13 +352,16 @@ const InventoryInfo = (props) => {
                     <tr key={Utils.makeId(5)}>
                       <td>{user.email}</td>
                       <td>Invitado</td>
-                      <button
-                        onClick={() => {
-                          props.removeUserFromInventory(user.uid);
-                        }}
-                      >
-                        x
-                      </button>
+                      <td>
+                        <button
+                          style={styles.delUserBtn}
+                          onClick={() => {
+                            props.removeUserFromInventory(user.uid);
+                          }}
+                        >
+                          x
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
@@ -466,6 +462,16 @@ const SearchItemForm = (props) => {
       </p>
     </div>
   );
+};
+
+const styles = {
+  delUserBtn: {
+    padding: "3px 5px",
+    color: "red",
+    border: "solid 1px red",
+    background: "none",
+    borderRadius: "2px",
+  },
 };
 
 export default Inventory;

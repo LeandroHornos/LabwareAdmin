@@ -26,7 +26,7 @@ const NavigationBar = () => {
             src="./img/carbo-logo-2-rojo.svg"
             style={{ height: "20px", marginRight: "5px" }}
           ></img>
-          <Link to="/" style={{ color: "rgb(230, 230, 230)" }}>
+          <Link to="/inventories" style={{ color: "rgb(230, 230, 230)" }}>
             LabwareAdmin
           </Link>
         </Navbar.Brand>
